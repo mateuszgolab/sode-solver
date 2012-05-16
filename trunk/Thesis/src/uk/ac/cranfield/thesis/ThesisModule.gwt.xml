@@ -1,0 +1,16 @@
+<module>
+	<inherits name="com.google.gwt.user.User" />
+	<!-- <inherits name="com.google.gwt.user.theme.standard.Standard" />  -->
+
+<!-- 	
+	<inherits name='com.smartclient.theme.silverwave.SilverWave' />
+	<inherits name="com.smartgwt.SmartGwt" /> 
+	<inherits name="com.gwtext.GwtExt" />
+	
+	<inherits name='com.google.gwt.visualization.Visualization'/>
+	 -->
+
+
+
+	<entry-point class="uk.ac.cranfield.thesis.client.ThesisModule" />
+</module>
