@@ -1,5 +1,9 @@
 package uk.ac.cranfield.thesis.client;
 
+import uk.ac.cranfield.thesis.client.view.EquationPanel;
+import uk.ac.cranfield.thesis.client.view.GraphPanel;
+import uk.ac.cranfield.thesis.client.view.InputPanel;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -9,6 +13,8 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.visualization.client.VisualizationUtils;
+import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -19,28 +25,25 @@ public class ThesisModule implements EntryPoint
     private VerticalPanel mainPanel = new VerticalPanel();
     private InputPanel inputPanel = new InputPanel();
     private EquationPanel equationPanel = new EquationPanel();
-    // private GraphPanel graphPanel = new GraphPanel();
+    private GraphPanel graphPanel = new GraphPanel();
     private RootPanel rootPanel = RootPanel.get();
     
     @Override
     public void onModuleLoad()
     {
-        
         mainPanel.setStyleName("center");
         mainPanel.setHorizontalAlignment(DockPanel.ALIGN_CENTER);
         mainPanel.add(inputPanel);
         mainPanel.add(equationPanel);
-        // mainPanel.add(graphPanel);
+        mainPanel.add(graphPanel);
         mainPanel.setSpacing(50);
         
         inputPanel.addButtonHandlers(new ComputeButtonHandler(), new ComputeButtonKeyPress());
         equationPanel.setVisible(false);
-        // graphPanel.setVisible(false);
+        graphPanel.setVisible(false);
         
         rootPanel.setStyleName("center");
         rootPanel.add(mainPanel);
-        
-        // VisualizationUtils.loadVisualizationApi(graphPanel, LineChart.PACKAGE);
     }
     
     private void computeAction()
@@ -49,13 +52,15 @@ public class ThesisModule implements EntryPoint
         
         if (inputPanel.isEquationEntered())
         {
-            equationPanel.setEquation(inputPanel.getEquations());
-            // graphPanel.setVisible(true);
+            equationPanel.setEquations(inputPanel.getEquations());
+            graphPanel.setEquations(inputPanel.getEquations());
+            graphPanel.setVisible(true);
             equationPanel.setVisible(true);
+            VisualizationUtils.loadVisualizationApi(graphPanel, LineChart.PACKAGE);
         }
         else
         {
-            // graphPanel.setVisible(false);
+            graphPanel.setVisible(false);
             equationPanel.setVisible(false);
         }
     }

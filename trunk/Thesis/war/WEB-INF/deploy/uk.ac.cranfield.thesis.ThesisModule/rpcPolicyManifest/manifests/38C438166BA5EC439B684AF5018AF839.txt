@@ -1,0 +1,2 @@
+serviceClass: uk.ac.cranfield.thesis.client.EquationsService
+path: 7C7040B9CC9AFC4D7C8197B4D781996F.gwt.rpc
