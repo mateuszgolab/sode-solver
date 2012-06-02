@@ -1,7 +1,9 @@
-package uk.ac.cranfield.thesis.client;
+package uk.ac.cranfield.thesis.client.view;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import uk.ac.cranfield.thesis.shared.Equation;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -93,27 +95,26 @@ public class InputPanel extends CaptionPanel
     {
     }
     
-    public List<String> getEquations()
+    public List<Equation> getEquations()
     {
-        List<String> equations = new ArrayList<String>();
+        List<Equation> inputs = new ArrayList<Equation>();
         for (int i = 0; i < flexTextPanel.getRowCount() - 1; i++)
         {
-            String equation = ((TextBox) flexTextPanel.getWidget(i, 0)).getText();
-            if (equation.equals(""))
+            if (getInput(i).isEmpty())
             {
                 flexTextPanel.removeRow(i);
                 i--;
                 continue;
             }
-            equations.add(equation);
+            inputs.add(new Equation(getInput(i)));
         }
         
-        return equations;
+        return inputs;
     }
     
     public boolean isEquationEntered()
     {
-        return !((TextBox) flexTextPanel.getWidget(0, 0)).getText().equals("");
+        return !(((TextBox) flexTextPanel.getWidget(0, 0)).getText().isEmpty());
     }
     
     private class InputListener implements KeyPressHandler
@@ -148,4 +149,8 @@ public class InputPanel extends CaptionPanel
         }
     }
     
+    private String getInput(int i)
+    {
+        return ((TextBox) flexTextPanel.getWidget(i, 0)).getText();
+    }
 }

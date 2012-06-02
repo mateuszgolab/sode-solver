@@ -1,6 +1,8 @@
-package uk.ac.cranfield.thesis.client;
+package uk.ac.cranfield.thesis.client.view;
 
 import java.util.List;
+
+import uk.ac.cranfield.thesis.shared.Equation;
 
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -18,14 +20,13 @@ public class EquationPanel extends CaptionPanel
         setStyleName("bigFontRoundedBorder");
         flexTable = new FlexTable();
         add(flexTable);
-        // setWidth("640px");
     }
     
-    public void setEquation(List<String> eqs)
+    public void setEquations(List<Equation> equations)
     {
-        for (String eq : eqs)
+        for (Equation equation : equations)
         {
-            eq = eq.replaceAll("\\+", "%2B");
+            String eq = equation.getEquation().replaceAll("\\+", "%2B");
             flexTable.setWidget(flexTable.getRowCount(), 0, new Image("http://chart.apis.google.com/chart?&cht=tx&chl="
                     + eq));
         }
