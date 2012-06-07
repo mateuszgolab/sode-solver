@@ -5,9 +5,10 @@ import java.util.List;
 
 import javax.script.ScriptException;
 
-import uk.ac.cranfield.thesis.client.EquationParser;
 import uk.ac.cranfield.thesis.client.service.EquationsService;
 import uk.ac.cranfield.thesis.client.service.EquationsServiceAsync;
+import uk.ac.cranfield.thesis.client.service.ParserService;
+import uk.ac.cranfield.thesis.client.service.ParserServiceAsync;
 import uk.ac.cranfield.thesis.shared.Equation;
 import uk.ac.cranfield.thesis.shared.Solution;
 
@@ -25,9 +26,10 @@ public class GraphPanel extends CaptionPanel implements Runnable
 {
     
     private LineChart chart;
-    private List<Equation> equations;
+    private List<String> equations;
     private DataTable dataTable;
-    private final EquationsServiceAsync parserService = (EquationsServiceAsync) GWT.create(EquationsService.class);
+    private final EquationsServiceAsync equationService = (EquationsServiceAsync) GWT.create(EquationsService.class);
+    private final ParserServiceAsync parserService = ParserService.Util.getInstance();
     private int equationsCounter;
     
     public GraphPanel()
@@ -68,7 +70,7 @@ public class GraphPanel extends CaptionPanel implements Runnable
         return options;
     }
     
-    public void setEquations(List<Equation> equations)
+    public void setEquations(List<String> equations)
     {
         this.equations = equations;
     }
@@ -79,34 +81,61 @@ public class GraphPanel extends CaptionPanel implements Runnable
         equationsCounter = 0;
         
         
-        for (Equation equation : equations)
+        for (String equation : equations)
+            parserService.parseEquation(equation, new ParserCallback());
+        
+    }
+    
+    private class EquationEvaluatorCallback implements AsyncCallback<Solution>
+    {
+        
+        @Override
+        public void onFailure(Throwable caught)
         {
-            EquationParser parser = new EquationParser(equation.getEquation());
-            equation.setIndependentVariable(parser.getIndependentVariable());
-            equation.setDependentVariable(parser.getDependentVariable());
-            
-            dataTable.addColumn(ColumnType.NUMBER, equation.getIndependentVariable());
-            dataTable.addColumn(ColumnType.NUMBER,
-                    equation.getDependentVariable() + "(" + equation.getIndependentVariable() + ")");
-            dataTable.addRows(100);
-            
-            parserService.setEquation(equation.getEquation(), new AsyncCallback<Void>()
+            System.out.println(caught.getMessage());
+        }
+        
+        @Override
+        public void onSuccess(Solution solution)
+        {
+            for (int i = 0; i < solution.size(); i++)
             {
-                
-                @Override
-                public void onFailure(Throwable caught)
-                {
-                    System.out.println(caught.getMessage());
-                    
-                }
-                
-                @Override
-                public void onSuccess(Void result)
-                {
-                    // TODO Auto-generated method stub
-                    
-                }
-            });
+                // x
+                dataTable.setValue(i, solution.getxAxis(), i);
+                // y
+                dataTable.setValue(i, solution.getyAxis(), solution.getResult(i));
+            }
+            
+            equationsCounter++;
+            
+            if (equationsCounter == equations.size())
+            {
+                chart = new LineChart(dataTable, createOptions());
+                clear();
+                add(chart);
+            }
+        }
+    };
+    
+    
+    private class ParserCallback implements AsyncCallback<Equation>
+    {
+        
+        
+        @Override
+        public void onFailure(Throwable caught)
+        {
+            // TODO Auto-generated method stub
+            
+        }
+        
+        @Override
+        public void onSuccess(Equation result)
+        {
+            dataTable.addColumn(ColumnType.NUMBER, String.valueOf(result.getIndependentVariable()));
+            dataTable.addColumn(ColumnType.NUMBER, result.getFunctionVariable() + "(" + result.getIndependentVariable()
+                    + ")");
+            dataTable.addRows(100);
             
             List<Double> points = new ArrayList<Double>();
             
@@ -115,38 +144,8 @@ public class GraphPanel extends CaptionPanel implements Runnable
                 points.add(d);
             }
             
+            equationService.evaluate(result, points, equationsCounter, new EquationEvaluatorCallback());
             
-            parserService.getValues(equation.getIndependentVariable(), points, equationsCounter,
-                    new AsyncCallback<Solution>()
-                    {
-                        
-                        @Override
-                        public void onFailure(Throwable caught)
-                        {
-                            System.out.println(caught.getMessage());
-                        }
-                        
-                        @Override
-                        public void onSuccess(Solution solution)
-                        {
-                            for (int i = 0; i < solution.size(); i++)
-                            {
-                                // x
-                                dataTable.setValue(i, solution.getxAxis(), i);
-                                // y
-                                dataTable.setValue(i, solution.getyAxis(), solution.getResult(i));
-                            }
-                            
-                            equationsCounter++;
-                            
-                            if (equationsCounter == equations.size())
-                            {
-                                chart = new LineChart(dataTable, createOptions());
-                                clear();
-                                add(chart);
-                            }
-                        }
-                    });
         }
     }
 }

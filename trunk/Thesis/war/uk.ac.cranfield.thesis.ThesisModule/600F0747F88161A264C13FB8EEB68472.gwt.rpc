@@ -1,0 +1,11 @@
+com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException, true, true, true, true, com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException/3936916533, 3936916533
+com.google.gwt.user.client.rpc.RpcTokenException, true, true, false, false, com.google.gwt.user.client.rpc.RpcTokenException/2345075298, 2345075298
+com.google.gwt.user.client.rpc.XsrfToken, false, false, true, true, com.google.gwt.user.client.rpc.XsrfToken/4254043109, 4254043109
+java.lang.Exception, true, false, true, false, java.lang.Exception/1920171873, 1920171873
+java.lang.RuntimeException, true, false, true, false, java.lang.RuntimeException/515124647, 515124647
+java.lang.String, true, true, true, true, java.lang.String/2004016611, 2004016611
+java.lang.Throwable, true, false, true, false, java.lang.Throwable/2953622131, 2953622131
+uk.ac.cranfield.thesis.client.service.ParserService, false, false, false, false, _, 3429225737
+uk.ac.cranfield.thesis.shared.Equation, true, true, false, false, uk.ac.cranfield.thesis.shared.Equation/206242156, 206242156
+uk.ac.cranfield.thesis.shared.EquationStatus, true, true, false, false, uk.ac.cranfield.thesis.shared.EquationStatus/4226244678, 4226244678
+uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException, true, true, false, false, uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException/592259024, 592259024
