@@ -3,8 +3,6 @@ package uk.ac.cranfield.thesis.client.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.cranfield.thesis.shared.Equation;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
@@ -58,7 +56,7 @@ public class InputPanel extends CaptionPanel
         
         MethodSelector methodSelector = new MethodSelector();
         
-        method1 = new RadioButton("method1", "method 1");
+        method1 = new RadioButton("method1", "Runge-Kutta");
         method1.setValue(true);
         method1.addClickHandler(methodSelector);
         
@@ -95,9 +93,9 @@ public class InputPanel extends CaptionPanel
     {
     }
     
-    public List<Equation> getEquations()
+    public List<String> getEquations()
     {
-        List<Equation> inputs = new ArrayList<Equation>();
+        List<String> inputs = new ArrayList<String>();
         for (int i = 0; i < flexTextPanel.getRowCount() - 1; i++)
         {
             if (getInput(i).isEmpty())
@@ -106,7 +104,7 @@ public class InputPanel extends CaptionPanel
                 i--;
                 continue;
             }
-            inputs.add(new Equation(getInput(i)));
+            inputs.add(getInput(i));
         }
         
         return inputs;

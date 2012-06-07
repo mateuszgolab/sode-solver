@@ -10,17 +10,27 @@
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name='com.google.gwt.visualization.Visualization' />
 	<inherits name='javax.script.Script' />
+	<inherits name='com.google.gwt.junit.JUnit'></inherits>
 
 
 	<entry-point class="uk.ac.cranfield.thesis.client.ThesisModule" />
 
-<!-- 
+
 	<servlet path="/equation"
-		class="uk.ac.cranfield.thesis.server.EquationServiceImpl" />
-		 -->
+		class="uk.ac.cranfield.thesis.server.service.EquationServiceImpl" />
+
+	<servlet path="/ParserService"
+		class="uk.ac.cranfield.thesis.server.service.ParserServiceImpl" />
+
+
+	<servlet path="/RungeKuttaSolverService"
+		class="uk.ac.cranfield.thesis.server.service.RungeKuttaSolverServiceImpl" />
+
+
+
 
 	<source path="client" />
 	<source path="shared" />
-	
+
 
 </module>

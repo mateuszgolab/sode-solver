@@ -4,13 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 
+@SuppressWarnings("serial")
 public class Solution implements Serializable
 {
     
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 4840743576262937343L;
     
     private List<Double> results;
     private int xAxis;
