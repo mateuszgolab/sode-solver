@@ -20,10 +20,13 @@ public class Equation implements Serializable
     {
         equationContent = equation;
         initValues = new ArrayList<Double>();
-        
-        // TODO : remove this mock
-        initValues.add(1.0);
-        
+        setStatus();
+    }
+    
+    public Equation(String equation, List<Double> init)
+    {
+        equationContent = equation;
+        initValues = init;
         setStatus();
     }
     

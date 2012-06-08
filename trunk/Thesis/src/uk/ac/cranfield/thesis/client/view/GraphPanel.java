@@ -2,8 +2,6 @@ package uk.ac.cranfield.thesis.client.view;
 
 import java.util.List;
 
-import uk.ac.cranfield.thesis.client.service.EquationsService;
-import uk.ac.cranfield.thesis.client.service.EquationsServiceAsync;
 import uk.ac.cranfield.thesis.client.service.ParserService;
 import uk.ac.cranfield.thesis.client.service.ParserServiceAsync;
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService;
@@ -12,14 +10,16 @@ import uk.ac.cranfield.thesis.shared.Equation;
 import uk.ac.cranfield.thesis.shared.Solution;
 
 import com.gargoylesoftware.htmlunit.javascript.host.Window;
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
 import com.google.gwt.visualization.client.DataTable;
 import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
-
 
 public class GraphPanel extends CaptionPanel implements Runnable
 {
@@ -27,15 +27,28 @@ public class GraphPanel extends CaptionPanel implements Runnable
     private LineChart chart;
     private List<String> equations;
     private DataTable dataTable;
-    private final EquationsServiceAsync equationService = (EquationsServiceAsync) GWT.create(EquationsService.class);
     private final ParserServiceAsync parserService = ParserService.Util.getInstance();
     private RungeKuttaSolverServiceAsync rungeKuttaSolverService = RungeKuttaSolverService.Util.getInstance();
     private int equationsCounter;
+    private DialogBox errorDialog;
     
     public GraphPanel()
     {
         setCaptionText("Solution");
         setStyleName("bigFontRoundedBorder");
+        errorDialog = new DialogBox();
+        errorDialog.setAnimationEnabled(true);
+        Button closeButton = new Button("Close");
+        closeButton.addClickHandler(new ClickHandler()
+        {
+            
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                errorDialog.hide();
+            }
+        });
+        errorDialog.add(closeButton);
         
         // chart = new LineChart(DataTable.create(), createOptions());
         // add(chart);
@@ -106,7 +119,9 @@ public class GraphPanel extends CaptionPanel implements Runnable
         @Override
         public void onFailure(Throwable caught)
         {
-            System.out.println(caught.getMessage());
+            errorDialog.setText(caught.getMessage());
+            errorDialog.center();
+            errorDialog.show();
         }
         
         @Override
@@ -127,7 +142,9 @@ public class GraphPanel extends CaptionPanel implements Runnable
         @Override
         public void onFailure(Throwable caught)
         {
-            System.out.println(caught.getMessage());
+            errorDialog.setText(caught.getMessage());
+            errorDialog.center();
+            errorDialog.show();
             
         }
         

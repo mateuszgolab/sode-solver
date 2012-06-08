@@ -24,7 +24,7 @@ public class EquationPanel extends CaptionPanel
     {
         for (String equation : equations)
         {
-            String eq = equation.replaceAll("\\+", "%2B");
+            String eq = equation.split(",")[0].replaceAll("\\+", "%2B");
             flexTable.setWidget(flexTable.getRowCount(), 0, new Image("http://chart.apis.google.com/chart?&cht=tx&chl="
                     + eq));
         }
