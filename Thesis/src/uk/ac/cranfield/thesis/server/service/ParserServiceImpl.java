@@ -12,6 +12,8 @@
  *******************************************************************************/
 package uk.ac.cranfield.thesis.server.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,17 +32,25 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
     public Equation parseEquation(String input) throws IncorrectODEEquationException
     {
         input = input.replace(" ", "");
+        String[] parts = input.split(",");
         
-        Equation equation = new Equation(input);
-        equation.setFunctionVariable(getFunctionVariable(input));
-        equation.setIndependentVariable(getIndependentVariable(input, equation.getFunctionVariable()));
-        equation.setOrder(longestRun(input, '\'', 1));
+        Equation equation = new Equation(parts[0]);
+        equation.setOrder(longestRun(parts[0], '\'', 1));
+        if (equation.getOrder() < parts.length - 1)
+            throw new IncorrectODEEquationException("lack of initial values");
+        
+        List<String> init = new ArrayList<String>(parts.length - 1);
+        for (int i = 1; i < parts.length; i++)
+            init.add(parts[i]);
+        
+        equation.setInitValues(parseInitialValues(init));
+        equation.setFunctionVariable(parseFunctionVariable(parts[0]));
+        equation.setIndependentVariable(parseIndependentVariable(parts[0], equation.getFunctionVariable()));
         
         return equation;
     }
     
-    
-    private char getFunctionVariable(String input) throws IncorrectODEEquationException
+    private char parseFunctionVariable(String input) throws IncorrectODEEquationException
     {
         char result = 0;
         for (char ch = 'a'; ch <= 'z'; ch++)
@@ -69,7 +79,7 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         return nm;
     }
     
-    private char getIndependentVariable(String input, char functionalVariable) throws IncorrectODEEquationException
+    private char parseIndependentVariable(String input, char functionalVariable) throws IncorrectODEEquationException
     {
         char result = 0;
         for (char ch = 'a'; ch <= 'z'; ch++)
@@ -83,6 +93,25 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
                 else
                     throw new IncorrectODEEquationException(input);
             }
+        }
+        
+        return result;
+    }
+    
+    private List<Double> parseInitialValues(List<String> data) throws IncorrectODEEquationException
+    {
+        List<Double> result = new ArrayList<Double>(data.size());
+        for (int i = 0; i < data.size(); i++)
+            result.add(0.0);
+        
+        for (String s : data)
+        {
+            String[] values = s.split("=");
+            if (values.length < 2)
+                throw new IncorrectODEEquationException("Wrong input of initial values");
+            
+            int i = longestRun(values[0], '\'', 1);
+            result.set(i, Double.valueOf(values[1]));
         }
         
         return result;
