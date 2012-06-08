@@ -38,9 +38,9 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
     public Solution solve(Equation equation) throws IncorrectODEEquationException, UnknownFunctionException,
             UnparsableExpressionException
     {
-        double h = 1.0;
+        double h = 0.1;
         double start = 0.0;
-        double stop = 100.0;
+        double stop = 10.0;
         
         List<Double> k1 = new ArrayList<Double>();
         List<Double> k2 = new ArrayList<Double>();
@@ -48,30 +48,37 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         List<Double> k4 = new ArrayList<Double>();
         List<Double> y = equation.getInitValues();
         List<String> f = getFunctionVector(equation);
+        List<Double> result = new ArrayList<Double>((int) ((stop - start) / h));
         
         // map contains derivative and initial value
         // <y0, 0.0> , <y1, 0.0> , ...
-        Map<String, Double> map = new HashMap<String, Double>(equation.getOrder());
-        
-        int k = 0;
-        for (Double val : y)
-        {
-            map.put("y" + k, val);
-            k++;
-        }
+        Map<String, Double> map = null;
+        result.add(y.get(y.size() - 1));
         
         for (double i = start; i < stop; i += h)
         {
+            map = getMap(y, equation.getFunctionVariable());
             map.put(String.valueOf(equation.getIndependentVariable()), i);
             k1 = evaluate(f, map, h);
             
+            map = getSum(y, k1, 0.5, equation.getFunctionVariable());
             map.put(String.valueOf(equation.getIndependentVariable()), i + h / 2);
-            k1 = evaluate(f, map, h);
+            k2 = evaluate(f, map, h);
             
+            map = getSum(y, k2, 0.5, equation.getFunctionVariable());
+            map.put(String.valueOf(equation.getIndependentVariable()), i + h / 2);
+            k3 = evaluate(f, map, h);
             
+            map = getSum(y, k3, 1.0, equation.getFunctionVariable());
+            map.put(String.valueOf(equation.getIndependentVariable()), i + h);
+            k4 = evaluate(f, map, h);
+            
+            y = evaluateFunction(y, k1, k2, k3, k4);
+            
+            result.add(y.get(y.size() - 1));
         }
         
-        return new Solution();
+        return new Solution(result, start, stop, h);
     }
     
     private List<String> getFunctionVector(Equation equation) throws IncorrectODEEquationException
@@ -137,9 +144,39 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         
     }
     
-    private Map<String, Double> addVectors(Map<String, Double> y, List<Double> v)
+    private Map<String, Double> getSum(final List<Double> y, final List<Double> v, final double h, final char f)
     {
-        // for()
+        Map<String, Double> map = new HashMap<String, Double>(y.size());
+        int k = 0;
+        
+        for (Double val : y)
+        {
+            map.put(String.valueOf(f) + k, val + h * v.get(k));
+            k++;
+        }
+        
+        return map;
+    }
+    
+    private Map<String, Double> getMap(final List<Double> y, final char f)
+    {
+        Map<String, Double> map = new HashMap<String, Double>(y.size());
+        int k = 0;
+        
+        for (Double val : y)
+        {
+            map.put(String.valueOf(f) + k, val);
+            k++;
+        }
+        
+        return map;
+    }
+    
+    private List<Double> evaluateFunction(List<Double> y, final List<Double> k1, final List<Double> k2,
+            final List<Double> k3, List<Double> k4)
+    {
+        for (int i = 0; i < y.size(); i++)
+            y.set(i, y.get(i) + (k1.get(i) + 2 * k2.get(i) + 2 * k3.get(i) + k4.get(i)) / 6.0);
         
         return y;
     }

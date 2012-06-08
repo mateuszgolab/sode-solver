@@ -13,6 +13,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface EquationsService extends RemoteService
 {
     
-    Solution evaluate(Equation equation, List<Double> points, int coordinate) throws Exception;
+    Solution evaluate(Equation equation, List<Double> points) throws Exception;
     
 }

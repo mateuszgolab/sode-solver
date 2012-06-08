@@ -8,23 +8,24 @@ import java.util.List;
 public class Solution implements Serializable
 {
     
-    
     private List<Double> results;
-    private int xAxis;
-    private int yAxis;
+    private double start;
+    private double stop;
+    private double h;
     
-    public Solution(List<Double> results, int coordinate)
+    public Solution(List<Double> results, double start, double stop, double h)
     {
         this.results = results;
-        this.xAxis = coordinate;
-        this.yAxis = coordinate + 1;
+        this.start = start;
+        this.stop = stop;
+        this.h = h;
     }
     
     public Solution()
     {
-        results = null;
-        xAxis = 0;
-        yAxis = 1;
+        this.start = 0.0;
+        this.stop = 0.0;
+        this.h = 0.0;
     }
     
     /**
@@ -50,43 +51,63 @@ public class Solution implements Serializable
     }
     
     
-    /**
-     * @return the xAxis
-     */
-    public final int getxAxis()
-    {
-        return xAxis;
-    }
-    
-    
-    /**
-     * @param xAxis the xAxis to set
-     */
-    public final void setxAxis(int xAxis)
-    {
-        this.xAxis = xAxis;
-    }
-    
-    
-    /**
-     * @return the yAxis
-     */
-    public final int getyAxis()
-    {
-        return yAxis;
-    }
-    
-    
-    /**
-     * @param yAxis the yAxis to set
-     */
-    public final void setyAxis(int yAxis)
-    {
-        this.yAxis = yAxis;
-    }
-    
     public int size()
     {
         return results.size();
     }
+    
+    
+    /**
+     * @return the start
+     */
+    public final double getStart()
+    {
+        return start;
+    }
+    
+    
+    /**
+     * @param start the start to set
+     */
+    public final void setStart(double start)
+    {
+        this.start = start;
+    }
+    
+    
+    /**
+     * @return the stop
+     */
+    public final double getStop()
+    {
+        return stop;
+    }
+    
+    
+    /**
+     * @param stop the stop to set
+     */
+    public final void setStop(double stop)
+    {
+        this.stop = stop;
+    }
+    
+    
+    /**
+     * @return the h
+     */
+    public final double getH()
+    {
+        return h;
+    }
+    
+    
+    /**
+     * @param h the h to set
+     */
+    public final void setH(double h)
+    {
+        this.h = h;
+    }
+    
 }

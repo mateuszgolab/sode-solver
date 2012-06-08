@@ -20,15 +20,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import de.congrace.exp4j.UnknownFunctionException;
-import de.congrace.exp4j.UnparsableExpressionException;
-
 @RemoteServiceRelativePath("RungeKuttaSolverService")
 public interface RungeKuttaSolverService extends RemoteService
 {
     
-    Solution solve(Equation equation) throws IncorrectODEEquationException, UnknownFunctionException,
-            UnparsableExpressionException;
+    Solution solve(Equation equation) throws IncorrectODEEquationException, Exception;
     
     
     /**

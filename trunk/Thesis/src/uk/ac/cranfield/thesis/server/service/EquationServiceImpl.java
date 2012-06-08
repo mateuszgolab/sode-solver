@@ -23,7 +23,7 @@ public class EquationServiceImpl extends RemoteServiceServlet implements Equatio
     
     
     @Override
-    public Solution evaluate(Equation equation, List<Double> points, int coordinate) throws UnknownFunctionException,
+    public Solution evaluate(Equation equation, List<Double> points) throws UnknownFunctionException,
             UnparsableExpressionException
     {
         if (equation == null)
@@ -38,6 +38,6 @@ public class EquationServiceImpl extends RemoteServiceServlet implements Equatio
             results.add(calc.calculate());
         }
         
-        return new Solution(results, coordinate);
+        return new Solution(results, 0, 10, 1);
     }
 }

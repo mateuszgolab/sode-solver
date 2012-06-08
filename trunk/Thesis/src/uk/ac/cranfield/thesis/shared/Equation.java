@@ -21,6 +21,9 @@ public class Equation implements Serializable
         equationContent = equation;
         initValues = new ArrayList<Double>();
         
+        // TODO : remove this mock
+        initValues.add(1.0);
+        
         setStatus();
     }
     

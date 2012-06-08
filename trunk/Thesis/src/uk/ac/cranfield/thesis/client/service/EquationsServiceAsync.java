@@ -11,6 +11,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface EquationsServiceAsync
 {
     
-    void evaluate(Equation equation, List<Double> points, int coordinate, AsyncCallback<Solution> callback);
+    void evaluate(Equation equation, List<Double> points, AsyncCallback<Solution> callback);
     
 }
