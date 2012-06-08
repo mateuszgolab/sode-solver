@@ -1,14 +1,13 @@
 package uk.ac.cranfield.thesis.client.view;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.script.ScriptException;
 
 import uk.ac.cranfield.thesis.client.service.EquationsService;
 import uk.ac.cranfield.thesis.client.service.EquationsServiceAsync;
 import uk.ac.cranfield.thesis.client.service.ParserService;
 import uk.ac.cranfield.thesis.client.service.ParserServiceAsync;
+import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService;
+import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverServiceAsync;
 import uk.ac.cranfield.thesis.shared.Equation;
 import uk.ac.cranfield.thesis.shared.Solution;
 
@@ -30,6 +29,7 @@ public class GraphPanel extends CaptionPanel implements Runnable
     private DataTable dataTable;
     private final EquationsServiceAsync equationService = (EquationsServiceAsync) GWT.create(EquationsService.class);
     private final ParserServiceAsync parserService = ParserService.Util.getInstance();
+    private RungeKuttaSolverServiceAsync rungeKuttaSolverService = RungeKuttaSolverService.Util.getInstance();
     private int equationsCounter;
     
     public GraphPanel()
@@ -44,21 +44,7 @@ public class GraphPanel extends CaptionPanel implements Runnable
     @Override
     public void run()
     {
-        
-        try
-        {
-            createTable();
-            // chart = new LineChart(dataTable, createOptions());
-            // add(chart);
-            
-        }
-        catch (ScriptException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        
+        createTable();
     }
     
     private Options createOptions()
@@ -75,15 +61,12 @@ public class GraphPanel extends CaptionPanel implements Runnable
         this.equations = equations;
     }
     
-    private void createTable() throws ScriptException
+    private void createTable()
     {
         dataTable = DataTable.create();
         equationsCounter = 0;
-        
-        
         for (String equation : equations)
             parserService.parseEquation(equation, new ParserCallback());
-        
     }
     
     private class EquationEvaluatorCallback implements AsyncCallback<Solution>
@@ -101,9 +84,9 @@ public class GraphPanel extends CaptionPanel implements Runnable
             for (int i = 0; i < solution.size(); i++)
             {
                 // x
-                dataTable.setValue(i, solution.getxAxis(), i);
+                // dataTable.setValue(i, solution.getxAxis(), i);
                 // y
-                dataTable.setValue(i, solution.getyAxis(), solution.getResult(i));
+                // dataTable.setValue(i, solution.getyAxis(), solution.getResult(i));
             }
             
             equationsCounter++;
@@ -117,16 +100,13 @@ public class GraphPanel extends CaptionPanel implements Runnable
         }
     };
     
-    
     private class ParserCallback implements AsyncCallback<Equation>
     {
-        
         
         @Override
         public void onFailure(Throwable caught)
         {
-            // TODO Auto-generated method stub
-            
+            System.out.println(caught.getMessage());
         }
         
         @Override
@@ -135,17 +115,50 @@ public class GraphPanel extends CaptionPanel implements Runnable
             dataTable.addColumn(ColumnType.NUMBER, String.valueOf(result.getIndependentVariable()));
             dataTable.addColumn(ColumnType.NUMBER, result.getFunctionVariable() + "(" + result.getIndependentVariable()
                     + ")");
-            dataTable.addRows(100);
             
-            List<Double> points = new ArrayList<Double>();
-            
-            for (double d = 0; d < 100; d++)
-            {
-                points.add(d);
-            }
-            
-            equationService.evaluate(result, points, equationsCounter, new EquationEvaluatorCallback());
+            rungeKuttaSolverService.solve(result, new RungeKuttaSolverCallback());
             
         }
     }
+    
+    private class RungeKuttaSolverCallback implements AsyncCallback<Solution>
+    {
+        
+        @Override
+        public void onFailure(Throwable caught)
+        {
+            System.out.println(caught.getMessage());
+            
+        }
+        
+        @Override
+        public void onSuccess(Solution result)
+        {
+            dataTable.addRows(result.size());
+            
+            // for (int i = 0; i < result.size(); i++)
+            int k = 0;
+            for (double i = result.getStart(); i < result.getStop() && k < result.size(); i += result.getH())
+            {
+                // x
+                dataTable.setValue(k, equationsCounter, i);
+                // y
+                dataTable.setValue(k, equationsCounter + 1, result.getResult(k));
+                
+                
+                k++;
+            }
+            
+            equationsCounter++;
+            
+            if (equationsCounter == equations.size())
+            {
+                chart = new LineChart(dataTable, createOptions());
+                clear();
+                add(chart);
+            }
+            
+        }
+    }
+    
 }
