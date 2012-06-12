@@ -14,7 +14,7 @@ public class EquationPanel extends CaptionPanel
     
     public EquationPanel()
     {
-        setCaptionText("Input");
+        setCaptionText("Equations");
         setStyleName("bigFontRoundedBorder");
         flexTable = new FlexTable();
         add(flexTable);

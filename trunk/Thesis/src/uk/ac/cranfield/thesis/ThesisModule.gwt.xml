@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
 
-	<!--  -->
-
-	<!-- <inherits name='com.smartclient.theme.silverwave.SilverWave' /> <inherits 
-		name="com.smartgwt.SmartGwt" /> <inherits name="com.gwtext.GwtExt" /> 
-	<inherits name='javax.script.Script' />
-		-->
+	
 	<inherits name="com.google.gwt.user.theme.standard.Standard" />
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name='com.google.gwt.visualization.Visualization' />

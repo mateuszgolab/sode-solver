@@ -25,7 +25,7 @@ public class ThesisModule implements EntryPoint
     private VerticalPanel mainPanel = new VerticalPanel();
     private InputPanel inputPanel = new InputPanel();
     private EquationPanel equationPanel = new EquationPanel();
-    private GraphPanel graphPanel = new GraphPanel();
+    private GraphPanel graphPanel = new GraphPanel(inputPanel);
     private RootPanel rootPanel = RootPanel.get();
     
     @Override

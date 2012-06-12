@@ -31,9 +31,11 @@ public class GraphPanel extends CaptionPanel implements Runnable
     private RungeKuttaSolverServiceAsync rungeKuttaSolverService = RungeKuttaSolverService.Util.getInstance();
     private int equationsCounter;
     private DialogBox errorDialog;
+    private InputPanel inputPanel;
     
-    public GraphPanel()
+    public GraphPanel(InputPanel panel)
     {
+        this.inputPanel = panel;
         setCaptionText("Solution");
         setStyleName("bigFontRoundedBorder");
         errorDialog = new DialogBox();
@@ -131,7 +133,8 @@ public class GraphPanel extends CaptionPanel implements Runnable
             dataTable.addColumn(ColumnType.NUMBER, result.getFunctionVariable() + "(" + result.getIndependentVariable()
                     + ")");
             
-            rungeKuttaSolverService.solve(result, 0.1, 0.0, 1.0, new RungeKuttaSolverCallback());
+            rungeKuttaSolverService.solve(result, inputPanel.getStep(), inputPanel.getRangeStart(),
+                    inputPanel.getRangeStop(), new RungeKuttaSolverCallback());
             
         }
     }
