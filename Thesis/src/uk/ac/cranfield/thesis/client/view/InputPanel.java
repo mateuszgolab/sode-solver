@@ -36,8 +36,8 @@ public class InputPanel extends CaptionPanel
     
     public InputPanel()
     {
-        // setCaptionText("Input");
-        setStyleName("roundedBorder");
+        setCaptionText("Input");
+        setStyleName("bigFontRoundedBorder");
         panel = new VerticalPanel();
         panel.setHorizontalAlignment(DockPanel.ALIGN_CENTER);
         panel.setSpacing(10);
@@ -82,7 +82,6 @@ public class InputPanel extends CaptionPanel
         hp2.add(method3);
         hp2.add(method4);
         panel.add(hp2);
-        
         
         rangeLabel = new Label("Range : ");
         rangeStart = new TextBox();
@@ -178,4 +177,21 @@ public class InputPanel extends CaptionPanel
     {
         return ((TextBox) flexTextPanel.getWidget(i, 0)).getText();
     }
+    
+    public double getRangeStart()
+    {
+        return Double.valueOf(rangeStart.getValue());
+    }
+    
+    public double getRangeStop()
+    {
+        return Double.valueOf(rangeStop.getValue());
+    }
+    
+    public double getStep()
+    {
+        return Double.valueOf(step.getValue());
+    }
+    
+    
 }
