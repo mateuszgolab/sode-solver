@@ -131,7 +131,7 @@ public class GraphPanel extends CaptionPanel implements Runnable
             dataTable.addColumn(ColumnType.NUMBER, result.getFunctionVariable() + "(" + result.getIndependentVariable()
                     + ")");
             
-            rungeKuttaSolverService.solve(result, new RungeKuttaSolverCallback());
+            rungeKuttaSolverService.solve(result, 0.1, 0.0, 1.0, new RungeKuttaSolverCallback());
             
         }
     }
@@ -155,7 +155,7 @@ public class GraphPanel extends CaptionPanel implements Runnable
             
             // for (int i = 0; i < result.size(); i++)
             int k = 0;
-            for (double i = result.getStart(); i < result.getStop() && k < result.size(); i += result.getH())
+            for (double i = result.getStart(); i < result.getStop() && k < result.size(); i += result.getStep())
             {
                 // x
                 dataTable.setValue(k, equationsCounter, i);

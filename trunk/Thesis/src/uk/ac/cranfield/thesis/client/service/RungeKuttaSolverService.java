@@ -24,7 +24,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface RungeKuttaSolverService extends RemoteService
 {
     
-    Solution solve(Equation equation) throws IncorrectODEEquationException, Exception;
+    Solution solve(Equation equation, double step, double start, double stop) throws IncorrectODEEquationException,
+            Exception;
     
     
     /**

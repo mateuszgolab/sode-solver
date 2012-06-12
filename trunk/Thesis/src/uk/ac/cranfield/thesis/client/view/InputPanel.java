@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -27,6 +28,11 @@ public class InputPanel extends CaptionPanel
     private RadioButton method2;
     private RadioButton method3;
     private RadioButton method4;
+    private Label stepLabel;
+    private Label rangeLabel;
+    private TextBox step;
+    private TextBox rangeStart;
+    private TextBox rangeStop;
     
     public InputPanel()
     {
@@ -70,11 +76,32 @@ public class InputPanel extends CaptionPanel
         method4.addClickHandler(methodSelector);
         
         HorizontalPanel hp2 = new HorizontalPanel();
+        hp2.setSpacing(10);
         hp2.add(method1);
         hp2.add(method2);
         hp2.add(method3);
         hp2.add(method4);
         panel.add(hp2);
+        
+        
+        rangeLabel = new Label("Range : ");
+        rangeStart = new TextBox();
+        rangeStart.setValue("0.0");
+        rangeStop = new TextBox();
+        rangeStop.setValue("10.0");
+        stepLabel = new Label("Step : ");
+        step = new TextBox();
+        step.setValue("0.1");
+        
+        HorizontalPanel hp3 = new HorizontalPanel();
+        hp3.setSpacing(10);
+        hp3.add(rangeLabel);
+        hp3.add(rangeStart);
+        hp3.add(rangeStop);
+        hp3.add(stepLabel);
+        hp3.add(step);
+        
+        panel.add(hp3);
         
         computeButton = new Button("Compute");
         panel.add(computeButton);

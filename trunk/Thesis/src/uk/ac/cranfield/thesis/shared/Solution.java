@@ -11,21 +11,21 @@ public class Solution implements Serializable
     private List<Double> results;
     private double start;
     private double stop;
-    private double h;
+    private double step;
     
-    public Solution(List<Double> results, double start, double stop, double h)
+    public Solution(List<Double> results, double start, double stop, double step)
     {
         this.results = results;
         this.start = start;
         this.stop = stop;
-        this.h = h;
+        this.step = step;
     }
     
     public Solution()
     {
         this.start = 0.0;
         this.stop = 0.0;
-        this.h = 0.0;
+        this.step = 0.0;
     }
     
     /**
@@ -96,18 +96,18 @@ public class Solution implements Serializable
     /**
      * @return the h
      */
-    public final double getH()
+    public final double getStep()
     {
-        return h;
+        return step;
     }
     
     
     /**
      * @param h the h to set
      */
-    public final void setH(double h)
+    public final void setStep(double step)
     {
-        this.h = h;
+        this.step = step;
     }
     
 }

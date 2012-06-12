@@ -14,10 +14,11 @@ package uk.ac.cranfield.thesis.client.service;
 
 import uk.ac.cranfield.thesis.shared.Equation;
 import uk.ac.cranfield.thesis.shared.Solution;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface RungeKuttaSolverServiceAsync
 {
     
-    void solve(Equation equation, AsyncCallback<Solution> callback);
+    void solve(Equation equation, double step, double start, double stop, AsyncCallback<Solution> callback);
 }
