@@ -1,0 +1,4 @@
+# Module uk.ac.cranfield.thesis.ThesisAE
+# RPC service class, partial path of RPC policy file
+uk.ac.cranfield.thesis.client.service.ParserService, AC5D014EB11585097525BA01C55EBC09.gwt.rpc
+uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService, FBE89C494369B851C21F6B529C7FBB88.gwt.rpc
