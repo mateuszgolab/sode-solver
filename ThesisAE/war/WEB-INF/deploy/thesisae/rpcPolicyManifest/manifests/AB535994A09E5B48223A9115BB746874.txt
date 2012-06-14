@@ -1,0 +1,2 @@
+serviceClass: uk.ac.cranfield.thesis.client.service.ParserService
+path: AC5D014EB11585097525BA01C55EBC09.gwt.rpc

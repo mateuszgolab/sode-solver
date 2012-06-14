@@ -1,0 +1,2 @@
+serviceClass: uk.ac.cranfield.thesis.client.GreetingService
+path: 5D05D88FDE1E3BCB551241F52F5078C2.gwt.rpc

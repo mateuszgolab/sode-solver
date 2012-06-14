@@ -1,0 +1,2 @@
+serviceClass: uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService
+path: FBE89C494369B851C21F6B529C7FBB88.gwt.rpc
