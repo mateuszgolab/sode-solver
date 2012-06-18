@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         version="2.5"
-         xmlns="http://java.sun.com/xml/ns/javaee">
+	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
 
-  <!-- Servlets -->
- <servlet>
-    <servlet-name>equationServlet</servlet-name>
-    <servlet-class>uk.ac.cranfield.thesis.server.service.EquationServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>equationServlet</servlet-name>
-    <url-pattern>/uk.ac.cranfield.thesis.ThesisAE/equation</url-pattern>
-  </servlet-mapping>
-  <servlet>
-  	<servlet-name>ParserService</servlet-name>
-  	<servlet-class>uk.ac.cranfield.thesis.server.service.ParserServiceImpl</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>ParserService</servlet-name>
-  	<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/ParserService</url-pattern>
-  </servlet-mapping>
-  <servlet>
-  	<servlet-name>RungeKuttaSolverService</servlet-name>
-  	<servlet-class>uk.ac.cranfield.thesis.server.service.RungeKuttaSolverServiceImpl</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>RungeKuttaSolverService</servlet-name>
-  	<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/RungeKuttaSolverService</url-pattern>
-  </servlet-mapping>
-  
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>ThesisAE.html</welcome-file>
-  </welcome-file-list>
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>ThesisAE.html</welcome-file>
+	</welcome-file-list>
+
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>equationServlet</servlet-name>
+		<servlet-class>uk.ac.cranfield.thesis.server.service.EquationServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>equationServlet</servlet-name>
+		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/equation</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ParserService</servlet-name>
+		<servlet-class>uk.ac.cranfield.thesis.server.service.ParserServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ParserService</servlet-name>
+		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/ParserService</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>RungeKuttaSolverService</servlet-name>
+		<servlet-class>uk.ac.cranfield.thesis.server.service.RungeKuttaSolverServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RungeKuttaSolverService</servlet-name>
+		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/RungeKuttaSolverService</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>PersistentService</servlet-name>
+		<servlet-class>uk.ac.cranfield.thesis.server.service.PersistentServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PersistentService</servlet-name>
+		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/PersistentService</url-pattern>
+	</servlet-mapping>
 
 </web-app>

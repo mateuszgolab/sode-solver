@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService;
-import uk.ac.cranfield.thesis.shared.Equation;
 import uk.ac.cranfield.thesis.shared.Solution;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
+import uk.ac.cranfield.thesis.shared.model.Equation;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

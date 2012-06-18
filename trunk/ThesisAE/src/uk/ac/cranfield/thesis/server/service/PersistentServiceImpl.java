@@ -10,15 +10,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package uk.ac.cranfield.thesis.client.service;
+package uk.ac.cranfield.thesis.server.service;
 
+import uk.ac.cranfield.thesis.client.service.PersistentService;
 import uk.ac.cranfield.thesis.shared.model.Equation;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 
-public interface ParserServiceAsync
+public class PersistentServiceImpl extends RemoteServiceServlet implements PersistentService
 {
     
-    void parseEquation(String input, AsyncCallback<Equation> callback);
-    
+    @Override
+    public void persistEquation(Equation equation)
+    {
+        ObjectifyService.register(Equation.class);
+        Objectify ofy = ObjectifyService.begin();
+        
+        ofy.put(equation);
+    }
 }

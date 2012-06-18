@@ -6,8 +6,8 @@ import uk.ac.cranfield.thesis.client.service.ParserService;
 import uk.ac.cranfield.thesis.client.service.ParserServiceAsync;
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService;
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverServiceAsync;
-import uk.ac.cranfield.thesis.shared.Equation;
 import uk.ac.cranfield.thesis.shared.Solution;
+import uk.ac.cranfield.thesis.shared.model.Equation;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

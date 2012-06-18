@@ -14,11 +14,31 @@ package uk.ac.cranfield.thesis.client.service;
 
 import uk.ac.cranfield.thesis.shared.model.Equation;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-public interface ParserServiceAsync
+@RemoteServiceRelativePath("PersistentService")
+public interface PersistentService extends RemoteService
 {
     
-    void parseEquation(String input, AsyncCallback<Equation> callback);
+    void persistEquation(Equation equation);
     
+    /**
+     * Utility class for simplifying access to the instance of async service.
+     */
+    public static class Util
+    {
+        
+        private static PersistentServiceAsync instance;
+        
+        public static PersistentServiceAsync getInstance()
+        {
+            if (instance == null)
+            {
+                instance = GWT.create(PersistentService.class);
+            }
+            return instance;
+        }
+    }
 }

@@ -1,33 +1,40 @@
-package uk.ac.cranfield.thesis.shared;
+package uk.ac.cranfield.thesis.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-@SuppressWarnings("serial")
+import com.google.appengine.api.users.User;
+
+
+@Entity
 public class Equation implements Serializable
 {
     
+    @Id
+    private Long id;
+    private User owner;
     private List<Double> initValues;
     private String equationContent;
     private char independentVariable;
     private char functionVariable;
-    private EquationStatus status;
     private int order;
     
     public Equation(String equation)
     {
         equationContent = equation;
         initValues = new ArrayList<Double>();
-        setStatus();
+        // setStatus();
     }
     
     public Equation(String equation, List<Double> init)
     {
         equationContent = equation;
         initValues = init;
-        setStatus();
+        // setStatus();
     }
     
     public Equation()
@@ -56,20 +63,20 @@ public class Equation implements Serializable
         return independentVariable;
     }
     
-    private void setStatus()
-    {
-        status = (equationContent.length() > 0) ? EquationStatus.CORRECT : EquationStatus.EMPTY;
-    }
-    
-    public EquationStatus getStatus()
-    {
-        return status;
-    }
-    
-    public boolean isEmpty()
-    {
-        return status == EquationStatus.EMPTY;
-    }
+    // private void setStatus()
+    // {
+    // status = (equationContent.length() > 0) ? EquationStatus.CORRECT : EquationStatus.EMPTY;
+    // }
+    //
+    // public EquationStatus getStatus()
+    // {
+    // return status;
+    // }
+    //
+    // public boolean isEmpty()
+    // {
+    // return status == EquationStatus.EMPTY;
+    // }
     
     /**
      * @param independentVariable the independentVariable to set
@@ -122,6 +129,42 @@ public class Equation implements Serializable
     public final void setOrder(int order)
     {
         this.order = order;
+    }
+    
+    
+    /**
+     * @return the id
+     */
+    public final Long getId()
+    {
+        return id;
+    }
+    
+    
+    /**
+     * @param id the id to set
+     */
+    public final void setId(Long id)
+    {
+        this.id = id;
+    }
+    
+    
+    /**
+     * @return the owner
+     */
+    public final User getOwner()
+    {
+        return owner;
+    }
+    
+    
+    /**
+     * @param owner the owner to set
+     */
+    public final void setOwner(User owner)
+    {
+        this.owner = owner;
     }
     
 }
