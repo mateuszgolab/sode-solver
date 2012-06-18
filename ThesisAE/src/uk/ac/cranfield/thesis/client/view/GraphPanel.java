@@ -9,9 +9,9 @@ import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverServiceAsync;
 import uk.ac.cranfield.thesis.shared.Equation;
 import uk.ac.cranfield.thesis.shared.Solution;
 
-import com.gargoylesoftware.htmlunit.javascript.host.Window;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
@@ -65,8 +65,8 @@ public class GraphPanel extends CaptionPanel implements Runnable
     private Options createOptions()
     {
         Options options = Options.create();
-        options.setWidth((Window.WINDOW_WIDTH / 2));
-        options.setHeight((Window.WINDOW_HEIGHT / 2));
+        options.setWidth((Window.getClientWidth() / 2));
+        options.setHeight((Window.getClientHeight() / 2));
         // options.setTitle("Solution");
         return options;
     }
@@ -76,7 +76,7 @@ public class GraphPanel extends CaptionPanel implements Runnable
         this.equations = equations;
     }
     
-    public void createTable()
+    private void createTable()
     {
         dataTable = DataTable.create();
         equationsCounter = 0;
@@ -121,9 +121,10 @@ public class GraphPanel extends CaptionPanel implements Runnable
         @Override
         public void onFailure(Throwable caught)
         {
-            errorDialog.setHTML(caught.getMessage());
-            errorDialog.center();
-            errorDialog.show();
+            // errorDialog.setHTML(caught.getMessage());
+            // errorDialog.center();
+            // errorDialog.show();
+            Window.alert(caught.getMessage());
         }
         
         @Override
@@ -145,9 +146,11 @@ public class GraphPanel extends CaptionPanel implements Runnable
         @Override
         public void onFailure(Throwable caught)
         {
-            errorDialog.setHTML(caught.getMessage());
-            errorDialog.center();
-            errorDialog.show();
+            // errorDialog.setHTML(caught.getMessage());
+            // errorDialog.center();
+            // errorDialog.show();
+            
+            Window.alert(caught.getMessage());
             
         }
         
