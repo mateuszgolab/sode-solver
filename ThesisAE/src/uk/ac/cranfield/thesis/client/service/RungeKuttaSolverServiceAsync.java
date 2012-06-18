@@ -12,8 +12,8 @@
  *******************************************************************************/
 package uk.ac.cranfield.thesis.client.service;
 
-import uk.ac.cranfield.thesis.shared.Equation;
 import uk.ac.cranfield.thesis.shared.Solution;
+import uk.ac.cranfield.thesis.shared.model.Equation;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

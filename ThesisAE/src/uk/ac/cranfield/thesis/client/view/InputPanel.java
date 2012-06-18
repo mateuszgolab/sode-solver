@@ -99,11 +99,12 @@ public class InputPanel extends CaptionPanel
         hp3.add(rangeStop);
         hp3.add(stepLabel);
         hp3.add(step);
-        
         panel.add(hp3);
         
+        HorizontalPanel hp4 = new HorizontalPanel();
         computeButton = new Button("Compute");
-        panel.add(computeButton);
+        hp4.add(computeButton);
+        panel.add(hp4);
         
         add(panel);
         
@@ -192,6 +193,5 @@ public class InputPanel extends CaptionPanel
     {
         return Double.valueOf(step.getValue());
     }
-    
     
 }

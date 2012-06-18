@@ -65,7 +65,6 @@ public class ThesisAE implements EntryPoint
         }
     }
     
-    
     private class ComputeButtonHandler implements ClickHandler
     {
         

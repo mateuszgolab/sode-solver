@@ -12,8 +12,8 @@
  *******************************************************************************/
 package uk.ac.cranfield.thesis.client.service;
 
-import uk.ac.cranfield.thesis.shared.Equation;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
+import uk.ac.cranfield.thesis.shared.model.Equation;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
