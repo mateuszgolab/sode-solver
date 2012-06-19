@@ -195,6 +195,38 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         return result;
     }
     
+    private String parseFunctionEquation2(Equation equation) throws IncorrectODEEquationException
+    {
+        String[] eq = equation.getEquation().split("=");
+        
+        if (eq.length < 2)
+            throw new IncorrectODEEquationException("Given equation has incorrect form , lack of assignment sign ( = )");
+        
+        int i = 0;
+        String result = "";
+        while (i < eq[1].length())
+        {
+            char ch = eq[1].charAt(i);
+            if (Character.isAlphabetic(ch) && ch != equation.getIndependentVariable())
+            {
+                i++;
+                int k = 0;
+                while (i < eq[1].length() && eq[1].charAt(i) == '\'')
+                {
+                    k++;
+                    i++;
+                }
+                
+                result += equation.getFunctionVariable() + Integer.valueOf(k).toString();
+            }
+            
+            result += eq[1].charAt(i);
+            i++;
+        }
+        
+        return result;
+    }
+    
     private List<Double> evaluate(List<String> function, double h, Map<String, Double> map)
             throws UnknownFunctionException, UnparsableExpressionException
     {
@@ -286,14 +318,16 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
     {
         Map<String, Double> map = new HashMap<String, Double>();
         
+        int fc = 0;
         for (List<Double> initValues : initVal)
         {
             int k = 0;
             for (Double val : initValues)
             {
-                map.put(String.valueOf(f) + k, val);
+                map.put(String.valueOf(f.get(fc)) + k, val);
                 k++;
             }
+            fc++;
         }
         
         return map;
