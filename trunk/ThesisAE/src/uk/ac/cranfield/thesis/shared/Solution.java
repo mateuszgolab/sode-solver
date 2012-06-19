@@ -1,6 +1,7 @@
 package uk.ac.cranfield.thesis.shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,11 +22,24 @@ public class Solution implements Serializable
         this.step = step;
     }
     
+    public Solution(double start, double stop, double step)
+    {
+        this.results = new ArrayList<Double>((int) ((stop - start) / step));
+        this.start = start;
+        this.stop = stop;
+        this.step = step;
+    }
+    
     public Solution()
     {
         this.start = 0.0;
         this.stop = 0.0;
         this.step = 0.0;
+    }
+    
+    public void addResult(double result)
+    {
+        results.add(result);
     }
     
     /**
