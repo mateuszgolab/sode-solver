@@ -11,14 +11,21 @@ public class EquationsSystem implements Serializable
     private List<Equation> equations;
     
     
-    /**
-     * @return the equations
-     */
+    public EquationsSystem()
+    {
+        this.equations = new ArrayList<Equation>();
+    }
+    
+    public EquationsSystem(List<Equation> equations)
+    {
+        this.equations = equations;
+    }
+    
+    
     public final List<Equation> getEquations()
     {
         return equations;
     }
-    
     
     /**
      * @param equations the equations to set
@@ -39,7 +46,6 @@ public class EquationsSystem implements Serializable
         return result;
     }
     
-    
     public List<Character> getFunctionVariables()
     {
         List<Character> result = new ArrayList<Character>(equations.size());
@@ -52,11 +58,9 @@ public class EquationsSystem implements Serializable
         return result;
     }
     
-    
     public char getIndependentVariable()
     {
         return equations.get(0).getIndependentVariable();
     }
-    
     
 }
