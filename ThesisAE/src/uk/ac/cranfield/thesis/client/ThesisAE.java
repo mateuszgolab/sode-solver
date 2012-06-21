@@ -31,6 +31,7 @@ public class ThesisAE implements EntryPoint
     @Override
     public void onModuleLoad()
     {
+        // DOM.setStyleAttribute(inputPanel.getContentWidget().getElement(), "margin", "50px 50px 50px 50px");
         mainPanel.setStyleName("center");
         mainPanel.setHorizontalAlignment(DockPanel.ALIGN_CENTER);
         mainPanel.add(inputPanel);
@@ -56,6 +57,7 @@ public class ThesisAE implements EntryPoint
             graphPanel.setEquations(inputPanel.getEquations());
             graphPanel.setVisible(true);
             equationPanel.setVisible(true);
+            // graphPanel.solveAndDraw();
             VisualizationUtils.loadVisualizationApi(graphPanel, LineChart.PACKAGE);
         }
         else

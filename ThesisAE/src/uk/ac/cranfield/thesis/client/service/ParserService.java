@@ -12,8 +12,11 @@
  *******************************************************************************/
 package uk.ac.cranfield.thesis.client.service;
 
+import java.util.List;
+
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
 import uk.ac.cranfield.thesis.shared.model.Equation;
+import uk.ac.cranfield.thesis.shared.model.EquationsSystem;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -24,6 +27,8 @@ public interface ParserService extends RemoteService
 {
     
     Equation parseEquation(String input) throws IncorrectODEEquationException;
+    
+    EquationsSystem parseEquationsSystem(List<String> input) throws IncorrectODEEquationException;
     
     /**
      * Utility class for simplifying access to the instance of async service.

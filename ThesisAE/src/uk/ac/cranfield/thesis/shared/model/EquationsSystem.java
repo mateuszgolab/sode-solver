@@ -63,4 +63,9 @@ public class EquationsSystem implements Serializable
         return equations.get(0).getIndependentVariable();
     }
     
+    public void addEquation(Equation equation)
+    {
+        this.equations.add(equation);
+    }
+    
 }

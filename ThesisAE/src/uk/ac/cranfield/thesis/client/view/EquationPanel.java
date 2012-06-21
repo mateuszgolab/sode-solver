@@ -2,20 +2,21 @@ package uk.ac.cranfield.thesis.client.view;
 
 import java.util.List;
 
-import com.google.gwt.user.client.ui.CaptionPanel;
+import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 
 
-public class EquationPanel extends CaptionPanel
+public class EquationPanel extends FormPanel
 {
     
     private FlexTable flexTable;
     
     public EquationPanel()
     {
-        setCaptionText("Equations");
-        setStyleName("bigFontRoundedBorder");
+        setHeading("Equations");
+        // setCaptionText("Equations");
+        // setStyleName("bigFontRoundedBorder");
         flexTable = new FlexTable();
         add(flexTable);
     }

@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService;
-import uk.ac.cranfield.thesis.shared.Solution;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
 import uk.ac.cranfield.thesis.shared.model.Equation;
 import uk.ac.cranfield.thesis.shared.model.EquationsSystem;
+import uk.ac.cranfield.thesis.shared.model.Solution;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -147,6 +147,8 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         }
         
         f.add(parseFunctionEquation(equation));
+        // f.add(parseFunctionEquation2(equation));
+        
         
         return f;
     }
@@ -164,7 +166,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         return f;
     }
     
-    private String parseFunctionEquation(Equation equation) throws IncorrectODEEquationException
+    private String parseFunctionEquation2(Equation equation) throws IncorrectODEEquationException
     {
         String[] eq = equation.getEquation().split("=");
         
@@ -195,7 +197,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         return result;
     }
     
-    private String parseFunctionEquation2(Equation equation) throws IncorrectODEEquationException
+    private String parseFunctionEquation(Equation equation) throws IncorrectODEEquationException
     {
         String[] eq = equation.getEquation().split("=");
         
@@ -207,7 +209,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         while (i < eq[1].length())
         {
             char ch = eq[1].charAt(i);
-            if (Character.isAlphabetic(ch) && ch != equation.getIndependentVariable())
+            if (Character.isLetter(ch) && ch != equation.getIndependentVariable())
             {
                 i++;
                 int k = 0;
@@ -217,7 +219,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
                     i++;
                 }
                 
-                result += equation.getFunctionVariable() + Integer.valueOf(k).toString();
+                result += ch + Integer.valueOf(k).toString();
             }
             
             result += eq[1].charAt(i);

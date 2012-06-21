@@ -3,12 +3,12 @@ package uk.ac.cranfield.thesis.client.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 
-public class InputPanel extends CaptionPanel
+public class InputPanel extends FormPanel
 {
     
     private VerticalPanel panel;
@@ -29,15 +29,17 @@ public class InputPanel extends CaptionPanel
     private RadioButton method3;
     private RadioButton method4;
     private Label stepLabel;
-    private Label rangeLabel;
+    private Label minLabel;
+    private Label maxLabel;
     private TextBox step;
-    private TextBox rangeStart;
-    private TextBox rangeStop;
+    private TextBox minBox;
+    private TextBox maxBox;
     
     public InputPanel()
     {
-        setCaptionText("Input");
-        setStyleName("bigFontRoundedBorder");
+        // setCaptionText("Input");
+        // setStyleName("bigFontRoundedBorder");
+        setHeading("Input");
         panel = new VerticalPanel();
         panel.setHorizontalAlignment(DockPanel.ALIGN_CENTER);
         panel.setSpacing(10);
@@ -83,20 +85,21 @@ public class InputPanel extends CaptionPanel
         hp2.add(method4);
         panel.add(hp2);
         
-        rangeLabel = new Label("Range : ");
-        rangeStart = new TextBox();
-        rangeStart.setValue("0.0");
-        rangeStop = new TextBox();
-        rangeStop.setValue("10.0");
+        minLabel = new Label("Min : ");
+        minBox = new TextBox();
+        minBox.setValue("0.0");
+        maxLabel = new Label("Max : ");
+        maxBox = new TextBox();
+        maxBox.setValue("10.0");
         stepLabel = new Label("Step : ");
         step = new TextBox();
         step.setValue("0.1");
         
         HorizontalPanel hp3 = new HorizontalPanel();
         hp3.setSpacing(10);
-        hp3.add(rangeLabel);
-        hp3.add(rangeStart);
-        hp3.add(rangeStop);
+        hp3.add(minLabel);
+        hp3.add(minBox);
+        hp3.add(maxBox);
         hp3.add(stepLabel);
         hp3.add(step);
         panel.add(hp3);
@@ -181,12 +184,12 @@ public class InputPanel extends CaptionPanel
     
     public double getRangeStart()
     {
-        return Double.valueOf(rangeStart.getValue());
+        return Double.valueOf(minBox.getValue());
     }
     
     public double getRangeStop()
     {
-        return Double.valueOf(rangeStop.getValue());
+        return Double.valueOf(maxBox.getValue());
     }
     
     public double getStep()
