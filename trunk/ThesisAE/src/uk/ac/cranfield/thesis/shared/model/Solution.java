@@ -1,4 +1,4 @@
-package uk.ac.cranfield.thesis.shared;
+package uk.ac.cranfield.thesis.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,31 +10,30 @@ public class Solution implements Serializable
 {
     
     private List<Double> results;
-    private double start;
-    private double stop;
+    private double min;
+    private double max;
     private double step;
+    private double minValue;
+    private double maxValue;
     
-    public Solution(List<Double> results, double start, double stop, double step)
+    public Solution(List<Double> results, double min, double max, double step)
     {
         this.results = results;
-        this.start = start;
-        this.stop = stop;
+        this.min = min;
+        this.max = max;
         this.step = step;
     }
     
-    public Solution(double start, double stop, double step)
+    public Solution(double min, double max, double step)
     {
-        this.results = new ArrayList<Double>((int) ((stop - start) / step));
-        this.start = start;
-        this.stop = stop;
+        this.results = new ArrayList<Double>((int) ((max - min) / step));
+        this.min = min;
+        this.max = max;
         this.step = step;
     }
     
     public Solution()
     {
-        this.start = 0.0;
-        this.stop = 0.0;
-        this.step = 0.0;
     }
     
     public void addResult(double result)
@@ -59,7 +58,7 @@ public class Solution implements Serializable
     }
     
     
-    public Double getResult(int i)
+    public double getResult(int i)
     {
         return results.get(i);
     }
@@ -74,36 +73,36 @@ public class Solution implements Serializable
     /**
      * @return the start
      */
-    public final double getStart()
+    public final double getMin()
     {
-        return start;
+        return min;
     }
     
     
     /**
      * @param start the start to set
      */
-    public final void setStart(double start)
+    public final void setMin(double min)
     {
-        this.start = start;
+        this.min = min;
     }
     
     
     /**
      * @return the stop
      */
-    public final double getStop()
+    public final double getMax()
     {
-        return stop;
+        return max;
     }
     
     
     /**
      * @param stop the stop to set
      */
-    public final void setStop(double stop)
+    public final void setMax(double max)
     {
-        this.stop = stop;
+        this.max = max;
     }
     
     
@@ -122,6 +121,42 @@ public class Solution implements Serializable
     public final void setStep(double step)
     {
         this.step = step;
+    }
+    
+    
+    /**
+     * @return the minValue
+     */
+    public final double getMinValue()
+    {
+        return minValue;
+    }
+    
+    
+    /**
+     * @param minValue the minValue to set
+     */
+    public final void setMinValue(double minValue)
+    {
+        this.minValue = minValue;
+    }
+    
+    
+    /**
+     * @return the maxValue
+     */
+    public final double getMaxValue()
+    {
+        return maxValue;
+    }
+    
+    
+    /**
+     * @param maxValue the maxValue to set
+     */
+    public final void setMaxValue(double maxValue)
+    {
+        this.maxValue = maxValue;
     }
     
 }

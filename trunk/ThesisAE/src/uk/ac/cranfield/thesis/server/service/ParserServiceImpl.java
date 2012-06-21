@@ -14,12 +14,15 @@ package uk.ac.cranfield.thesis.server.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import uk.ac.cranfield.thesis.client.service.ParserService;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
 import uk.ac.cranfield.thesis.shared.model.Equation;
+import uk.ac.cranfield.thesis.shared.model.EquationsSystem;
 
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -48,6 +51,45 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         equation.setIndependentVariable(parseIndependentVariable(parts[0], equation.getFunctionVariable()));
         
         return equation;
+    }
+    
+    @Override
+    public EquationsSystem parseEquationsSystem(List<String> inputs) throws IncorrectODEEquationException
+    {
+        EquationsSystem system = new EquationsSystem();
+        List<Character> functionalVariables = new ArrayList<Character>(inputs.size());
+        
+        for (String input : inputs)
+        {
+            input = input.replace(" ", "");
+            String[] parts = input.split(",");
+            
+            Equation equation = new Equation(parts[0]);
+            equation.setOrder(longestRun(parts[0], '\'', 1));
+            if (equation.getOrder() < parts.length - 1)
+                throw new IncorrectODEEquationException("lack of initial values");
+            
+            List<String> init = new ArrayList<String>(parts.length - 1);
+            for (int i = 1; i < parts.length; i++)
+                init.add(parts[i]);
+            
+            equation.setInitValues(parseInitialValues(init));
+            equation.setFunctionVariable(parseFunctionVariable(parts[0]));
+            functionalVariables.add(equation.getFunctionVariable());
+            
+            system.addEquation(equation);
+        }
+        
+        
+        List<Equation> equations = system.getEquations();
+        char independentVariable = parseIndependentVariable(inputs, functionalVariables);
+        
+        for (Equation eq : equations)
+        {
+            eq.setIndependentVariable(independentVariable);
+        }
+        
+        return system;
     }
     
     private char parseFunctionVariable(String input) throws IncorrectODEEquationException
@@ -88,10 +130,75 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
             Matcher m = p.matcher(input);
             if (m.find() && ch != functionalVariable)
             {
-                if (result == 0)
-                    result = ch;
-                else
-                    throw new IncorrectODEEquationException(input);
+                // if (result == 0)
+                // result = ch;
+                // else
+                // throw new IncorrectODEEquationException(input);
+            }
+        }
+        
+        return result;
+    }
+    
+    private char parseIndependentVariable(List<String> inputs, List<Character> functionalVariables)
+            throws IncorrectODEEquationException
+    {
+        char result = 0;
+        int k = 0;
+        Set<Character> set = new TreeSet<Character>();
+        List<Character> results = new ArrayList<Character>();
+        
+        String input = inputs.get(0);
+        
+        for (char ch = 'a'; ch <= 'z'; ch++)
+        {
+            Pattern p = Pattern.compile("^[^" + ch + "]*" + ch + "[^" + ch + "]*$");
+            Matcher m = p.matcher(input);
+            if (m.find() && ch != functionalVariables.get(k))
+            {
+                results.add(ch);
+            }
+        }
+        
+        for (int i = 1; i < inputs.size(); i++)
+        {
+            for (char ch = 'a'; ch <= 'z'; ch++)
+            {
+                Pattern p = Pattern.compile("^[^" + ch + "]*" + ch + "[^" + ch + "]*$");
+                Matcher m = p.matcher(inputs.get(i));
+                if (m.find() && ch != functionalVariables.get(k))
+                {
+                    set.add(ch);
+                }
+            }
+            
+            for (Character res : results)
+            {
+                if (!set.contains(res))
+                {
+                    results.remove(res);
+                }
+            }
+            
+            if (results.isEmpty())
+            {
+                throw new IncorrectODEEquationException(inputs.get(i));
+            }
+            
+            set.clear();
+            k++;
+        }
+        
+        if (results.size() != 1)
+        {
+            throw new IncorrectODEEquationException(inputs.toString());
+        }
+        
+        for (Character ch : results)
+        {
+            if (ch != null)
+            {
+                return ch;
             }
         }
         
@@ -116,4 +223,6 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         
         return result;
     }
+    
+    
 }
