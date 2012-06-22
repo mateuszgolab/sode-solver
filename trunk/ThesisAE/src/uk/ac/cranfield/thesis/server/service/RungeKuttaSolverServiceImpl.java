@@ -166,37 +166,6 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         return f;
     }
     
-    private String parseFunctionEquation2(Equation equation) throws IncorrectODEEquationException
-    {
-        String[] eq = equation.getEquation().split("=");
-        
-        if (eq.length < 2)
-            throw new IncorrectODEEquationException("Given equation has incorrect form , lack of assignment sign ( = )");
-        
-        int i = 0;
-        String result = "";
-        while (i < eq[1].length())
-        {
-            if (eq[1].charAt(i) == equation.getFunctionVariable())
-            {
-                i++;
-                int k = 0;
-                while (i < eq[1].length() && eq[1].charAt(i) == '\'')
-                {
-                    k++;
-                    i++;
-                }
-                
-                result += equation.getFunctionVariable() + Integer.valueOf(k).toString();
-            }
-            
-            result += eq[1].charAt(i);
-            i++;
-        }
-        
-        return result;
-    }
-    
     private String parseFunctionEquation(Equation equation) throws IncorrectODEEquationException
     {
         String[] eq = equation.getEquation().split("=");
@@ -205,15 +174,16 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
             throw new IncorrectODEEquationException("Given equation has incorrect form , lack of assignment sign ( = )");
         
         int i = 0;
+        int len = eq[1].length();
         String result = "";
-        while (i < eq[1].length())
+        while (i < len)
         {
             char ch = eq[1].charAt(i);
             if (Character.isLetter(ch) && ch != equation.getIndependentVariable())
             {
                 i++;
                 int k = 0;
-                while (i < eq[1].length() && eq[1].charAt(i) == '\'')
+                while (i < len && eq[1].charAt(i) == '\'')
                 {
                     k++;
                     i++;
@@ -222,7 +192,11 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
                 result += ch + Integer.valueOf(k).toString();
             }
             
-            result += eq[1].charAt(i);
+            if (i < len)
+            {
+                result += eq[1].charAt(i);
+            }
+            
             i++;
         }
         
@@ -246,6 +220,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         return results;
     }
     
+    
     private List<List<Double>> evaluateSystem(List<List<String>> functions, double h, Map<String, Double> map)
             throws UnknownFunctionException, UnparsableExpressionException
     {
@@ -268,6 +243,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         return results;
     }
     
+    
     private Map<String, Double> getSum(final List<Double> y, final List<Double> v, final double h, final char f)
     {
         Map<String, Double> map = new HashMap<String, Double>(y.size());
@@ -281,6 +257,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         
         return map;
     }
+    
     
     private Map<String, Double> getSum(final List<List<Double>> functions, final List<List<Double>> vectors,
             final double h, final List<Character> f)
@@ -302,6 +279,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         return map;
     }
     
+    
     private Map<String, Double> getMap(final List<Double> y, final char f)
     {
         Map<String, Double> map = new HashMap<String, Double>(y.size());
@@ -315,6 +293,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         
         return map;
     }
+    
     
     private Map<String, Double> getMap(final List<List<Double>> initVal, List<Character> f)
     {
@@ -335,6 +314,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         return map;
     }
     
+    
     private List<Double> evaluateFunction(List<Double> y, final List<Double> k1, final List<Double> k2,
             final List<Double> k3, List<Double> k4)
     {
@@ -343,6 +323,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         
         return y;
     }
+    
     
     private List<List<Double>> evaluateFunctions(List<List<Double>> functions, final List<List<Double>> k1,
             final List<List<Double>> k2, final List<List<Double>> k3, List<List<Double>> k4)

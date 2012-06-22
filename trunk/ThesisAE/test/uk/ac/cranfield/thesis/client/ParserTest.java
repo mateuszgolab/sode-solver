@@ -176,49 +176,56 @@ public class ParserTest extends GWTTestCase
         
     }
     
-    // public void testCorrectEquationFunction()
-    // {
-    // final ParserServiceAsync parserService = ParserService.Util.getInstance();
-    // delayTestFinish(500);
-    // parserService.parseEquation("y''' = y '' + y*y' - y  + x + 4", new AsyncCallback<Equation>()
-    // {
-    //
-    // @Override
-    // public void onFailure(Throwable caught)
-    // {
-    // assertTrue(false);
-    // finishTest();
-    // }
-    //
-    // @Override
-    // public void onSuccess(Equation result)
-    // {
-    // parserService.getFunctionVector(result, new AsyncCallback<List<String>>()
-    // {
-    //
-    // @Override
-    // public void onFailure(Throwable caught)
-    // {
-    // assertTrue(false);
-    // finishTest();
-    // }
-    //
-    // @Override
-    // public void onSuccess(List<String> result)
-    // {
-    // assertEquals(result.size(), 3);
-    // assertEquals("y1", result.get(0));
-    // assertEquals("y2", result.get(1));
-    // assertEquals("y2+y0*y1-y0+x+4", result.get(2));
-    // finishTest();
-    //
-    // }
-    // });
-    //
-    // }
-    //
-    // });
-    //
-    //
-    // }
+    public void testCaseInsensitivity()
+    {
+        ParserServiceAsync parserService = ParserService.Util.getInstance();
+        delayTestFinish(500);
+        
+        parserService.parseEquation("y'' = y + x + 2*X + 3/Y'", new AsyncCallback<Equation>()
+        {
+            
+            @Override
+            public void onSuccess(Equation result)
+            {
+                assertEquals('y', result.getFunctionVariable());
+                assertEquals('x', result.getIndependentVariable());
+                assertEquals(2, result.getOrder());
+            }
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(false);
+                finishTest();
+            }
+        });
+    }
+    
+    public void testCorrectEquationFunction()
+    {
+        final ParserServiceAsync parserService = ParserService.Util.getInstance();
+        delayTestFinish(500);
+        parserService.parseEquation("y''' = y '' + y*y' - y  + x + 4", new AsyncCallback<Equation>()
+        {
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(false);
+                finishTest();
+            }
+            
+            @Override
+            public void onSuccess(Equation result)
+            {
+                assertEquals('y', result.getFunctionVariable());
+                assertEquals('x', result.getIndependentVariable());
+                assertEquals(3, result.getOrder());
+                finishTest();
+            }
+            
+        });
+        
+        
+    }
 }

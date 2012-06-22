@@ -3,18 +3,20 @@ package uk.ac.cranfield.thesis.client.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.KeyListener;
+import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
+import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 
@@ -22,7 +24,6 @@ public class InputPanel extends FormPanel
 {
     
     private VerticalPanel panel;
-    private FlexTable flexTextPanel;
     private Button computeButton;
     private RadioButton method1;
     private RadioButton method2;
@@ -31,9 +32,10 @@ public class InputPanel extends FormPanel
     private Label stepLabel;
     private Label minLabel;
     private Label maxLabel;
-    private TextBox step;
-    private TextBox minBox;
-    private TextBox maxBox;
+    private TextField<String> step;
+    private TextField<String> minBox;
+    private TextField<String> maxBox;
+    private FlexTable flexTextPanel;
     
     public InputPanel()
     {
@@ -45,19 +47,19 @@ public class InputPanel extends FormPanel
         panel.setSpacing(10);
         // setWidth("640px");
         
-        
         flexTextPanel = new FlexTable();
         panel.add(flexTextPanel);
         
-        TextBox input = new TextBox();
+        TextField<String> input = new TextField<String>();
         input.setWidth("600px");
         // input.setWidth(new Integer(Window.getClientWidth()).toString() + "px");
         
-        TextBox input2 = new TextBox();
+        TextField<String> input2 = new TextField<String>();
         input2.setWidth("600px");
         // input2.setWidth(new Integer(Window.getClientWidth()).toString() + "px");
         input2.setValue("...");
-        input2.addKeyPressHandler(new InputListener());
+        // input2.addKeyPressHandler(new InputListener());
+        input2.addKeyListener(new InputListener());
         
         flexTextPanel.setWidget(flexTextPanel.getRowCount(), 0, input);
         flexTextPanel.setWidget(flexTextPanel.getRowCount(), 0, input2);
@@ -86,19 +88,22 @@ public class InputPanel extends FormPanel
         panel.add(hp2);
         
         minLabel = new Label("Min : ");
-        minBox = new TextBox();
+        minBox = new TextField<String>();
         minBox.setValue("0.0");
+        
         maxLabel = new Label("Max : ");
-        maxBox = new TextBox();
+        maxBox = new TextField<String>();
         maxBox.setValue("10.0");
+        
         stepLabel = new Label("Step : ");
-        step = new TextBox();
+        step = new TextField<String>();
         step.setValue("0.1");
         
         HorizontalPanel hp3 = new HorizontalPanel();
         hp3.setSpacing(10);
         hp3.add(minLabel);
         hp3.add(minBox);
+        hp3.add(maxLabel);
         hp3.add(maxBox);
         hp3.add(stepLabel);
         hp3.add(step);
@@ -113,10 +118,10 @@ public class InputPanel extends FormPanel
         
     }
     
-    public void addButtonHandlers(ClickHandler handler, KeyPressHandler keyHandler)
+    public void addButtonHandlers(SelectionListener<ButtonEvent> handler)
     {
-        computeButton.addClickHandler(handler);
-        computeButton.addKeyPressHandler(keyHandler);
+        computeButton.addSelectionListener(handler);
+        // computeButton.add addKeyPressHandler(keyHandler);
     }
     
     public void removeButtonHandler()
@@ -140,23 +145,25 @@ public class InputPanel extends FormPanel
         return inputs;
     }
     
+    @SuppressWarnings("unchecked")
     public boolean isEquationEntered()
     {
-        return !(((TextBox) flexTextPanel.getWidget(0, 0)).getText().isEmpty());
+        String val = ((TextField<String>) flexTextPanel.getWidget(0, 0)).getValue();
+        return (val != null) && (!val.isEmpty());
     }
     
-    private class InputListener implements KeyPressHandler
+    private class InputListener extends KeyListener
     {
         
         @Override
-        public void onKeyPress(KeyPressEvent event)
+        public void componentKeyPress(ComponentEvent event)
         {
             if (event.getSource().equals(flexTextPanel.getWidget(flexTextPanel.getRowCount() - 1, 0)))
             {
-                TextBox input = new TextBox();
+                TextField<String> input = new TextField<String>();
                 input.setWidth("600px");
                 input.setValue("...");
-                input.addKeyPressHandler(this);
+                input.addKeyListener(this);
                 flexTextPanel.setWidget(flexTextPanel.getRowCount(), 0, input);
             }
         }
@@ -177,9 +184,10 @@ public class InputPanel extends FormPanel
         }
     }
     
+    @SuppressWarnings("unchecked")
     private String getInput(int i)
     {
-        return ((TextBox) flexTextPanel.getWidget(i, 0)).getText();
+        return ((TextField<String>) flexTextPanel.getWidget(i, 0)).getValue();
     }
     
     public double getRangeStart()

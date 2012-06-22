@@ -33,7 +33,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
     private List<String> equations;
     private DataTable dataTable;
     private final ParserServiceAsync parserService = ParserService.Util.getInstance();
-    private RungeKuttaSolverServiceAsync rungeKuttaSolverService = RungeKuttaSolverService.Util.getInstance();
+    private final RungeKuttaSolverServiceAsync rungeKuttaSolverService = RungeKuttaSolverService.Util.getInstance();
     private int equationsCounter;
     private DialogBox errorDialog;
     private InputPanel inputPanel;
@@ -76,8 +76,18 @@ public class GraphPanel extends AbsolutePanel implements Runnable
     @Override
     public void run()
     {
-        solveAndDraw();
+        progressWidget.show();
+        dataTable = DataTable.create();
+        equationsCounter = 0;
         
+        if (equations.size() == 1)
+        {
+            parserService.parseEquation(equations.get(0), new EquationParserCallback());
+        }
+        else
+        {
+            parserService.parseEquationsSystem(equations, new EquationsSystemParserCallback());
+        }
     }
     
     private Options createOptions()
@@ -93,54 +103,6 @@ public class GraphPanel extends AbsolutePanel implements Runnable
     {
         this.equations = equations;
     }
-    
-    public void solveAndDraw()
-    {
-        progressWidget.show();
-        dataTable = DataTable.create();
-        equationsCounter = 0;
-        
-        if (equations.size() == 1)
-        {
-            parserService.parseEquation(equations.get(0), new EquationParserCallback());
-        }
-        else
-        {
-            parserService.parseEquationsSystem(equations, new EquationsSystemParserCallback());
-        }
-    }
-    
-    private class EquationEvaluatorCallback implements AsyncCallback<Solution>
-    {
-        
-        @Override
-        public void onFailure(Throwable caught)
-        {
-            progressWidget.close();
-            System.out.println(caught.getMessage());
-        }
-        
-        @Override
-        public void onSuccess(Solution solution)
-        {
-            for (int i = 0; i < solution.size(); i++)
-            {
-                // x
-                // dataTable.setValue(i, solution.getxAxis(), i);
-                // y
-                // dataTable.setValue(i, solution.getyAxis(), solution.getResult(i));
-            }
-            
-            equationsCounter++;
-            
-            if (equationsCounter == equations.size())
-            {
-                lineChart = new LineChart(dataTable, createOptions());
-                clear();
-                add(lineChart);
-            }
-        }
-    };
     
     private class EquationParserCallback implements AsyncCallback<Equation>
     {
@@ -328,6 +290,5 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             progressWidget.close();
         }
     }
-    
     
 }

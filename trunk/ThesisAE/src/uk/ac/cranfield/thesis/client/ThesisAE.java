@@ -4,9 +4,9 @@ import uk.ac.cranfield.thesis.client.view.EquationPanel;
 import uk.ac.cranfield.thesis.client.view.GraphPanel;
 import uk.ac.cranfield.thesis.client.view.InputPanel;
 
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
@@ -39,7 +39,8 @@ public class ThesisAE implements EntryPoint
         mainPanel.add(graphPanel);
         mainPanel.setSpacing(50);
         
-        inputPanel.addButtonHandlers(new ComputeButtonHandler(), new ComputeButtonKeyPress());
+        // inputPanel.addButtonHandlers(new ComputeButtonHandler(), new ComputeButtonKeyPress());
+        inputPanel.addButtonHandlers(new ComputeButtonHandler());
         equationPanel.setVisible(false);
         graphPanel.setVisible(false);
         
@@ -67,14 +68,26 @@ public class ThesisAE implements EntryPoint
         }
     }
     
-    private class ComputeButtonHandler implements ClickHandler
+    // private class ComputeButtonHandler implements ClickHandler
+    // {
+    //
+    // @Override
+    // public void onClick(ClickEvent event)
+    // {
+    // computeAction();
+    // }
+    // }
+    
+    private class ComputeButtonHandler extends SelectionListener<ButtonEvent>
     {
         
         @Override
-        public void onClick(ClickEvent event)
+        public void componentSelected(ButtonEvent ce)
         {
             computeAction();
+            
         }
+        
     }
     
     private class ComputeButtonKeyPress implements KeyPressHandler
