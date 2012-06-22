@@ -34,7 +34,7 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
     @Override
     public Equation parseEquation(String input) throws IncorrectODEEquationException
     {
-        input = input.replace(" ", "");
+        input = input.replace(" ", "").toLowerCase();
         String[] parts = input.split(",");
         
         Equation equation = new Equation(parts[0]);
@@ -126,15 +126,18 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         char result = 0;
         for (char ch = 'a'; ch <= 'z'; ch++)
         {
-            Pattern p = Pattern.compile("^[^" + ch + "]*" + ch + "[^" + ch + "]*$");
-            Matcher m = p.matcher(input);
-            if (m.find() && ch != functionalVariable)
-            {
-                // if (result == 0)
-                // result = ch;
-                // else
-                // throw new IncorrectODEEquationException(input);
-            }
+            // TODO : check if exists in a string and longest run == 0 and != functional variable
+            // Pattern p = Pattern.compile("^[^" + ch + "]*" + ch + "[^" + ch + "]*$");
+            // Pattern p = Pattern.compile("^[^" + ch + "]*" + ch + "[^" + ch + "]*$");
+            // if(longestRun(input, ch, 0) == 0)
+            // Matcher m = p.matcher(input);
+            // if (m.find() && ch != functionalVariable)
+            // {
+            // if (result == 0)
+            // result = ch;
+            // else
+            // throw new IncorrectODEEquationException(input);
+            // }
         }
         
         return result;
@@ -223,6 +226,5 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         
         return result;
     }
-    
     
 }
