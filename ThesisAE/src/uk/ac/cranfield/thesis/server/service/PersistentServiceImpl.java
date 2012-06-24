@@ -18,7 +18,9 @@ import uk.ac.cranfield.thesis.shared.model.Equation;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Query;
 
+@SuppressWarnings("serial")
 public class PersistentServiceImpl extends RemoteServiceServlet implements PersistentService
 {
     
@@ -29,5 +31,17 @@ public class PersistentServiceImpl extends RemoteServiceServlet implements Persi
         Objectify ofy = ObjectifyService.begin();
         
         ofy.put(equation);
+    }
+    
+    @Override
+    public Equation getEquation(String name)
+    {
+        ObjectifyService.register(Equation.class);
+        Objectify ofy = ObjectifyService.begin();
+        
+        Query<Equation> q = ofy.query(Equation.class).filter("name", name);
+        
+        return q.get();
+        
     }
 }

@@ -13,6 +13,7 @@
 package uk.ac.cranfield.thesis.server.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -123,24 +124,37 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
     
     private char parseIndependentVariable(String input, char functionalVariable) throws IncorrectODEEquationException
     {
-        char result = 0;
-        for (char ch = 'a'; ch <= 'z'; ch++)
+        Set<Character> invalid = new HashSet<Character>();
+        Set<Character> valid = new HashSet<Character>();
+        
+        for (int i = 0; i < input.length(); i++)
         {
-            // TODO : check if exists in a string and longest run == 0 and != functional variable
-            // Pattern p = Pattern.compile("^[^" + ch + "]*" + ch + "[^" + ch + "]*$");
-            // Pattern p = Pattern.compile("^[^" + ch + "]*" + ch + "[^" + ch + "]*$");
-            // if(longestRun(input, ch, 0) == 0)
-            // Matcher m = p.matcher(input);
-            // if (m.find() && ch != functionalVariable)
-            // {
-            // if (result == 0)
-            // result = ch;
-            // else
-            // throw new IncorrectODEEquationException(input);
-            // }
+            char ch = input.charAt(i);
+            if (Character.isLetter(ch))
+            {
+                if (input.contains(ch + "'"))
+                {
+                    invalid.add(ch);
+                }
+                else
+                {
+                    valid.add(ch);
+                }
+            }
         }
         
-        return result;
+        if (valid.size() > 1)
+        {
+            throw new IncorrectODEEquationException("Too many independent variables in equation");
+        }
+        
+        for (Character ch : valid)
+        {
+            return ch;
+        }
+        
+        return 0;
+        
     }
     
     private char parseIndependentVariable(List<String> inputs, List<Character> functionalVariables)

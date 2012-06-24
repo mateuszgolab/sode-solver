@@ -4,18 +4,20 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import com.google.appengine.api.users.User;
+import com.googlecode.objectify.annotation.Entity;
 
 
+@SuppressWarnings("serial")
 @Entity
 public class Equation implements Serializable
 {
     
     @Id
     private Long id;
+    private String name;
     private User owner;
     private List<Double> initValues;
     private String equationContent;
@@ -42,7 +44,6 @@ public class Equation implements Serializable
         this("");
     }
     
-    
     public int getOrder()
     {
         return order;
@@ -63,20 +64,6 @@ public class Equation implements Serializable
         return independentVariable;
     }
     
-    // private void setStatus()
-    // {
-    // status = (equationContent.length() > 0) ? EquationStatus.CORRECT : EquationStatus.EMPTY;
-    // }
-    //
-    // public EquationStatus getStatus()
-    // {
-    // return status;
-    // }
-    //
-    // public boolean isEmpty()
-    // {
-    // return status == EquationStatus.EMPTY;
-    // }
     
     /**
      * @param independentVariable the independentVariable to set
@@ -165,6 +152,24 @@ public class Equation implements Serializable
     public final void setOwner(User owner)
     {
         this.owner = owner;
+    }
+    
+    
+    /**
+     * @return the name
+     */
+    public final String getName()
+    {
+        return name;
+    }
+    
+    
+    /**
+     * @param name the name to set
+     */
+    public final void setName(String name)
+    {
+        this.name = name;
     }
     
 }

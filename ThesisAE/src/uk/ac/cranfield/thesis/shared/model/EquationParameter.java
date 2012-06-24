@@ -4,13 +4,28 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 
+@SuppressWarnings("serial")
 @Entity
-public class Parameter implements Serializable
+public class EquationParameter implements Serializable
 {
     
     private double min;
     private double max;
     private double step;
+    
+    public EquationParameter()
+    {
+        min = 0.0;
+        max = 0.0;
+        step = 0.0;
+    }
+    
+    public EquationParameter(double min, double max, double step)
+    {
+        this.min = min;
+        this.max = max;
+        this.step = step;
+    }
     
     /**
      * @return the min

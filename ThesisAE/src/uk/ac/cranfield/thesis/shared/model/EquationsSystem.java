@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@SuppressWarnings("serial")
 public class EquationsSystem implements Serializable
 {
     
     private List<Equation> equations;
-    
     
     public EquationsSystem()
     {
@@ -20,7 +20,6 @@ public class EquationsSystem implements Serializable
     {
         this.equations = equations;
     }
-    
     
     public final List<Equation> getEquations()
     {
