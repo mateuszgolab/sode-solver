@@ -39,31 +39,40 @@ public class InputPanel extends FormPanel
     
     public InputPanel()
     {
-        // setCaptionText("Input");
-        // setStyleName("bigFontRoundedBorder");
         setHeading("Input");
+        
         panel = new VerticalPanel();
         panel.setHorizontalAlignment(DockPanel.ALIGN_CENTER);
         panel.setSpacing(10);
-        // setWidth("640px");
         
-        flexTextPanel = new FlexTable();
-        panel.add(flexTextPanel);
+        createEquationsInput();
+        createMethodsSelector();
+        createParametersInput();
+        createPersistentPanel();
+        createComputePanel();
         
+        add(panel);
+        
+    }
+    
+    private void createEquationsInput()
+    {
         TextField<String> input = new TextField<String>();
         input.setWidth("600px");
-        // input.setWidth(new Integer(Window.getClientWidth()).toString() + "px");
         
         TextField<String> input2 = new TextField<String>();
         input2.setWidth("600px");
-        // input2.setWidth(new Integer(Window.getClientWidth()).toString() + "px");
         input2.setValue("...");
-        // input2.addKeyPressHandler(new InputListener());
         input2.addKeyListener(new InputListener());
         
+        flexTextPanel = new FlexTable();
         flexTextPanel.setWidget(flexTextPanel.getRowCount(), 0, input);
         flexTextPanel.setWidget(flexTextPanel.getRowCount(), 0, input2);
-        
+        panel.add(flexTextPanel);
+    }
+    
+    private void createMethodsSelector()
+    {
         MethodSelector methodSelector = new MethodSelector();
         
         method1 = new RadioButton("method1", "Runge-Kutta");
@@ -86,15 +95,16 @@ public class InputPanel extends FormPanel
         hp2.add(method3);
         hp2.add(method4);
         panel.add(hp2);
-        
+    }
+    
+    private void createParametersInput()
+    {
         minLabel = new Label("Min : ");
         minBox = new TextField<String>();
         minBox.setValue("0.0");
-        
         maxLabel = new Label("Max : ");
         maxBox = new TextField<String>();
         maxBox.setValue("10.0");
-        
         stepLabel = new Label("Step : ");
         step = new TextField<String>();
         step.setValue("0.1");
@@ -108,14 +118,29 @@ public class InputPanel extends FormPanel
         hp3.add(stepLabel);
         hp3.add(step);
         panel.add(hp3);
-        
+    }
+    
+    private void createPersistentPanel()
+    {
         HorizontalPanel hp4 = new HorizontalPanel();
-        computeButton = new Button("Compute");
-        hp4.add(computeButton);
+        hp4.setSpacing(10);
+        Button saveSystem = new Button("Save system");
+        Button loadSystem = new Button("Load system");
+        Button saveParameters = new Button("Save parameters");
+        Button loadParameters = new Button("Load parameters");
+        hp4.add(saveSystem);
+        hp4.add(loadSystem);
+        hp4.add(saveParameters);
+        hp4.add(loadParameters);
         panel.add(hp4);
-        
-        add(panel);
-        
+    }
+    
+    private void createComputePanel()
+    {
+        HorizontalPanel hp5 = new HorizontalPanel();
+        computeButton = new Button("Compute");
+        hp5.add(computeButton);
+        panel.add(hp5);
     }
     
     public void addButtonHandlers(SelectionListener<ButtonEvent> handler)

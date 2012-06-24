@@ -24,6 +24,8 @@ public interface PersistentService extends RemoteService
     
     void persistEquation(Equation equation);
     
+    Equation getEquation(String name);
+    
     /**
      * Utility class for simplifying access to the instance of async service.
      */

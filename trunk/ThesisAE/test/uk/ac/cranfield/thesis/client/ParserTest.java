@@ -190,6 +190,7 @@ public class ParserTest extends GWTTestCase
                 assertEquals('y', result.getFunctionVariable());
                 assertEquals('x', result.getIndependentVariable());
                 assertEquals(2, result.getOrder());
+                finishTest();
             }
             
             @Override
@@ -221,6 +222,60 @@ public class ParserTest extends GWTTestCase
                 assertEquals('y', result.getFunctionVariable());
                 assertEquals('x', result.getIndependentVariable());
                 assertEquals(3, result.getOrder());
+                finishTest();
+            }
+            
+        });
+        
+        
+    }
+    
+    public void testNoIndependentVariable()
+    {
+        final ParserServiceAsync parserService = ParserService.Util.getInstance();
+        delayTestFinish(500);
+        parserService.parseEquation("y''' = y '' + y*y' - y  + 4", new AsyncCallback<Equation>()
+        {
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(false);
+                finishTest();
+            }
+            
+            @Override
+            public void onSuccess(Equation result)
+            {
+                assertEquals('y', result.getFunctionVariable());
+                assertEquals(0, result.getIndependentVariable());
+                assertEquals(3, result.getOrder());
+                finishTest();
+            }
+            
+        });
+        
+        
+    }
+    
+    public void testToManyIndependentVariables()
+    {
+        final ParserServiceAsync parserService = ParserService.Util.getInstance();
+        delayTestFinish(500);
+        parserService.parseEquation("y''' = y '' + y*y' - y  + 4 + x + u", new AsyncCallback<Equation>()
+        {
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(caught instanceof IncorrectODEEquationException);
+                finishTest();
+            }
+            
+            @Override
+            public void onSuccess(Equation result)
+            {
+                assertTrue(false);
                 finishTest();
             }
             

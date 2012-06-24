@@ -4,32 +4,27 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.googlecode.objectify.annotation.Entity;
+
 
 @SuppressWarnings("serial")
+@Entity
 public class Solution implements Serializable
 {
     
     private List<Double> results;
-    private double min;
-    private double max;
-    private double step;
-    private double minValue;
-    private double maxValue;
+    private EquationParameter parameter;
     
     public Solution(List<Double> results, double min, double max, double step)
     {
         this.results = results;
-        this.min = min;
-        this.max = max;
-        this.step = step;
+        parameter = new EquationParameter(min, max, step);
     }
     
     public Solution(double min, double max, double step)
     {
         this.results = new ArrayList<Double>((int) ((max - min) / step));
-        this.min = min;
-        this.max = max;
-        this.step = step;
+        parameter = new EquationParameter(min, max, step);
     }
     
     public Solution()
@@ -75,7 +70,7 @@ public class Solution implements Serializable
      */
     public final double getMin()
     {
-        return min;
+        return parameter.getMin();
     }
     
     
@@ -84,7 +79,7 @@ public class Solution implements Serializable
      */
     public final void setMin(double min)
     {
-        this.min = min;
+        parameter.setMin(min);
     }
     
     
@@ -93,7 +88,7 @@ public class Solution implements Serializable
      */
     public final double getMax()
     {
-        return max;
+        return parameter.getMax();
     }
     
     
@@ -102,7 +97,7 @@ public class Solution implements Serializable
      */
     public final void setMax(double max)
     {
-        this.max = max;
+        parameter.setMax(max);
     }
     
     
@@ -111,7 +106,7 @@ public class Solution implements Serializable
      */
     public final double getStep()
     {
-        return step;
+        return parameter.getStep();
     }
     
     
@@ -120,43 +115,8 @@ public class Solution implements Serializable
      */
     public final void setStep(double step)
     {
-        this.step = step;
+        parameter.setStep(step);
     }
     
-    
-    /**
-     * @return the minValue
-     */
-    public final double getMinValue()
-    {
-        return minValue;
-    }
-    
-    
-    /**
-     * @param minValue the minValue to set
-     */
-    public final void setMinValue(double minValue)
-    {
-        this.minValue = minValue;
-    }
-    
-    
-    /**
-     * @return the maxValue
-     */
-    public final double getMaxValue()
-    {
-        return maxValue;
-    }
-    
-    
-    /**
-     * @param maxValue the maxValue to set
-     */
-    public final void setMaxValue(double maxValue)
-    {
-        this.maxValue = maxValue;
-    }
     
 }
