@@ -6,21 +6,21 @@ import javax.persistence.Entity;
 
 @SuppressWarnings("serial")
 @Entity
-public class EquationParameter implements Serializable
+public class EquationParameterEntity implements Serializable
 {
     
     private double min;
     private double max;
     private double step;
     
-    public EquationParameter()
+    public EquationParameterEntity()
     {
         min = 0.0;
         max = 0.0;
         step = 0.0;
     }
     
-    public EquationParameter(double min, double max, double step)
+    public EquationParameterEntity(double min, double max, double step)
     {
         this.min = min;
         this.max = max;

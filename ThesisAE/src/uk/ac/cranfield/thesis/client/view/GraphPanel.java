@@ -7,8 +7,8 @@ import uk.ac.cranfield.thesis.client.service.ParserServiceAsync;
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService;
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverServiceAsync;
 import uk.ac.cranfield.thesis.client.view.widget.ProgressWidget;
-import uk.ac.cranfield.thesis.shared.model.Equation;
-import uk.ac.cranfield.thesis.shared.model.EquationsSystem;
+import uk.ac.cranfield.thesis.shared.Equation;
+import uk.ac.cranfield.thesis.shared.EquationsSystem;
 import uk.ac.cranfield.thesis.shared.model.Solution;
 
 import com.extjs.gxt.ui.client.widget.form.FormPanel;

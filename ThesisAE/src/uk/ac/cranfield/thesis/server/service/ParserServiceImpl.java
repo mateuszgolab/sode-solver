@@ -21,9 +21,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import uk.ac.cranfield.thesis.client.service.ParserService;
+import uk.ac.cranfield.thesis.shared.Equation;
+import uk.ac.cranfield.thesis.shared.EquationsSystem;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
-import uk.ac.cranfield.thesis.shared.model.Equation;
-import uk.ac.cranfield.thesis.shared.model.EquationsSystem;
 
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;

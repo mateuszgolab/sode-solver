@@ -13,7 +13,8 @@
 package uk.ac.cranfield.thesis.server.service;
 
 import uk.ac.cranfield.thesis.client.service.PersistentService;
-import uk.ac.cranfield.thesis.shared.model.Equation;
+import uk.ac.cranfield.thesis.shared.Equation;
+import uk.ac.cranfield.thesis.shared.model.SystemEntity;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Objectify;
@@ -43,5 +44,25 @@ public class PersistentServiceImpl extends RemoteServiceServlet implements Persi
         
         return q.get();
         
+    }
+    
+    @Override
+    public void persistEquationsSystem(SystemEntity system)
+    {
+        ObjectifyService.register(SystemEntity.class);
+        Objectify ofy = ObjectifyService.begin();
+        ofy.put(system);
+        
+    }
+    
+    @Override
+    public SystemEntity getEquationsSystem(String name)
+    {
+        ObjectifyService.register(SystemEntity.class);
+        Objectify ofy = ObjectifyService.begin();
+        
+        Query<SystemEntity> q = ofy.query(SystemEntity.class).filter("name", name);
+        
+        return q.get();
     }
 }

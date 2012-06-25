@@ -12,7 +12,8 @@
  *******************************************************************************/
 package uk.ac.cranfield.thesis.client.service;
 
-import uk.ac.cranfield.thesis.shared.model.Equation;
+import uk.ac.cranfield.thesis.shared.Equation;
+import uk.ac.cranfield.thesis.shared.model.SystemEntity;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -25,6 +26,10 @@ public interface PersistentService extends RemoteService
     void persistEquation(Equation equation);
     
     Equation getEquation(String name);
+    
+    void persistEquationsSystem(SystemEntity system);
+    
+    SystemEntity getEquationsSystem(String name);
     
     /**
      * Utility class for simplifying access to the instance of async service.
