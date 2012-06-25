@@ -58,7 +58,6 @@ public class ThesisAE implements EntryPoint
             graphPanel.setEquations(inputPanel.getEquations());
             graphPanel.setVisible(true);
             equationPanel.setVisible(true);
-            // graphPanel.solveAndDraw();
             VisualizationUtils.loadVisualizationApi(graphPanel, LineChart.PACKAGE);
         }
         else

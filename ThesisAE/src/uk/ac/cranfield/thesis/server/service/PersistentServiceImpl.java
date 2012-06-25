@@ -25,31 +25,31 @@ import com.googlecode.objectify.Query;
 public class PersistentServiceImpl extends RemoteServiceServlet implements PersistentService
 {
     
+    static
+    {
+        ObjectifyService.register(Equation.class);
+        ObjectifyService.register(SystemEntity.class);
+    }
+    
     @Override
     public void persistEquation(Equation equation)
     {
-        ObjectifyService.register(Equation.class);
         Objectify ofy = ObjectifyService.begin();
-        
         ofy.put(equation);
     }
     
     @Override
     public Equation getEquation(String name)
     {
-        ObjectifyService.register(Equation.class);
         Objectify ofy = ObjectifyService.begin();
-        
         Query<Equation> q = ofy.query(Equation.class).filter("name", name);
         
         return q.get();
-        
     }
     
     @Override
     public void persistEquationsSystem(SystemEntity system)
     {
-        ObjectifyService.register(SystemEntity.class);
         Objectify ofy = ObjectifyService.begin();
         ofy.put(system);
         
@@ -58,9 +58,7 @@ public class PersistentServiceImpl extends RemoteServiceServlet implements Persi
     @Override
     public SystemEntity getEquationsSystem(String name)
     {
-        ObjectifyService.register(SystemEntity.class);
         Objectify ofy = ObjectifyService.begin();
-        
         Query<SystemEntity> q = ofy.query(SystemEntity.class).filter("name", name);
         
         return q.get();
