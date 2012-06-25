@@ -3,6 +3,10 @@ package uk.ac.cranfield.thesis.client.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.ac.cranfield.thesis.client.service.PersistentService;
+import uk.ac.cranfield.thesis.client.service.PersistentServiceAsync;
+import uk.ac.cranfield.thesis.shared.model.SystemEntity;
+
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.KeyListener;
@@ -12,6 +16,8 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -23,6 +29,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class InputPanel extends FormPanel
 {
     
+    private final PersistentServiceAsync persistenceService = PersistentService.Util.getInstance();
     private VerticalPanel panel;
     private Button computeButton;
     private RadioButton method1;
@@ -125,7 +132,63 @@ public class InputPanel extends FormPanel
         HorizontalPanel hp4 = new HorizontalPanel();
         hp4.setSpacing(10);
         Button saveSystem = new Button("Save system");
+        saveSystem.addSelectionListener(new SelectionListener<ButtonEvent>()
+        {
+            
+            @Override
+            public void componentSelected(ButtonEvent ce)
+            {
+                persistenceService.persistEquationsSystem(new SystemEntity("testName", getEquations()),
+                        new AsyncCallback<Void>()
+                        {
+                            
+                            @Override
+                            public void onSuccess(Void result)
+                            {
+                                Window.alert("System stored successfully");
+                                
+                            }
+                            
+                            @Override
+                            public void onFailure(Throwable caught)
+                            {
+                                Window.alert(caught.getMessage());
+                                
+                            }
+                        });
+            }
+            
+            
+        });
+        
         Button loadSystem = new Button("Load system");
+        loadSystem.addSelectionListener(new SelectionListener<ButtonEvent>()
+        {
+            
+            @Override
+            public void componentSelected(ButtonEvent ce)
+            {
+                persistenceService.getEquationsSystem("testName", new AsyncCallback<SystemEntity>()
+                {
+                    
+                    @Override
+                    public void onFailure(Throwable caught)
+                    {
+                        // TODO Auto-generated method stub
+                        
+                    }
+                    
+                    @Override
+                    public void onSuccess(SystemEntity result)
+                    {
+                        // TODO : clear panel and add loaded system ( equation by equation)
+                        
+                        // flexTextPanel.
+                    }
+                });
+            }
+        });
+        
         Button saveParameters = new Button("Save parameters");
         Button loadParameters = new Button("Load parameters");
         hp4.add(saveSystem);

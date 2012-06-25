@@ -15,18 +15,18 @@ public class Solution implements Serializable
 {
     
     private List<Double> results;
-    private EquationParameter parameter;
+    private EquationParameterEntity parameter;
     
     public Solution(List<Double> results, double min, double max, double step)
     {
         this.results = results;
-        parameter = new EquationParameter(min, max, step);
+        parameter = new EquationParameterEntity(min, max, step);
     }
     
     public Solution(double min, double max, double step)
     {
         this.results = new ArrayList<Double>((int) ((max - min) / step));
-        parameter = new EquationParameter(min, max, step);
+        parameter = new EquationParameterEntity(min, max, step);
     }
     
     public Solution()
