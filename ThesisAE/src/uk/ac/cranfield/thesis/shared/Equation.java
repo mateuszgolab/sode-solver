@@ -1,4 +1,4 @@
-package uk.ac.cranfield.thesis.shared.model;
+package uk.ac.cranfield.thesis.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
