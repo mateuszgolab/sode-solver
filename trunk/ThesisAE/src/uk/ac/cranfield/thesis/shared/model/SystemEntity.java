@@ -13,7 +13,6 @@ public class SystemEntity implements Serializable
 {
     
     @Id
-    private Long id;
     private String name;
     private List<String> equations;
     
@@ -65,11 +64,4 @@ public class SystemEntity implements Serializable
     }
     
     
-    /**
-     * @param id the id to set
-     */
-    public final void setId(Long id)
-    {
-        this.id = id;
-    }
 }

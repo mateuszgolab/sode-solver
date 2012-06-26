@@ -10,10 +10,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package uk.ac.cranfield.thesis.server.service;
+package uk.ac.cranfield.thesis.server.service.persistence;
 
-import uk.ac.cranfield.thesis.client.service.PersistentService;
-import uk.ac.cranfield.thesis.shared.Equation;
+import java.util.List;
+
+import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceService;
 import uk.ac.cranfield.thesis.shared.model.SystemEntity;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -22,33 +23,17 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 
 @SuppressWarnings("serial")
-public class PersistentServiceImpl extends RemoteServiceServlet implements PersistentService
+public class SystemPersistenceServiceImpl extends RemoteServiceServlet implements SystemPersistenceService
 {
     
     static
     {
-        ObjectifyService.register(Equation.class);
         ObjectifyService.register(SystemEntity.class);
     }
     
-    @Override
-    public void persistEquation(Equation equation)
-    {
-        Objectify ofy = ObjectifyService.begin();
-        ofy.put(equation);
-    }
     
     @Override
-    public Equation getEquation(String name)
-    {
-        Objectify ofy = ObjectifyService.begin();
-        Query<Equation> q = ofy.query(Equation.class).filter("name", name);
-        
-        return q.get();
-    }
-    
-    @Override
-    public void persistEquationsSystem(SystemEntity system)
+    public void persist(SystemEntity system)
     {
         Objectify ofy = ObjectifyService.begin();
         ofy.put(system);
@@ -56,11 +41,20 @@ public class PersistentServiceImpl extends RemoteServiceServlet implements Persi
     }
     
     @Override
-    public SystemEntity getEquationsSystem(String name)
+    public SystemEntity get(String name)
     {
         Objectify ofy = ObjectifyService.begin();
         Query<SystemEntity> q = ofy.query(SystemEntity.class).filter("name", name);
         
         return q.get();
+    }
+    
+    @Override
+    public List<SystemEntity> getAll()
+    {
+        Objectify ofy = ObjectifyService.begin();
+        Query<SystemEntity> q = ofy.query(SystemEntity.class);
+        
+        return q.list();
     }
 }

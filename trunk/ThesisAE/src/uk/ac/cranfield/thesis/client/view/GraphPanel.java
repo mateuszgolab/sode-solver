@@ -226,6 +226,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             }
             
             progressWidget.close();
+            inputPanel.enableSolutionSaving();
             
         }
     }
@@ -290,6 +291,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             }
             
             progressWidget.close();
+            inputPanel.enableSolutionSaving();
         }
     }
     

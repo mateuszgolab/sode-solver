@@ -3,9 +3,10 @@ package uk.ac.cranfield.thesis.client.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.cranfield.thesis.client.service.PersistentService;
-import uk.ac.cranfield.thesis.client.service.PersistentServiceAsync;
-import uk.ac.cranfield.thesis.shared.model.SystemEntity;
+import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceService;
+import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceServiceAsync;
+import uk.ac.cranfield.thesis.client.view.widget.LoadSystemWidget;
+import uk.ac.cranfield.thesis.client.view.widget.SaveSystemWidget;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -16,8 +17,6 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -29,9 +28,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class InputPanel extends FormPanel
 {
     
-    private final PersistentServiceAsync persistenceService = PersistentService.Util.getInstance();
+    private final SystemPersistenceServiceAsync persistenceService = SystemPersistenceService.Util.getInstance();
     private VerticalPanel panel;
     private Button computeButton;
+    private Button saveSolution;
     private RadioButton method1;
     private RadioButton method2;
     private RadioButton method3;
@@ -43,6 +43,7 @@ public class InputPanel extends FormPanel
     private TextField<String> minBox;
     private TextField<String> maxBox;
     private FlexTable flexTextPanel;
+    
     
     public InputPanel()
     {
@@ -140,6 +141,8 @@ public class InputPanel extends FormPanel
     {
         HorizontalPanel hp = new HorizontalPanel();
         hp.setSpacing(10);
+        
+        final SaveSystemWidget saveSystemWidget = new SaveSystemWidget(this);
         Button saveSystem = new Button("Save system");
         saveSystem.addSelectionListener(new SelectionListener<ButtonEvent>()
         {
@@ -147,41 +150,20 @@ public class InputPanel extends FormPanel
             @Override
             public void componentSelected(ButtonEvent ce)
             {
-                persistenceService.persistEquationsSystem(new SystemEntity("testName2", getEquations()),
-                        new AsyncCallback<Void>()
-                        {
-                            
-                            @Override
-                            public void onSuccess(Void result)
-                            {
-                                Window.alert("System stored successfully");
-                                
-                            }
-                            
-                            @Override
-                            public void onFailure(Throwable caught)
-                            {
-                                Window.alert(caught.getMessage());
-                                
-                            }
-                        });
+                saveSystemWidget.showDialog();
             }
-            
-            
         });
         
         Button saveParameters = new Button("Save parameters");
         
-        Button saveSolution = new Button("Save solution");
+        saveSolution = new Button("Save solution");
+        saveSolution.setEnabled(false);
         
         hp.add(saveSystem);
         hp.add(saveParameters);
         hp.add(saveSolution);
-        // panel.add(hp);
         
-        HorizontalPanel hp2 = new HorizontalPanel();
-        hp2.setSpacing(5);
-        
+        final LoadSystemWidget loadSystemWidget = new LoadSystemWidget();
         Button loadSystem = new Button("Load system");
         loadSystem.addSelectionListener(new SelectionListener<ButtonEvent>()
         {
@@ -189,59 +171,60 @@ public class InputPanel extends FormPanel
             @Override
             public void componentSelected(ButtonEvent ce)
             {
-                persistenceService.getEquationsSystem("testName2", new AsyncCallback<SystemEntity>()
-                {
-                    
-                    @Override
-                    public void onFailure(Throwable caught)
-                    {
-                        Window.alert(caught.getMessage());
-                    }
-                    
-                    @SuppressWarnings("unchecked")
-                    @Override
-                    public void onSuccess(SystemEntity result)
-                    {
-                        
-                        for (int i = 2; i < flexTextPanel.getRowCount(); i++)
-                        {
-                            flexTextPanel.removeRow(i);
-                        }
-                        ((TextField<String>) flexTextPanel.getWidget(0, 0)).setValue("");
-                        ((TextField<String>) flexTextPanel.getWidget(1, 0)).setValue("...");
-                        
-                        if (result == null)
-                            return;
-                        
-                        List<String> equations = result.getEquations();
-                        int i = 0;
-                        for (String eq : equations)
-                        {
-                            if (eq != null && !eq.isEmpty())
-                            {
-                                if (i < 2)
-                                {
-                                    ((TextField<String>) flexTextPanel.getWidget(i, 0)).setValue(eq);
-                                }
-                                else
-                                {
-                                    addEquationTextField(eq);
-                                }
-                                i++;
-                            }
-                        }
-                        
-                        if (i > 1)
-                        {
-                            addLastEquationTextField();
-                        }
-                    }
-                });
+                loadSystemWidget.showData();
+                
+                // persistenceService.get("testName2", new AsyncCallback<SystemEntity>()
+                // {
+                //
+                // @Override
+                // public void onFailure(Throwable caught)
+                // {
+                // Window.alert(caught.getMessage());
+                // }
+                //
+                // @SuppressWarnings("unchecked")
+                // @Override
+                // public void onSuccess(SystemEntity result)
+                // {
+                //
+                // for (int i = 2; i < flexTextPanel.getRowCount(); i++)
+                // {
+                // flexTextPanel.removeRow(i);
+                // }
+                // ((TextField<String>) flexTextPanel.getWidget(0, 0)).setValue("");
+                // ((TextField<String>) flexTextPanel.getWidget(1, 0)).setValue("...");
+                //
+                // if (result == null)
+                // return;
+                //
+                // List<String> equations = result.getEquations();
+                // int i = 0;
+                // for (String eq : equations)
+                // {
+                // if (eq != null && !eq.isEmpty())
+                // {
+                // if (i < 2)
+                // {
+                // ((TextField<String>) flexTextPanel.getWidget(i, 0)).setValue(eq);
+                // }
+                // else
+                // {
+                // addEquationTextField(eq);
+                // }
+                // i++;
+                // }
+                // }
+                //
+                // if (i > 1)
+                // {
+                // addLastEquationTextField();
+                // }
+                // }
+                // });
             }
         });
         
         Button loadParameters = new Button("Load parameters");
-        
         Button loadSolution = new Button("Load solution");
         
         hp.add(loadSystem);
@@ -343,6 +326,11 @@ public class InputPanel extends FormPanel
     public double getStep()
     {
         return Double.valueOf(step.getValue());
+    }
+    
+    public void enableSolutionSaving()
+    {
+        saveSolution.setEnabled(true);
     }
     
 }
