@@ -12,9 +12,7 @@
 	<inherits name="com.googlecode.objectify.Objectify" />
 	<inherits name="com.extjs.gxt.ui.GXT" />
 	<inherits name="com.extjs.gxt.charts.Chart" />
-<!-- 	
-	<inherits name='com.sencha.gxt.ui.GXT' />
- -->
+	<!-- <inherits name='com.sencha.gxt.ui.GXT' /> -->
 
 	<entry-point class="uk.ac.cranfield.thesis.client.ThesisAE" />
 
@@ -28,6 +26,10 @@
 
 	<servlet path="/RungeKuttaSolverService"
 		class="uk.ac.cranfield.thesis.server.service.RungeKuttaSolverServiceImpl" />
+
+
+	<servlet path="/SystemPersistenceService"
+		class="uk.ac.cranfield.thesis.server.service.persistence.SystemPersistenceSeriveImpl" />
 
 
 

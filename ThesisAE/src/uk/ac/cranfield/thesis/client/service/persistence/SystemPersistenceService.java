@@ -10,26 +10,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package uk.ac.cranfield.thesis.client.service;
+package uk.ac.cranfield.thesis.client.service.persistence;
 
-import uk.ac.cranfield.thesis.shared.Equation;
+import java.util.List;
+
 import uk.ac.cranfield.thesis.shared.model.SystemEntity;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-@RemoteServiceRelativePath("PersistentService")
-public interface PersistentService extends RemoteService
+@RemoteServiceRelativePath("SystemPersistenceService")
+public interface SystemPersistenceService extends RemoteService
 {
     
-    void persistEquation(Equation equation);
     
-    Equation getEquation(String name);
+    void persist(SystemEntity system);
     
-    void persistEquationsSystem(SystemEntity system);
+    SystemEntity get(String name);
     
-    SystemEntity getEquationsSystem(String name);
+    List<SystemEntity> getAll();
     
     /**
      * Utility class for simplifying access to the instance of async service.
@@ -37,13 +37,13 @@ public interface PersistentService extends RemoteService
     public static class Util
     {
         
-        private static PersistentServiceAsync instance;
+        private static SystemPersistenceServiceAsync instance;
         
-        public static PersistentServiceAsync getInstance()
+        public static SystemPersistenceServiceAsync getInstance()
         {
             if (instance == null)
             {
-                instance = GWT.create(PersistentService.class);
+                instance = GWT.create(SystemPersistenceService.class);
             }
             return instance;
         }
