@@ -35,12 +35,12 @@
 		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/RungeKuttaSolverService</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>PersistentService</servlet-name>
-		<servlet-class>uk.ac.cranfield.thesis.server.service.PersistentServiceImpl</servlet-class>
+		<servlet-name>SystemPersistenceService</servlet-name>
+		<servlet-class>uk.ac.cranfield.thesis.server.service.persistence.SystemPersistenceServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>PersistentService</servlet-name>
-		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/PersistentService</url-pattern>
+		<servlet-name>SystemPersistenceService</servlet-name>
+		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/SystemPersistenceService</url-pattern>
 	</servlet-mapping>
 
 </web-app>
