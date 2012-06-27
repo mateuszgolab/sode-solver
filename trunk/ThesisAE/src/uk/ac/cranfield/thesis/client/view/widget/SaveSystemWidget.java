@@ -12,12 +12,10 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.util.IconHelper;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.Html;
-import com.extjs.gxt.ui.client.widget.Status;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
-import com.extjs.gxt.ui.client.widget.toolbar.FillToolItem;
-import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -28,6 +26,7 @@ public class SaveSystemWidget extends Dialog
     private InputPanel panel;
     private TextField<String> nameText;
     private Button save;
+    private MessageBox mb;
     
     public SaveSystemWidget(InputPanel panel)
     {
@@ -52,19 +51,10 @@ public class SaveSystemWidget extends Dialog
         nameText.addKeyListener(new KeyListener()
         {
             
-            @SuppressWarnings("unchecked")
             @Override
             public void componentKeyPress(ComponentEvent event)
             {
-                // TODO : fix backspace
-                if (event.getKeyCode() == KeyCodes.KEY_BACKSPACE && nameText.getValue().isEmpty())
-                {
-                    save.disable();
-                }
-                else
-                {
-                    save.enable();
-                }
+                save.enable();
             }
         });
         
@@ -76,13 +66,9 @@ public class SaveSystemWidget extends Dialog
     protected void createButtons()
     {
         super.createButtons();
-        Status status = new Status();
-        status.setBusy("please wait...");
-        status.hide();
-        status.setAutoWidth(true);
-        getButtonBar().add(status);
         
-        getButtonBar().add(new FillToolItem());
+        final MessageBox mb = new MessageBox();
+        mb.setTitle("System of equations saved successfully");
         
         save = new Button("Save");
         save.disable();
@@ -92,23 +78,31 @@ public class SaveSystemWidget extends Dialog
             @Override
             public void componentSelected(ButtonEvent ce)
             {
-                SystemEntity entity = new SystemEntity(nameText.getValue(), panel.getEquations());
-                persistentService.persist(entity, new AsyncCallback<Void>()
+                if (nameText.getValue() != null && !nameText.getValue().isEmpty())
                 {
-                    
-                    @Override
-                    public void onSuccess(Void result)
+                    SystemEntity entity = new SystemEntity(nameText.getValue(), panel.getEquations());
+                    persistentService.persist(entity, new AsyncCallback<Void>()
                     {
-                        hide();
-                    }
-                    
-                    @Override
-                    public void onFailure(Throwable caught)
-                    {
-                        add(new Html(caught.getMessage()));
-                        show();
-                    }
-                });
+                        
+                        @Override
+                        public void onSuccess(Void result)
+                        {
+                            hide();
+                            mb.show();
+                        }
+                        
+                        @Override
+                        public void onFailure(Throwable caught)
+                        {
+                            add(new Html(caught.getMessage()));
+                            show();
+                        }
+                    });
+                }
+                else
+                {
+                    save.disable();
+                }
             }
         });
         

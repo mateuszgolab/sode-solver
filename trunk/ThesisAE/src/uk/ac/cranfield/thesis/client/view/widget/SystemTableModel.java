@@ -1,14 +1,12 @@
 package uk.ac.cranfield.thesis.client.view.widget;
 
-import java.util.List;
-
 import uk.ac.cranfield.thesis.shared.model.SystemEntity;
 
-import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.data.BaseModel;
 
 
 @SuppressWarnings("serial")
-public class SystemTableModel extends BaseModelData
+public class SystemTableModel extends BaseModel
 {
     
     public SystemTableModel()
@@ -16,10 +14,16 @@ public class SystemTableModel extends BaseModelData
         
     }
     
+    public SystemTableModel(String name, String equations)
+    {
+        set("name", name);
+        set("equations", equations);
+    }
+    
     public SystemTableModel(SystemEntity system)
     {
         set("name", system.getName());
-        set("equations", system.getEquations());
+        set("equations", "lol2");
     }
     
     
@@ -33,12 +37,12 @@ public class SystemTableModel extends BaseModelData
         set("name", name);
     }
     
-    public List<String> getEquations()
+    public String getEquations()
     {
         return get("equations");
     }
     
-    public void setEquations(List<String> equations)
+    public void setEquations(String equations)
     {
         set("equations", equations);
     }
