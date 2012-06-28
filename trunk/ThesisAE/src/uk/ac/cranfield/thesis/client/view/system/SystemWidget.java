@@ -22,6 +22,8 @@ public class SystemWidget extends Dialog
     private final SystemPersistenceServiceAsync persistentService = SystemPersistenceService.Util.getInstance();
     private SystemTable table;
     private InputPanel inputPanel;
+    private Button load;
+    private Button remove;
     
     public SystemWidget(InputPanel panel)
     {
@@ -30,7 +32,7 @@ public class SystemWidget extends Dialog
         setButtons("");
         
         this.inputPanel = panel;
-        table = new SystemTable();
+        table = new SystemTable(this);
         add(table);
         
         hide();
@@ -45,7 +47,7 @@ public class SystemWidget extends Dialog
         mb.setTitle("System of equations saved successfully");
         
         // Load Button
-        Button load = new Button("Load");
+        load = new Button("Load");
         load.addSelectionListener(new SelectionListener<ButtonEvent>()
         {
             
@@ -70,7 +72,7 @@ public class SystemWidget extends Dialog
         });
         
         // Remove Button
-        Button remove = new Button("Remove");
+        remove = new Button("Remove");
         remove.addSelectionListener(new SelectionListener<ButtonEvent>()
         {
             
@@ -83,7 +85,7 @@ public class SystemWidget extends Dialog
                     @Override
                     public void onSuccess(String result)
                     {
-                        
+                        showData();
                     }
                     
                     @Override
@@ -95,9 +97,37 @@ public class SystemWidget extends Dialog
             }
         });
         
+        // Remove all Button
+        Button removeAll = new Button("Remove all");
+        removeAll.addSelectionListener(new SelectionListener<ButtonEvent>()
+        {
+            
+            @Override
+            public void componentSelected(ButtonEvent ce)
+            {
+                persistentService.removeAll(new AsyncCallback<Void>()
+                {
+                    
+                    @Override
+                    public void onFailure(Throwable caught)
+                    {
+                        showData();
+                    }
+                    
+                    @Override
+                    public void onSuccess(Void result)
+                    {
+                        showData();
+                        
+                    }
+                });
+            }
+        });
+        
         addButton(load);
-        addButton(remove);
         addButton(cancel);
+        addButton(remove);
+        addButton(removeAll);
     }
     
     public void showData()
@@ -109,6 +139,7 @@ public class SystemWidget extends Dialog
             public void onSuccess(List<SystemEntity> result)
             {
                 table.setData(result);
+                setButtonsEnabled(false);
                 show();
             }
             
@@ -119,5 +150,11 @@ public class SystemWidget extends Dialog
                 show();
             }
         });
+    }
+    
+    public void setButtonsEnabled(boolean enabled)
+    {
+        load.setEnabled(enabled);
+        remove.setEnabled(enabled);
     }
 }
