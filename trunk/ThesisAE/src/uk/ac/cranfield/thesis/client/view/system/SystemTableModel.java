@@ -1,4 +1,6 @@
-package uk.ac.cranfield.thesis.client.view.widget;
+package uk.ac.cranfield.thesis.client.view.system;
+
+import java.util.List;
 
 import uk.ac.cranfield.thesis.shared.model.SystemEntity;
 
@@ -14,7 +16,7 @@ public class SystemTableModel extends BaseModel
         
     }
     
-    public SystemTableModel(String name, String equations)
+    public SystemTableModel(String name, List<String> equations)
     {
         set("name", name);
         set("equations", equations);
@@ -23,7 +25,7 @@ public class SystemTableModel extends BaseModel
     public SystemTableModel(SystemEntity system)
     {
         set("name", system.getName());
-        set("equations", "lol2");
+        set("equations", system.getEquations());
     }
     
     

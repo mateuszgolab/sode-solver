@@ -1,4 +1,4 @@
-package uk.ac.cranfield.thesis.client.view.widget;
+package uk.ac.cranfield.thesis.client.view.system;
 
 import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceService;
 import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceServiceAsync;

@@ -3,10 +3,9 @@ package uk.ac.cranfield.thesis.client.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceService;
-import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceServiceAsync;
-import uk.ac.cranfield.thesis.client.view.widget.LoadSystemWidget;
-import uk.ac.cranfield.thesis.client.view.widget.SaveSystemWidget;
+import uk.ac.cranfield.thesis.client.ThesisAE;
+import uk.ac.cranfield.thesis.client.view.system.SaveSystemWidget;
+import uk.ac.cranfield.thesis.client.view.system.SystemWidget;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -28,7 +27,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class InputPanel extends FormPanel
 {
     
-    private final SystemPersistenceServiceAsync persistenceService = SystemPersistenceService.Util.getInstance();
     private VerticalPanel panel;
     private Button computeButton;
     private Button saveSolution;
@@ -43,12 +41,14 @@ public class InputPanel extends FormPanel
     private TextField<String> minBox;
     private TextField<String> maxBox;
     private FlexTable flexTextPanel;
+    private ThesisAE parent;
     
     
-    public InputPanel()
+    public InputPanel(ThesisAE parent)
     {
         setHeading("Input");
         
+        this.parent = parent;
         panel = new VerticalPanel();
         panel.setHorizontalAlignment(DockPanel.ALIGN_CENTER);
         panel.setSpacing(10);
@@ -163,15 +163,15 @@ public class InputPanel extends FormPanel
         hp.add(saveParameters);
         hp.add(saveSolution);
         
-        final LoadSystemWidget loadSystemWidget = new LoadSystemWidget();
-        Button loadSystem = new Button("Load system");
+        final SystemWidget systemWidget = new SystemWidget(this);
+        Button loadSystem = new Button("Systems");
         loadSystem.addSelectionListener(new SelectionListener<ButtonEvent>()
         {
             
             @Override
             public void componentSelected(ButtonEvent ce)
             {
-                loadSystemWidget.showData();
+                systemWidget.showData();
                 
                 // persistenceService.get("testName2", new AsyncCallback<SystemEntity>()
                 // {
@@ -224,8 +224,8 @@ public class InputPanel extends FormPanel
             }
         });
         
-        Button loadParameters = new Button("Load parameters");
-        Button loadSolution = new Button("Load solution");
+        Button loadParameters = new Button("Parameters");
+        Button loadSolution = new Button("Solutions");
         
         hp.add(loadSystem);
         hp.add(loadParameters);
@@ -331,6 +331,20 @@ public class InputPanel extends FormPanel
     public void enableSolutionSaving()
     {
         saveSolution.setEnabled(true);
+    }
+    
+    public void loadEquations(List<String> equations)
+    {
+        parent.resetView();
+        saveSolution.disable();
+        flexTextPanel.removeAllRows();
+        
+        for (String eq : equations)
+        {
+            addEquationTextField(eq);
+        }
+        
+        addLastEquationTextField();
     }
     
 }

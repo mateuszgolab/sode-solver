@@ -16,4 +16,8 @@ public interface SystemPersistenceServiceAsync
     
     void getAll(AsyncCallback<List<SystemEntity>> callback);
     
+    void remove(String name, AsyncCallback<String> callback);
+    
+    void removeAll(AsyncCallback<Void> callback);
+    
 }
