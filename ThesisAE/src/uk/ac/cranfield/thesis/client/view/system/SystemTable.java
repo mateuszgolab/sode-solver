@@ -34,9 +34,11 @@ public class SystemTable extends LayoutContainer
     private Grid<SystemTableModel> grid;
     private ListStore<SystemTableModel> store;
     private SystemTableModel selected;
+    private SystemWidget parentWidget;
     
-    public SystemTable()
+    public SystemTable(SystemWidget parent)
     {
+        parentWidget = parent;
         store = new ListStore<SystemTableModel>();
     }
     
@@ -112,10 +114,13 @@ public class SystemTable extends LayoutContainer
                         if (be.getSelection().size() > 0)
                         {
                             selected = be.getSelection().get(0);
+                            parentWidget.setButtonsEnabled(true);
+                            
                         }
                         else
                         {
                             selected = null;
+                            parentWidget.setButtonsEnabled(false);
                         }
                     }
                 });

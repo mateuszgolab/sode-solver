@@ -172,55 +172,6 @@ public class InputPanel extends FormPanel
             public void componentSelected(ButtonEvent ce)
             {
                 systemWidget.showData();
-                
-                // persistenceService.get("testName2", new AsyncCallback<SystemEntity>()
-                // {
-                //
-                // @Override
-                // public void onFailure(Throwable caught)
-                // {
-                // Window.alert(caught.getMessage());
-                // }
-                //
-                // @SuppressWarnings("unchecked")
-                // @Override
-                // public void onSuccess(SystemEntity result)
-                // {
-                //
-                // for (int i = 2; i < flexTextPanel.getRowCount(); i++)
-                // {
-                // flexTextPanel.removeRow(i);
-                // }
-                // ((TextField<String>) flexTextPanel.getWidget(0, 0)).setValue("");
-                // ((TextField<String>) flexTextPanel.getWidget(1, 0)).setValue("...");
-                //
-                // if (result == null)
-                // return;
-                //
-                // List<String> equations = result.getEquations();
-                // int i = 0;
-                // for (String eq : equations)
-                // {
-                // if (eq != null && !eq.isEmpty())
-                // {
-                // if (i < 2)
-                // {
-                // ((TextField<String>) flexTextPanel.getWidget(i, 0)).setValue(eq);
-                // }
-                // else
-                // {
-                // addEquationTextField(eq);
-                // }
-                // i++;
-                // }
-                // }
-                //
-                // if (i > 1)
-                // {
-                // addLastEquationTextField();
-                // }
-                // }
-                // });
             }
         });
         

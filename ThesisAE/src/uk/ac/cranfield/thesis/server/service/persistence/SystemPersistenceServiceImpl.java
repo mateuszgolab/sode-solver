@@ -71,7 +71,7 @@ public class SystemPersistenceServiceImpl extends RemoteServiceServlet implement
     public void removeAll()
     {
         Objectify ofy = ObjectifyService.begin();
-        ofy.delete(SystemEntity.class);
+        ofy.delete(getAll());
         
     }
 }
