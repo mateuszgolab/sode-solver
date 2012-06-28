@@ -57,4 +57,21 @@ public class SystemPersistenceServiceImpl extends RemoteServiceServlet implement
         
         return q.list();
     }
+    
+    @Override
+    public String remove(String name)
+    {
+        Objectify ofy = ObjectifyService.begin();
+        ofy.delete(SystemEntity.class, name);
+        
+        return name;
+    }
+    
+    @Override
+    public void removeAll()
+    {
+        Objectify ofy = ObjectifyService.begin();
+        ofy.delete(SystemEntity.class);
+        
+    }
 }

@@ -31,6 +31,10 @@ public interface SystemPersistenceService extends RemoteService
     
     List<SystemEntity> getAll();
     
+    String remove(String name);
+    
+    void removeAll();
+    
     /**
      * Utility class for simplifying access to the instance of async service.
      */

@@ -22,11 +22,20 @@ import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
 public class ThesisAE implements EntryPoint
 {
     
-    private VerticalPanel mainPanel = new VerticalPanel();
-    private InputPanel inputPanel = new InputPanel();
-    private EquationPanel equationPanel = new EquationPanel();
-    private GraphPanel graphPanel = new GraphPanel(inputPanel);
-    private RootPanel rootPanel = RootPanel.get();
+    private VerticalPanel mainPanel;
+    private InputPanel inputPanel;
+    private EquationPanel equationPanel;
+    private GraphPanel graphPanel;
+    private RootPanel rootPanel;
+    
+    public ThesisAE()
+    {
+        mainPanel = new VerticalPanel();
+        inputPanel = new InputPanel(this);
+        equationPanel = new EquationPanel();
+        graphPanel = new GraphPanel(inputPanel);
+        rootPanel = RootPanel.get();
+    }
     
     @Override
     public void onModuleLoad()
@@ -67,15 +76,12 @@ public class ThesisAE implements EntryPoint
         }
     }
     
-    // private class ComputeButtonHandler implements ClickHandler
-    // {
-    //
-    // @Override
-    // public void onClick(ClickEvent event)
-    // {
-    // computeAction();
-    // }
-    // }
+    public void resetView()
+    {
+        equationPanel.setVisible(false);
+        graphPanel.setVisible(false);
+    }
+    
     
     private class ComputeButtonHandler extends SelectionListener<ButtonEvent>
     {
