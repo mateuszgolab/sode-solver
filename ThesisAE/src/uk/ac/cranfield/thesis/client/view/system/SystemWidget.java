@@ -30,6 +30,7 @@ public class SystemWidget extends Dialog
         setResizable(false);
         setClosable(true);
         setButtons("");
+        setSize(510, 400);
         
         this.inputPanel = panel;
         table = new SystemTable(this);
@@ -54,7 +55,8 @@ public class SystemWidget extends Dialog
             @Override
             public void componentSelected(ButtonEvent ce)
             {
-                inputPanel.loadEquations(table.getSelectedEquations());
+                inputPanel.loadEquations(table.getSelectedEquations(), table.getRangeProperty("min"),
+                        table.getRangeProperty("max"), table.getRangeProperty("step"));
                 hide();
             }
         });

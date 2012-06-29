@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 import com.googlecode.objectify.annotation.Entity;
 
 
@@ -15,18 +13,24 @@ public class Solution implements Serializable
 {
     
     private List<Double> results;
-    private EquationParameterEntity parameter;
+    private double min;
+    private double max;
+    private double step;
     
     public Solution(List<Double> results, double min, double max, double step)
     {
         this.results = results;
-        parameter = new EquationParameterEntity(min, max, step);
+        this.min = min;
+        this.max = max;
+        this.step = step;
     }
     
     public Solution(double min, double max, double step)
     {
         this.results = new ArrayList<Double>((int) ((max - min) / step));
-        parameter = new EquationParameterEntity(min, max, step);
+        this.min = min;
+        this.max = max;
+        this.step = step;
     }
     
     public Solution()
@@ -68,56 +72,56 @@ public class Solution implements Serializable
     
     
     /**
-     * @return the start
+     * @return the min
      */
     public final double getMin()
     {
-        return parameter.getMin();
+        return min;
     }
     
     
     /**
-     * @param start the start to set
+     * @param min the min to set
      */
     public final void setMin(double min)
     {
-        parameter.setMin(min);
+        this.min = min;
     }
     
     
     /**
-     * @return the stop
+     * @return the max
      */
     public final double getMax()
     {
-        return parameter.getMax();
+        return max;
     }
     
     
     /**
-     * @param stop the stop to set
+     * @param max the max to set
      */
     public final void setMax(double max)
     {
-        parameter.setMax(max);
+        this.max = max;
     }
     
     
     /**
-     * @return the h
+     * @return the step
      */
     public final double getStep()
     {
-        return parameter.getStep();
+        return step;
     }
     
     
     /**
-     * @param h the h to set
+     * @param step the step to set
      */
     public final void setStep(double step)
     {
-        parameter.setStep(step);
+        this.step = step;
     }
     
     
