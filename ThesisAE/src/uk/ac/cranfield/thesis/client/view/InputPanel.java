@@ -164,8 +164,8 @@ public class InputPanel extends FormPanel
         hp.add(saveSolution);
         
         final SystemWidget systemWidget = new SystemWidget(this);
-        Button loadSystem = new Button("Systems");
-        loadSystem.addSelectionListener(new SelectionListener<ButtonEvent>()
+        Button systems = new Button("Systems");
+        systems.addSelectionListener(new SelectionListener<ButtonEvent>()
         {
             
             @Override
@@ -178,7 +178,7 @@ public class InputPanel extends FormPanel
         Button loadParameters = new Button("Parameters");
         Button loadSolution = new Button("Solutions");
         
-        hp.add(loadSystem);
+        hp.add(systems);
         hp.add(loadParameters);
         hp.add(loadSolution);
         panel.add(hp);

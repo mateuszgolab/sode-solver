@@ -1,7 +1,5 @@
 package uk.ac.cranfield.thesis.client.view.system;
 
-import java.util.List;
-
 import uk.ac.cranfield.thesis.shared.model.SystemEntity;
 
 import com.extjs.gxt.ui.client.data.BaseModel;
@@ -16,15 +14,6 @@ public class SystemTableModel extends BaseModel
         
     }
     
-    public SystemTableModel(String name, List<String> equations, double min, double max, double step)
-    {
-        set("name", name);
-        set("equations", equations);
-        set("min", min);
-        set("max", max);
-        set("step", step);
-    }
-    
     public SystemTableModel(SystemEntity system)
     {
         set("name", system.getName());
@@ -32,6 +21,7 @@ public class SystemTableModel extends BaseModel
         set("min", system.getMin());
         set("max", system.getMax());
         set("step", system.getStep());
+        set("date", system.getDate());
     }
     
     

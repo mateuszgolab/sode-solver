@@ -30,7 +30,7 @@ public class SystemWidget extends Dialog
         setResizable(false);
         setClosable(true);
         setButtons("");
-        setSize(510, 400);
+        setSize(610, 400);
         
         this.inputPanel = panel;
         table = new SystemTable(this);
@@ -134,6 +134,7 @@ public class SystemWidget extends Dialog
     
     public void showData()
     {
+        table.clearSelection();
         persistentService.getAll(new AsyncCallback<List<SystemEntity>>()
         {
             

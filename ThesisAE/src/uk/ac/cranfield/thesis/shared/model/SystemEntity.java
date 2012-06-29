@@ -1,6 +1,7 @@
 package uk.ac.cranfield.thesis.shared.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -18,6 +19,7 @@ public class SystemEntity implements Serializable
     private double min;
     private double max;
     private double step;
+    private Date date;
     
     
     public SystemEntity()
@@ -32,6 +34,7 @@ public class SystemEntity implements Serializable
         this.min = min;
         this.max = max;
         this.step = step;
+        this.date = new Date();
     }
     
     
@@ -122,6 +125,24 @@ public class SystemEntity implements Serializable
     public final double getStep()
     {
         return step;
+    }
+    
+    
+    /**
+     * @return the date
+     */
+    public final Date getDate()
+    {
+        return date;
+    }
+    
+    
+    /**
+     * @param date the date to set
+     */
+    public final void setDate(Date date)
+    {
+        this.date = date;
     }
     
     

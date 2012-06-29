@@ -22,6 +22,7 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Element;
 
 
@@ -34,21 +35,14 @@ public class SystemTable extends LayoutContainer
     private ListStore<SystemTableModel> store;
     private SystemTableModel selected;
     private SystemWidget parentWidget;
+    private GridCellRenderer<SystemTableModel> buttonRenderer;
     
     public SystemTable(SystemWidget parent)
     {
         parentWidget = parent;
         store = new ListStore<SystemTableModel>();
-    }
-    
-    @Override
-    protected void onRender(Element parent, int index)
-    {
-        super.onRender(parent, index);
-        // setLayout(new FlowLayout(2));
-        getAriaSupport().setPresentation(true);
         
-        GridCellRenderer<SystemTableModel> buttonRenderer = new GridCellRenderer<SystemTableModel>()
+        buttonRenderer = new GridCellRenderer<SystemTableModel>()
         {
             
             @Override
@@ -94,19 +88,26 @@ public class SystemTable extends LayoutContainer
         column = new ColumnConfig();
         column.setId("min");
         column.setHeader("Min");
-        column.setWidth(100);
+        column.setWidth(75);
         configs.add(column);
         
         column = new ColumnConfig();
         column.setId("max");
         column.setHeader("Max");
-        column.setWidth(100);
+        column.setWidth(75);
         configs.add(column);
         
         column = new ColumnConfig();
         column.setId("step");
         column.setHeader("Step");
-        column.setWidth(100);
+        column.setWidth(75);
+        configs.add(column);
+        
+        column = new ColumnConfig();
+        column.setId("date");
+        column.setHeader("Saved");
+        column.setDateTimeFormat(DateTimeFormat.getFormat("HH:mm:ss   dd.MM.yyyy"));
+        column.setWidth(175);
         configs.add(column);
         
         column = new ColumnConfig();
@@ -146,9 +147,18 @@ public class SystemTable extends LayoutContainer
         contentPanel.setHeading("System of equations");
         contentPanel.setFrame(true);
         contentPanel.setLayout(new FitLayout());
-        contentPanel.setSize(500, 400);
+        contentPanel.setSize(600, 400);
         
         add(contentPanel);
+    }
+    
+    @Override
+    protected void onRender(Element parent, int index)
+    {
+        super.onRender(parent, index);
+        // setLayout(new FlowLayout(2));
+        getAriaSupport().setPresentation(true);
+        
         
     }
     
@@ -169,10 +179,21 @@ public class SystemTable extends LayoutContainer
     
     public void setData(List<SystemEntity> data)
     {
-        store = new ListStore<SystemTableModel>();
-        for (SystemEntity system : data)
+        if (columnModel != null)
         {
-            store.add(new SystemTableModel(system));
+            store = new ListStore<SystemTableModel>();
+            for (SystemEntity system : data)
+            {
+                store.add(new SystemTableModel(system));
+            }
+            
+            grid.reconfigure(store, columnModel);
         }
+    }
+    
+    public void clearSelection()
+    {
+        if (grid != null)
+            grid.getSelectionModel().deselectAll();
     }
 }
