@@ -80,7 +80,8 @@ public class SaveSystemWidget extends Dialog
             {
                 if (nameText.getValue() != null && !nameText.getValue().isEmpty())
                 {
-                    SystemEntity entity = new SystemEntity(nameText.getValue(), panel.getEquations());
+                    SystemEntity entity = new SystemEntity(nameText.getValue(), panel.getEquations(), panel
+                            .getRangeStart(), panel.getRangeStop(), panel.getStep());
                     persistentService.persist(entity, new AsyncCallback<Void>()
                     {
                         

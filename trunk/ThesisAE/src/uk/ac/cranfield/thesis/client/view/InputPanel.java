@@ -37,7 +37,7 @@ public class InputPanel extends FormPanel
     private Label stepLabel;
     private Label minLabel;
     private Label maxLabel;
-    private TextField<String> step;
+    private TextField<String> stepBox;
     private TextField<String> minBox;
     private TextField<String> maxBox;
     private FlexTable flexTextPanel;
@@ -123,8 +123,8 @@ public class InputPanel extends FormPanel
         maxBox = new TextField<String>();
         maxBox.setValue("10.0");
         stepLabel = new Label("Step : ");
-        step = new TextField<String>();
-        step.setValue("0.1");
+        stepBox = new TextField<String>();
+        stepBox.setValue("0.1");
         
         HorizontalPanel hp3 = new HorizontalPanel();
         hp3.setSpacing(10);
@@ -133,7 +133,7 @@ public class InputPanel extends FormPanel
         hp3.add(maxLabel);
         hp3.add(maxBox);
         hp3.add(stepLabel);
-        hp3.add(step);
+        hp3.add(stepBox);
         panel.add(hp3);
     }
     
@@ -264,19 +264,19 @@ public class InputPanel extends FormPanel
         return ((TextField<String>) flexTextPanel.getWidget(i, 0)).getValue();
     }
     
-    public double getRangeStart()
+    public Double getRangeStart()
     {
         return Double.valueOf(minBox.getValue());
     }
     
-    public double getRangeStop()
+    public Double getRangeStop()
     {
         return Double.valueOf(maxBox.getValue());
     }
     
-    public double getStep()
+    public Double getStep()
     {
-        return Double.valueOf(step.getValue());
+        return Double.valueOf(stepBox.getValue());
     }
     
     public void enableSolutionSaving()
@@ -284,7 +284,7 @@ public class InputPanel extends FormPanel
         saveSolution.setEnabled(true);
     }
     
-    public void loadEquations(List<String> equations)
+    public void loadEquations(List<String> equations, String min, String max, String step)
     {
         parent.resetView();
         saveSolution.disable();
@@ -296,6 +296,10 @@ public class InputPanel extends FormPanel
         }
         
         addLastEquationTextField();
+        
+        minBox.setValue(min);
+        maxBox.setValue(max);
+        stepBox.setValue(step);
     }
     
 }

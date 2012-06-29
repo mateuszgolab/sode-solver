@@ -22,7 +22,6 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.google.gwt.user.client.Element;
 
 
@@ -46,7 +45,7 @@ public class SystemTable extends LayoutContainer
     protected void onRender(Element parent, int index)
     {
         super.onRender(parent, index);
-        setLayout(new FlowLayout(2));
+        // setLayout(new FlowLayout(2));
         getAriaSupport().setPresentation(true);
         
         GridCellRenderer<SystemTableModel> buttonRenderer = new GridCellRenderer<SystemTableModel>()
@@ -87,10 +86,27 @@ public class SystemTable extends LayoutContainer
         ColumnConfig column = new ColumnConfig();
         
         column = new ColumnConfig();
-        
         column.setId("name");
         column.setHeader("Name");
         column.setWidth(150);
+        configs.add(column);
+        
+        column = new ColumnConfig();
+        column.setId("min");
+        column.setHeader("Min");
+        column.setWidth(100);
+        configs.add(column);
+        
+        column = new ColumnConfig();
+        column.setId("max");
+        column.setHeader("Max");
+        column.setWidth(100);
+        configs.add(column);
+        
+        column = new ColumnConfig();
+        column.setId("step");
+        column.setHeader("Step");
+        column.setWidth(100);
         configs.add(column);
         
         column = new ColumnConfig();
@@ -130,16 +146,20 @@ public class SystemTable extends LayoutContainer
         contentPanel.setHeading("System of equations");
         contentPanel.setFrame(true);
         contentPanel.setLayout(new FitLayout());
-        contentPanel.setSize(300, 400);
+        contentPanel.setSize(500, 400);
         
         add(contentPanel);
-        
         
     }
     
     public List<String> getSelectedEquations()
     {
         return selected.get("equations");
+    }
+    
+    public String getRangeProperty(String property)
+    {
+        return selected.get(property).toString();
     }
     
     public String getSelectedName()
@@ -149,12 +169,10 @@ public class SystemTable extends LayoutContainer
     
     public void setData(List<SystemEntity> data)
     {
-        store.removeAll();
+        store = new ListStore<SystemTableModel>();
         for (SystemEntity system : data)
         {
             store.add(new SystemTableModel(system));
         }
-        
-        
     }
 }
