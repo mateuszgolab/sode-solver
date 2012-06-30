@@ -14,7 +14,7 @@ package uk.ac.cranfield.thesis.client.service.persistence;
 
 import java.util.List;
 
-import uk.ac.cranfield.thesis.shared.model.SystemEntity;
+import uk.ac.cranfield.thesis.shared.model.entity.SystemEntity;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -23,7 +23,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("SystemPersistenceService")
 public interface SystemPersistenceService extends RemoteService
 {
-    
     
     void persist(SystemEntity system);
     

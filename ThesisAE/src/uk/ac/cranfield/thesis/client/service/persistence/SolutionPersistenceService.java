@@ -10,25 +10,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package uk.ac.cranfield.thesis.client.service;
+package uk.ac.cranfield.thesis.client.service.persistence;
 
 import java.util.List;
 
-import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
-import uk.ac.cranfield.thesis.shared.model.Equation;
-import uk.ac.cranfield.thesis.shared.model.System;
+import uk.ac.cranfield.thesis.shared.model.Solution;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-@RemoteServiceRelativePath("ParserService")
-public interface ParserService extends RemoteService
+@RemoteServiceRelativePath("SolutionPersistenceService")
+public interface SolutionPersistenceService extends RemoteService
 {
     
-    Equation parseEquation(String input) throws IncorrectODEEquationException;
+    void persist(Solution solution);
     
-    System parseEquationsSystem(List<String> input) throws IncorrectODEEquationException;
+    Solution get(String name);
+    
+    List<Solution> getAll();
+    
+    String remove(String name);
+    
+    void removeAll();
     
     /**
      * Utility class for simplifying access to the instance of async service.
@@ -36,16 +40,15 @@ public interface ParserService extends RemoteService
     public static class Util
     {
         
-        private static ParserServiceAsync instance;
+        private static SolutionPersistenceServiceAsync instance;
         
-        public static ParserServiceAsync getInstance()
+        public static SolutionPersistenceServiceAsync getInstance()
         {
             if (instance == null)
             {
-                instance = GWT.create(ParserService.class);
+                instance = GWT.create(SolutionPersistenceService.class);
             }
             return instance;
         }
     }
-    
 }

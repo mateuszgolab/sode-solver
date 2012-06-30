@@ -1,6 +1,6 @@
 package uk.ac.cranfield.thesis.client.service.persistence;
 
-import uk.ac.cranfield.thesis.shared.Equation;
+import uk.ac.cranfield.thesis.shared.model.Equation;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;

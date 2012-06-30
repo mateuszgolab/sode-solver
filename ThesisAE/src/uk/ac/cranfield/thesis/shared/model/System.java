@@ -1,22 +1,23 @@
-package uk.ac.cranfield.thesis.shared;
+package uk.ac.cranfield.thesis.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
+
 @SuppressWarnings("serial")
-public class EquationsSystem implements Serializable
+public class System implements Serializable
 {
     
     private List<Equation> equations;
     
-    public EquationsSystem()
+    public System()
     {
         this.equations = new ArrayList<Equation>();
     }
     
-    public EquationsSystem(List<Equation> equations)
+    public System(List<Equation> equations)
     {
         this.equations = equations;
     }

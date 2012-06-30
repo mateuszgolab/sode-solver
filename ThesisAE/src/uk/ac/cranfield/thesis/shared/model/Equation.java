@@ -1,12 +1,9 @@
-package uk.ac.cranfield.thesis.shared;
+package uk.ac.cranfield.thesis.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Id;
-
-import com.google.appengine.api.users.User;
 import com.googlecode.objectify.annotation.Entity;
 
 
@@ -15,10 +12,7 @@ import com.googlecode.objectify.annotation.Entity;
 public class Equation implements Serializable
 {
     
-    @Id
-    private Long id;
-    private String name;
-    private User owner;
+    // private User owner;
     private List<Double> initValues;
     private String equationContent;
     private char independentVariable;
@@ -118,58 +112,5 @@ public class Equation implements Serializable
         this.order = order;
     }
     
-    
-    /**
-     * @return the id
-     */
-    public final Long getId()
-    {
-        return id;
-    }
-    
-    
-    /**
-     * @param id the id to set
-     */
-    public final void setId(Long id)
-    {
-        this.id = id;
-    }
-    
-    
-    /**
-     * @return the owner
-     */
-    public final User getOwner()
-    {
-        return owner;
-    }
-    
-    
-    /**
-     * @param owner the owner to set
-     */
-    public final void setOwner(User owner)
-    {
-        this.owner = owner;
-    }
-    
-    
-    /**
-     * @return the name
-     */
-    public final String getName()
-    {
-        return name;
-    }
-    
-    
-    /**
-     * @param name the name to set
-     */
-    public final void setName(String name)
-    {
-        this.name = name;
-    }
     
 }

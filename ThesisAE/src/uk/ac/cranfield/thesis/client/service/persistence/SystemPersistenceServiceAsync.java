@@ -2,7 +2,7 @@ package uk.ac.cranfield.thesis.client.service.persistence;
 
 import java.util.List;
 
-import uk.ac.cranfield.thesis.shared.model.SystemEntity;
+import uk.ac.cranfield.thesis.shared.model.entity.SystemEntity;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

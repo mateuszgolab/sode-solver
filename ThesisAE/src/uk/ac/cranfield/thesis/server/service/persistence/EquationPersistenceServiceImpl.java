@@ -1,7 +1,7 @@
 package uk.ac.cranfield.thesis.server.service.persistence;
 
 import uk.ac.cranfield.thesis.client.service.persistence.EquationPersistenceService;
-import uk.ac.cranfield.thesis.shared.Equation;
+import uk.ac.cranfield.thesis.shared.model.Equation;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Objectify;

@@ -7,9 +7,9 @@ import uk.ac.cranfield.thesis.client.service.ParserServiceAsync;
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService;
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverServiceAsync;
 import uk.ac.cranfield.thesis.client.view.widget.ProgressWidget;
-import uk.ac.cranfield.thesis.shared.Equation;
-import uk.ac.cranfield.thesis.shared.EquationsSystem;
+import uk.ac.cranfield.thesis.shared.model.Equation;
 import uk.ac.cranfield.thesis.shared.model.Solution;
+import uk.ac.cranfield.thesis.shared.model.System;
 
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -132,7 +132,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
         }
     }
     
-    private class EquationsSystemParserCallback implements AsyncCallback<EquationsSystem>
+    private class EquationsSystemParserCallback implements AsyncCallback<System>
     {
         
         @Override
@@ -146,7 +146,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
         }
         
         @Override
-        public void onSuccess(EquationsSystem result)
+        public void onSuccess(System result)
         {
             List<Equation> list = result.getEquations();
             dataTable.addColumn(ColumnType.NUMBER, String.valueOf(result.getIndependentVariable()));
@@ -226,7 +226,6 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             }
             
             progressWidget.close();
-            inputPanel.enableSolutionSaving();
             
         }
     }
@@ -291,7 +290,6 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             }
             
             progressWidget.close();
-            inputPanel.enableSolutionSaving();
         }
     }
     

@@ -3,7 +3,7 @@ package uk.ac.cranfield.thesis.client.view.system;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.cranfield.thesis.shared.model.SystemEntity;
+import uk.ac.cranfield.thesis.shared.model.entity.SystemEntity;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -155,7 +155,7 @@ public class SystemTable extends LayoutContainer
     // protected void onRender(Element parent, int index)
     // {
     // super.onRender(parent, index);
-    // // setLayout(new FlowLayout(2));
+    // setLayout(new FlowLayout(10));
     // getAriaSupport().setPresentation(true);
     //
     //
@@ -196,5 +196,10 @@ public class SystemTable extends LayoutContainer
             grid.getSelectionModel().deselectAll();
     }
     
+    public void removeSelectedSystem()
+    {
+        if (selected != null)
+            store.remove(selected);
+    }
     
 }

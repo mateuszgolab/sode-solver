@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService;
-import uk.ac.cranfield.thesis.shared.Equation;
-import uk.ac.cranfield.thesis.shared.EquationsSystem;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
+import uk.ac.cranfield.thesis.shared.model.Equation;
+import uk.ac.cranfield.thesis.shared.model.System;
 import uk.ac.cranfield.thesis.shared.model.Solution;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -82,7 +82,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
     }
     
     @Override
-    public List<Solution> solveSystem(EquationsSystem system, double step, double start, double stop)
+    public List<Solution> solveSystem(System system, double step, double start, double stop)
             throws IncorrectODEEquationException, UnknownFunctionException, UnparsableExpressionException
     {
         List<List<Double>> k1 = new ArrayList<List<Double>>();
@@ -153,7 +153,7 @@ public class RungeKuttaSolverServiceImpl extends RemoteServiceServlet implements
         return f;
     }
     
-    private List<List<String>> getFunctionVector(EquationsSystem system) throws IncorrectODEEquationException
+    private List<List<String>> getFunctionVector(System system) throws IncorrectODEEquationException
     {
         List<List<String>> f = new ArrayList<List<String>>();
         List<Equation> equations = system.getEquations();

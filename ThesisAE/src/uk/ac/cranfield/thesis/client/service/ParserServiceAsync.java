@@ -14,8 +14,8 @@ package uk.ac.cranfield.thesis.client.service;
 
 import java.util.List;
 
-import uk.ac.cranfield.thesis.shared.Equation;
-import uk.ac.cranfield.thesis.shared.EquationsSystem;
+import uk.ac.cranfield.thesis.shared.model.Equation;
+import uk.ac.cranfield.thesis.shared.model.System;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -24,6 +24,6 @@ public interface ParserServiceAsync
     
     void parseEquation(String input, AsyncCallback<Equation> callback);
     
-    void parseEquationsSystem(List<String> input, AsyncCallback<EquationsSystem> callback);
+    void parseEquationsSystem(List<String> input, AsyncCallback<System> callback);
     
 }

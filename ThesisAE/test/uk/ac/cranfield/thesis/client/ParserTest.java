@@ -2,8 +2,8 @@ package uk.ac.cranfield.thesis.client;
 
 import uk.ac.cranfield.thesis.client.service.ParserService;
 import uk.ac.cranfield.thesis.client.service.ParserServiceAsync;
-import uk.ac.cranfield.thesis.shared.Equation;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
+import uk.ac.cranfield.thesis.shared.model.Equation;
 
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;

@@ -14,8 +14,8 @@ package uk.ac.cranfield.thesis.server.service.persistence;
 
 import java.util.List;
 
-import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceService;
-import uk.ac.cranfield.thesis.shared.model.entity.SystemEntity;
+import uk.ac.cranfield.thesis.client.service.persistence.SolutionPersistenceService;
+import uk.ac.cranfield.thesis.shared.model.Solution;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Objectify;
@@ -23,17 +23,16 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 
 @SuppressWarnings("serial")
-public class SystemPersistenceServiceImpl extends RemoteServiceServlet implements SystemPersistenceService
+public class SolutionPersistenceServiceImpl extends RemoteServiceServlet implements SolutionPersistenceService
 {
     
     static
     {
-        ObjectifyService.register(SystemEntity.class);
+        ObjectifyService.register(Solution.class);
     }
     
-    
     @Override
-    public void persist(SystemEntity system)
+    public void persist(Solution system)
     {
         Objectify ofy = ObjectifyService.begin();
         ofy.put(system);
@@ -41,19 +40,19 @@ public class SystemPersistenceServiceImpl extends RemoteServiceServlet implement
     }
     
     @Override
-    public SystemEntity get(String name)
+    public Solution get(String name)
     {
         Objectify ofy = ObjectifyService.begin();
-        Query<SystemEntity> q = ofy.query(SystemEntity.class).filter("name", name);
+        Query<Solution> q = ofy.query(Solution.class).filter("name", name);
         
         return q.get();
     }
     
     @Override
-    public List<SystemEntity> getAll()
+    public List<Solution> getAll()
     {
         Objectify ofy = ObjectifyService.begin();
-        Query<SystemEntity> q = ofy.query(SystemEntity.class);
+        Query<Solution> q = ofy.query(Solution.class);
         
         return q.list();
     }
@@ -62,7 +61,7 @@ public class SystemPersistenceServiceImpl extends RemoteServiceServlet implement
     public String remove(String name)
     {
         Objectify ofy = ObjectifyService.begin();
-        ofy.delete(SystemEntity.class, name);
+        ofy.delete(Solution.class, name);
         
         return name;
     }
