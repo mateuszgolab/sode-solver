@@ -163,7 +163,8 @@ public class InputPanel extends FormPanel
         hp.add(saveParameters);
         hp.add(saveSolution);
         
-        final SystemWidget systemWidget = new SystemWidget(this);
+        
+        final SystemWidget systemWidget = new SystemWidget(InputPanel.this);
         Button systems = new Button("Systems");
         systems.addSelectionListener(new SelectionListener<ButtonEvent>()
         {
@@ -171,6 +172,7 @@ public class InputPanel extends FormPanel
             @Override
             public void componentSelected(ButtonEvent ce)
             {
+                // SystemWidget systemWidget = new SystemWidget(InputPanel.this);
                 systemWidget.showData();
             }
         });

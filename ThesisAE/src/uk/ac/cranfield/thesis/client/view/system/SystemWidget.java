@@ -33,10 +33,9 @@ public class SystemWidget extends Dialog
         setSize(610, 400);
         
         this.inputPanel = panel;
-        table = new SystemTable(this);
-        add(table);
+        // table = new SystemTable(this);
+        // add(table);
         
-        hide();
     }
     
     @Override
@@ -134,7 +133,9 @@ public class SystemWidget extends Dialog
     
     public void showData()
     {
-        table.clearSelection();
+        // table.clearSelection();
+        table = new SystemTable(this);
+        add(table);
         persistentService.getAll(new AsyncCallback<List<SystemEntity>>()
         {
             
@@ -143,7 +144,7 @@ public class SystemWidget extends Dialog
             {
                 table.setData(result);
                 setButtonsEnabled(false);
-                show();
+                setVisible(true);
             }
             
             @Override

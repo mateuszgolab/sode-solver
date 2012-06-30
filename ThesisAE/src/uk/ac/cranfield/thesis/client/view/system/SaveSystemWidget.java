@@ -88,7 +88,8 @@ public class SaveSystemWidget extends Dialog
                         @Override
                         public void onSuccess(Void result)
                         {
-                            hide();
+                            // hide();
+                            setVisible(false);
                             mb.show();
                         }
                         
@@ -96,7 +97,8 @@ public class SaveSystemWidget extends Dialog
                         public void onFailure(Throwable caught)
                         {
                             add(new Html(caught.getMessage()));
-                            show();
+                            // show();
+                            setVisible(true);
                         }
                     });
                 }
@@ -114,7 +116,8 @@ public class SaveSystemWidget extends Dialog
             @Override
             public void componentSelected(ButtonEvent ce)
             {
-                hide();
+                // hide();
+                setVisible(false);
             }
         });
         
@@ -128,7 +131,8 @@ public class SaveSystemWidget extends Dialog
     {
         nameText.clear();
         save.disable();
-        show();
+        // show();
+        setVisible(true);
         
     }
 }
