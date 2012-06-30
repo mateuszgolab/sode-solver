@@ -23,7 +23,6 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.Element;
 
 
 public class SystemTable extends LayoutContainer
@@ -152,15 +151,15 @@ public class SystemTable extends LayoutContainer
         add(contentPanel);
     }
     
-    @Override
-    protected void onRender(Element parent, int index)
-    {
-        super.onRender(parent, index);
-        // setLayout(new FlowLayout(2));
-        getAriaSupport().setPresentation(true);
-        
-        
-    }
+    // @Override
+    // protected void onRender(Element parent, int index)
+    // {
+    // super.onRender(parent, index);
+    // // setLayout(new FlowLayout(2));
+    // getAriaSupport().setPresentation(true);
+    //
+    //
+    // }
     
     public List<String> getSelectedEquations()
     {
@@ -196,4 +195,6 @@ public class SystemTable extends LayoutContainer
         if (grid != null)
             grid.getSelectionModel().deselectAll();
     }
+    
+    
 }
