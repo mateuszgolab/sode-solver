@@ -21,9 +21,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import uk.ac.cranfield.thesis.client.service.ParserService;
-import uk.ac.cranfield.thesis.shared.Equation;
-import uk.ac.cranfield.thesis.shared.EquationsSystem;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
+import uk.ac.cranfield.thesis.shared.model.Equation;
+import uk.ac.cranfield.thesis.shared.model.System;
 
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -55,9 +55,9 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
     }
     
     @Override
-    public EquationsSystem parseEquationsSystem(List<String> inputs) throws IncorrectODEEquationException
+    public System parseEquationsSystem(List<String> inputs) throws IncorrectODEEquationException
     {
-        EquationsSystem system = new EquationsSystem();
+        System system = new System();
         List<Character> functionalVariables = new ArrayList<Character>(inputs.size());
         
         for (String input : inputs)

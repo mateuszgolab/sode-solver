@@ -1,6 +1,6 @@
 package uk.ac.cranfield.thesis.client.view.system;
 
-import uk.ac.cranfield.thesis.shared.model.SystemEntity;
+import uk.ac.cranfield.thesis.shared.model.entity.SystemEntity;
 
 import com.extjs.gxt.ui.client.data.BaseModel;
 

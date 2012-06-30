@@ -5,8 +5,8 @@ import java.util.List;
 
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService;
 import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverServiceAsync;
-import uk.ac.cranfield.thesis.shared.Equation;
-import uk.ac.cranfield.thesis.shared.EquationsSystem;
+import uk.ac.cranfield.thesis.shared.model.Equation;
+import uk.ac.cranfield.thesis.shared.model.System;
 import uk.ac.cranfield.thesis.shared.model.Solution;
 
 import com.google.gwt.junit.client.GWTTestCase;
@@ -85,7 +85,7 @@ public class RungeKuttaSolverTest extends GWTTestCase
         List<Equation> equations = new ArrayList<Equation>(2);
         equations.add(equation);
         equations.add(equation2);
-        EquationsSystem system = new EquationsSystem(equations);
+        System system = new System(equations);
         
         solverService.solveSystem(system, 0.1, 0.0, 1.0, new AsyncCallback<List<Solution>>()
         {
@@ -135,7 +135,7 @@ public class RungeKuttaSolverTest extends GWTTestCase
         List<Equation> equations = new ArrayList<Equation>(2);
         equations.add(equation);
         equations.add(equation2);
-        EquationsSystem system = new EquationsSystem(equations);
+        System system = new System(equations);
         
         solverService.solveSystem(system, 0.1, 0.0, 1.0, new AsyncCallback<List<Solution>>()
         {
@@ -199,7 +199,7 @@ public class RungeKuttaSolverTest extends GWTTestCase
         equations.add(equation2);
         equations.add(equation3);
         
-        EquationsSystem system = new EquationsSystem(equations);
+        System system = new System(equations);
         
         solverService.solveSystem(system, 0.1, 0.0, 1.0, new AsyncCallback<List<Solution>>()
         {

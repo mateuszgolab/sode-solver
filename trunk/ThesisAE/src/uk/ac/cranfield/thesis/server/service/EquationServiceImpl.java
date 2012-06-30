@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.cranfield.thesis.client.service.EquationsService;
-import uk.ac.cranfield.thesis.shared.Equation;
+import uk.ac.cranfield.thesis.shared.model.Equation;
 import uk.ac.cranfield.thesis.shared.model.Solution;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;

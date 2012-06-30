@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.cranfield.thesis.client.ThesisAE;
-import uk.ac.cranfield.thesis.client.view.system.SaveSystemWidget;
+import uk.ac.cranfield.thesis.client.view.system.SaveSystemDialog;
 import uk.ac.cranfield.thesis.client.view.system.SystemWidget;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -29,7 +29,6 @@ public class InputPanel extends FormPanel
     
     private VerticalPanel panel;
     private Button computeButton;
-    private Button saveSolution;
     private RadioButton method1;
     private RadioButton method2;
     private RadioButton method3;
@@ -142,30 +141,21 @@ public class InputPanel extends FormPanel
         HorizontalPanel hp = new HorizontalPanel();
         hp.setSpacing(10);
         
-        final SaveSystemWidget saveSystemWidget = new SaveSystemWidget(this);
-        Button saveSystem = new Button("Save system");
+        final SaveSystemDialog saveSystemDialog = new SaveSystemDialog(this);
+        Button saveSystem = new Button("Save equation system");
         saveSystem.addSelectionListener(new SelectionListener<ButtonEvent>()
         {
             
             @Override
             public void componentSelected(ButtonEvent ce)
             {
-                saveSystemWidget.showDialog();
+                saveSystemDialog.showDialog();
             }
         });
-        
-        Button saveParameters = new Button("Save parameters");
-        
-        saveSolution = new Button("Save solution");
-        saveSolution.setEnabled(false);
-        
         hp.add(saveSystem);
-        hp.add(saveParameters);
-        hp.add(saveSolution);
-        
         
         final SystemWidget systemWidget = new SystemWidget(InputPanel.this);
-        Button systems = new Button("Systems");
+        Button systems = new Button("Show equation systems");
         systems.addSelectionListener(new SelectionListener<ButtonEvent>()
         {
             
@@ -176,13 +166,8 @@ public class InputPanel extends FormPanel
                 systemWidget.showData();
             }
         });
-        
-        Button loadParameters = new Button("Parameters");
-        Button loadSolution = new Button("Solutions");
-        
         hp.add(systems);
-        hp.add(loadParameters);
-        hp.add(loadSolution);
+        
         panel.add(hp);
     }
     
@@ -281,15 +266,9 @@ public class InputPanel extends FormPanel
         return Double.valueOf(stepBox.getValue());
     }
     
-    public void enableSolutionSaving()
-    {
-        saveSolution.setEnabled(true);
-    }
-    
     public void loadEquations(List<String> equations, String min, String max, String step)
     {
         parent.resetView();
-        saveSolution.disable();
         flexTextPanel.removeAllRows();
         
         for (String eq : equations)

@@ -5,7 +5,7 @@ import java.util.List;
 import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceService;
 import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceServiceAsync;
 import uk.ac.cranfield.thesis.client.view.InputPanel;
-import uk.ac.cranfield.thesis.shared.model.SystemEntity;
+import uk.ac.cranfield.thesis.shared.model.entity.SystemEntity;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -56,7 +56,7 @@ public class SystemWidget extends Dialog
             {
                 inputPanel.loadEquations(table.getSelectedEquations(), table.getRangeProperty("min"),
                         table.getRangeProperty("max"), table.getRangeProperty("step"));
-                hide();
+                setVisible(false);
             }
         });
         
@@ -68,7 +68,7 @@ public class SystemWidget extends Dialog
             @Override
             public void componentSelected(ButtonEvent ce)
             {
-                hide();
+                setVisible(false);
             }
         });
         
@@ -86,7 +86,9 @@ public class SystemWidget extends Dialog
                     @Override
                     public void onSuccess(String result)
                     {
-                        showData();
+                        table.removeSelectedSystem();
+                        // showData();
+                        // setVisible(false);
                     }
                     
                     @Override
@@ -134,8 +136,11 @@ public class SystemWidget extends Dialog
     public void showData()
     {
         // table.clearSelection();
+        if (table != null)
+            remove(table);
         table = new SystemTable(this);
         add(table);
+        
         persistentService.getAll(new AsyncCallback<List<SystemEntity>>()
         {
             

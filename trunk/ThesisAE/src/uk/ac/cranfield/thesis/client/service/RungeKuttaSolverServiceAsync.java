@@ -14,8 +14,8 @@ package uk.ac.cranfield.thesis.client.service;
 
 import java.util.List;
 
-import uk.ac.cranfield.thesis.shared.Equation;
-import uk.ac.cranfield.thesis.shared.EquationsSystem;
+import uk.ac.cranfield.thesis.shared.model.Equation;
+import uk.ac.cranfield.thesis.shared.model.System;
 import uk.ac.cranfield.thesis.shared.model.Solution;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -25,6 +25,6 @@ public interface RungeKuttaSolverServiceAsync
     
     void solve(Equation equation, double step, double start, double stop, AsyncCallback<Solution> callback);
     
-    void solveSystem(EquationsSystem system, double step, double start, double stop,
+    void solveSystem(System system, double step, double start, double stop,
             AsyncCallback<List<Solution>> callback);
 }
