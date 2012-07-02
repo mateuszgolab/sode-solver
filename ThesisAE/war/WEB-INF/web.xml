@@ -28,7 +28,7 @@
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>RungeKuttaSolverService</servlet-name>
-		<servlet-class>uk.ac.cranfield.thesis.server.service.RungeKuttaSolverServiceImpl</servlet-class>
+		<servlet-class>uk.ac.cranfield.thesis.server.service.solver.RungeKuttaSolverServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>RungeKuttaSolverService</servlet-name>
@@ -41,6 +41,22 @@
 	<servlet-mapping>
 		<servlet-name>SystemPersistenceService</servlet-name>
 		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/SystemPersistenceService</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>SolutionPersistenceService</servlet-name>
+		<servlet-class>uk.ac.cranfield.thesis.server.service.persistence.SolutionPersistenceServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SolutionPersistenceService</servlet-name>
+		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/SolutionPersistenceService</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>BulirschStoerSolverService</servlet-name>
+		<servlet-class>uk.ac.cranfield.thesis.server.service.solver.BulirschStoerSolverServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BulirschStoerSolverService</servlet-name>
+		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/BulirschStoerSolverService</url-pattern>
 	</servlet-mapping>
 
 </web-app>

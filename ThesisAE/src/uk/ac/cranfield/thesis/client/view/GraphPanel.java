@@ -4,8 +4,8 @@ import java.util.List;
 
 import uk.ac.cranfield.thesis.client.service.ParserService;
 import uk.ac.cranfield.thesis.client.service.ParserServiceAsync;
-import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService;
-import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverServiceAsync;
+import uk.ac.cranfield.thesis.client.service.solver.RungeKuttaSolverService;
+import uk.ac.cranfield.thesis.client.service.solver.RungeKuttaSolverServiceAsync;
 import uk.ac.cranfield.thesis.client.view.widget.ProgressWidget;
 import uk.ac.cranfield.thesis.shared.model.Equation;
 import uk.ac.cranfield.thesis.shared.model.Solution;

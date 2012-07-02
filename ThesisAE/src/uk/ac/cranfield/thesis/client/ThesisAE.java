@@ -7,9 +7,6 @@ import uk.ac.cranfield.thesis.client.view.InputPanel;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -95,17 +92,17 @@ public class ThesisAE implements EntryPoint
         
     }
     
-    private class ComputeButtonKeyPress implements KeyPressHandler
-    {
-        
-        @Override
-        public void onKeyPress(KeyPressEvent event)
-        {
-            if (event.getCharCode() == KeyCodes.KEY_ENTER)
-            {
-                computeAction();
-            }
-        }
-    }
+    // private class ComputeButtonKeyPress implements KeyPressHandler
+    // {
+    //
+    // @Override
+    // public void onKeyPress(KeyPressEvent event)
+    // {
+    // if (event.getCharCode() == KeyCodes.KEY_ENTER)
+    // {
+    // computeAction();
+    // }
+    // }
+    // }
     
 }
