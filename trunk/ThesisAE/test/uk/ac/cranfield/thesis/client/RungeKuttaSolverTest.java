@@ -3,8 +3,8 @@ package uk.ac.cranfield.thesis.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverService;
-import uk.ac.cranfield.thesis.client.service.RungeKuttaSolverServiceAsync;
+import uk.ac.cranfield.thesis.client.service.solver.RungeKuttaSolverService;
+import uk.ac.cranfield.thesis.client.service.solver.RungeKuttaSolverServiceAsync;
 import uk.ac.cranfield.thesis.shared.model.Equation;
 import uk.ac.cranfield.thesis.shared.model.System;
 import uk.ac.cranfield.thesis.shared.model.Solution;

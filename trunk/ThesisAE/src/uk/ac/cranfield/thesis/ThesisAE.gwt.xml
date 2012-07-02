@@ -25,7 +25,10 @@
 
 
 	<servlet path="/RungeKuttaSolverService"
-		class="uk.ac.cranfield.thesis.server.service.RungeKuttaSolverServiceImpl" />
+		class="uk.ac.cranfield.thesis.server.service.solver.RungeKuttaSolverServiceImpl" />
+		
+		<servlet path="/BulirschStoerSolverService"
+		class="uk.ac.cranfield.thesis.server.service.solver.BulirschStoerSolverServiceImpl" />
 
 
 	<servlet path="/SystemPersistenceService"
