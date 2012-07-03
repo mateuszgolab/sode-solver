@@ -45,24 +45,95 @@ public class BulirschStoerSolverServiceImpl extends Solver implements BulirschSt
         map.put(String.valueOf(equation.getIndependentVariable()), start);
         // z2 = z1 + hf(x, z1)
         List<Double> z1 = getSum(z0, evaluate(f, step, map));
+        int counter = 1;
         
         for (double i = start + step; i < stop; i += step)
         {
-            map = getMap(z1, equation.getFunctionVariable());
-            map.put(String.valueOf(equation.getIndependentVariable()), i);
-            y = evaluateFunction(y, z1, z0, evaluate(f, step, map));
-            solution.addResult(y.get(y.size() - 1));
+            if (counter % 2 != 0)
+            {
+                solution.addResult(0.0);
+            }
+            else
+            {
+                map = getMap(z1, equation.getFunctionVariable());
+                map.put(String.valueOf(equation.getIndependentVariable()), i);
+                y = evaluateFunction(y, z1, z0, evaluate(f, step, map));
+                solution.addResult(y.get(y.size() - 1));
+                
+                tmp = z1;
+                map = getMap(z1, equation.getFunctionVariable());
+                map.put(String.valueOf(equation.getIndependentVariable()), start);
+                z1 = getSum(z0, evaluate(f, 2 * step, map));
+                z0 = new ArrayList<Double>(tmp);
+            }
             
-            tmp = z1;
-            map = getMap(z1, equation.getFunctionVariable());
-            map.put(String.valueOf(equation.getIndependentVariable()), start);
-            z1 = getSum(z0, evaluate(f, 2 * step, map));
-            z0 = new ArrayList<Double>(tmp);
-            
+            counter++;
         }
+        
+        // Extrapolation
+        
+        int begin = 1;
+        int end = solution.size() - 2;
+        double j = 1;
+        double result = 0.0;
+        
+        while (begin < end)
+        {
+            double k = j;
+            for (int i = begin; i <= end; i += 2)
+            {
+                result = solution.getResult(i + 1);
+                result += (solution.getResult(i + 1) - solution.getResult(i - 1))
+                        / (Math.pow((k + 1) / (k - j + 2), 2) - 1);
+                
+                solution.setResult(i, result);
+                k++;
+            }
+            j++;
+            begin++;
+            end--;
+        }
+        
         
         return solution;
     }
+    
+    // @Override
+    // public Solution solve(Equation equation, double step, double start, double stop)
+    // throws IncorrectODEEquationException, Exception
+    // {
+    // List<Double> y = equation.getInitValues();
+    // List<String> f = getFunctionVector(equation);
+    // Solution solution = new Solution(start, stop, step);
+    // solution.addResult(y.get(y.size() - 1));
+    //
+    // List<Double> tmp;
+    // List<Double> z0 = new ArrayList<Double>(equation.getInitValues());
+    // // map contains derivative and initial value
+    // // <y0, 0.0> , <y1, 0.0> , ... , <z0, 0.5> , <z1, 0.5> , ...
+    // Map<String, Double> map = getMap(z0, equation.getFunctionVariable());
+    // // add <x, val3>
+    // map.put(String.valueOf(equation.getIndependentVariable()), start);
+    // // z2 = z1 + hf(x, z1)
+    // List<Double> z1 = getSum(z0, evaluate(f, step, map));
+    //
+    // for (double i = start + step; i < stop; i += step)
+    // {
+    // map = getMap(z1, equation.getFunctionVariable());
+    // map.put(String.valueOf(equation.getIndependentVariable()), i);
+    // y = evaluateFunction(y, z1, z0, evaluate(f, step, map));
+    // solution.addResult(y.get(y.size() - 1));
+    //
+    // tmp = z1;
+    // map = getMap(z1, equation.getFunctionVariable());
+    // map.put(String.valueOf(equation.getIndependentVariable()), start);
+    // z1 = getSum(z0, evaluate(f, 2 * step, map));
+    // z0 = new ArrayList<Double>(tmp);
+    //
+    // }
+    //
+    // return solution;
+    // }
     
     @Override
     public List<Solution> solveSystem(System system, double step, double start, double stop)

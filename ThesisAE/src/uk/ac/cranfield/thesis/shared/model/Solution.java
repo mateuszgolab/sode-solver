@@ -39,6 +39,11 @@ public class Solution implements Serializable
         results.add(result);
     }
     
+    public void setResult(int index, double result)
+    {
+        results.set(index, result);
+    }
+    
     /**
      * @return the results
      */

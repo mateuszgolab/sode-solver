@@ -28,7 +28,6 @@ public class BulirschStoerSolverTest extends GWTTestCase
         
         Equation equation = new Equation("y'=y");
         equation.setFunctionVariable('y');
-        equation.setIndependentVariable('x');
         equation.setOrder(1);
         
         List<Double> list = new ArrayList<Double>();
