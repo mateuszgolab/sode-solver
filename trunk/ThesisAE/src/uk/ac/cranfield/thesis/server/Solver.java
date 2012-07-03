@@ -126,7 +126,6 @@ public class Solver extends RemoteServiceServlet
         return results;
     }
     
-    
     protected Map<String, Double> getSum(final List<Double> y, final List<Double> v, final double h, final char f)
     {
         Map<String, Double> map = new HashMap<String, Double>(y.size());
@@ -141,26 +140,6 @@ public class Solver extends RemoteServiceServlet
         return map;
     }
     
-    /**
-     * returns following vector wich is the result of the following equation y + h*v
-     * @param y - vector to add
-     * @param v - vector to add
-     * @param h - step
-     * @return y + h*v
-     */
-    protected List<Double> getSum(final List<Double> y, final List<Double> v, final double h)
-    {
-        List<Double> list = new ArrayList<Double>(y.size());
-        int k = 0;
-        
-        for (Double val : y)
-        {
-            list.add(val + h * v.get(k));
-            k++;
-        }
-        
-        return list;
-    }
     
     protected Map<String, Double> getSum(final List<List<Double>> functions, final List<List<Double>> vectors,
             final double h, final List<Character> f)
@@ -223,6 +202,7 @@ public class Solver extends RemoteServiceServlet
         
         return y;
     }
+    
     
     protected List<List<Double>> evaluateFunctions(List<List<Double>> functions, final List<List<Double>> k1,
             final List<List<Double>> k2, final List<List<Double>> k3, List<List<Double>> k4)

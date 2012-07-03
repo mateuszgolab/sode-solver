@@ -12,6 +12,7 @@
  *******************************************************************************/
 package uk.ac.cranfield.thesis.server.service.solver;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,26 +37,28 @@ public class BulirschStoerSolverServiceImpl extends Solver implements BulirschSt
         solution.addResult(y.get(y.size() - 1));
         
         List<Double> tmp;
-        List<Double> z2;
-        List<Double> z0 = equation.getInitValues();
+        List<Double> z0 = new ArrayList<Double>(equation.getInitValues());
         // map contains derivative and initial value
         // <y0, 0.0> , <y1, 0.0> , ... , <z0, 0.5> , <z1, 0.5> , ...
         Map<String, Double> map = getMap(z0, equation.getFunctionVariable());
         // add <x, val3>
         map.put(String.valueOf(equation.getIndependentVariable()), start);
-        // z1 = z0 + hf(x, z0)
-        List<Double> z1 = getSum(z0, evaluate(f, step, map), step);
+        // z2 = z1 + hf(x, z1)
+        List<Double> z1 = getSum(z0, evaluate(f, step, map));
         
         for (double i = start + step; i < stop; i += step)
         {
+            map = getMap(z1, equation.getFunctionVariable());
+            map.put(String.valueOf(equation.getIndependentVariable()), i);
+            y = evaluateFunction(y, z1, z0, evaluate(f, step, map));
+            solution.addResult(y.get(y.size() - 1));
+            
             tmp = z1;
             map = getMap(z1, equation.getFunctionVariable());
-            // add <x, val3>
-            map.put(String.valueOf(equation.getIndependentVariable()), i);
-            z2 = getSum(z0, evaluate(f, 2 * step, map), 1.0);
+            map.put(String.valueOf(equation.getIndependentVariable()), start);
+            z1 = getSum(z0, evaluate(f, 2 * step, map));
+            z0 = new ArrayList<Double>(tmp);
             
-            
-            solution.addResult(y.get(y.size() - 1));
         }
         
         return solution;
@@ -66,6 +69,36 @@ public class BulirschStoerSolverServiceImpl extends Solver implements BulirschSt
             throws IncorrectODEEquationException, Exception
     {
         return null;
+    }
+    
+    private List<Double> evaluateFunction(List<Double> y, final List<Double> z0, final List<Double> z1,
+            final List<Double> f)
+    {
+        for (int i = 0; i < y.size(); i++)
+            y.set(i, 0.5 * (z1.get(i) + z0.get(i) + f.get(i)));
+        
+        return y;
+    }
+    
+    /**
+     * returns following vector wich is the result of the following equation y + h*v
+     * @param y - vector to add
+     * @param v - vector to add
+     * @param h - step
+     * @return y + h*v
+     */
+    private List<Double> getSum(final List<Double> y, final List<Double> v)
+    {
+        List<Double> list = new ArrayList<Double>(y.size());
+        int k = 0;
+        
+        for (Double val : y)
+        {
+            list.add(val + v.get(k));
+            k++;
+        }
+        
+        return list;
     }
     
     

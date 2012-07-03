@@ -32,7 +32,7 @@
 
 
 	<servlet path="/SystemPersistenceService"
-		class="uk.ac.cranfield.thesis.server.service.persistence.SystemPersistenceSeriveImpl" />
+		class="uk.ac.cranfield.thesis.server.service.persistence.SystemPersistenceServiceImpl" />
 
 
 
