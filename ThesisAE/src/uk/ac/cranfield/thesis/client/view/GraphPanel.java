@@ -4,6 +4,8 @@ import java.util.List;
 
 import uk.ac.cranfield.thesis.client.service.ParserService;
 import uk.ac.cranfield.thesis.client.service.ParserServiceAsync;
+import uk.ac.cranfield.thesis.client.service.solver.ModifiedMidpointService;
+import uk.ac.cranfield.thesis.client.service.solver.ModifiedMidpointServiceAsync;
 import uk.ac.cranfield.thesis.client.service.solver.RungeKuttaSolverService;
 import uk.ac.cranfield.thesis.client.service.solver.RungeKuttaSolverServiceAsync;
 import uk.ac.cranfield.thesis.client.view.widget.ProgressWidget;
@@ -34,6 +36,8 @@ public class GraphPanel extends AbsolutePanel implements Runnable
     private DataTable dataTable;
     private final ParserServiceAsync parserService = ParserService.Util.getInstance();
     private final RungeKuttaSolverServiceAsync rungeKuttaSolverService = RungeKuttaSolverService.Util.getInstance();
+    private final ModifiedMidpointServiceAsync modifiedMidpointSolverService = ModifiedMidpointService.Util
+            .getInstance();
     private int equationsCounter;
     private DialogBox errorDialog;
     private InputPanel inputPanel;
@@ -126,8 +130,16 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             dataTable.addColumn(ColumnType.NUMBER, result.getFunctionVariable() + "(" + result.getIndependentVariable()
                     + ")");
             
-            rungeKuttaSolverService.solve(result, inputPanel.getStep(), inputPanel.getRangeStart(),
-                    inputPanel.getRangeStop(), new RungeKuttaEquationSolverCallback());
+            if (SolverMethod.RUNGE_KUTTA.toString().compareTo(inputPanel.getSelectedMethod()) == 0)
+            {
+                rungeKuttaSolverService.solve(result, inputPanel.getStep(), inputPanel.getRangeStart(),
+                        inputPanel.getRangeStop(), new EquationSolverCallback());
+            }
+            else if (SolverMethod.MODIFIED_MIDPOINT.toString().compareTo(inputPanel.getSelectedMethod()) == 0)
+            {
+                modifiedMidpointSolverService.solve(result, inputPanel.getStep(), inputPanel.getRangeStart(),
+                        inputPanel.getRangeStop(), new EquationSolverCallback());
+            }
             
         }
     }
@@ -163,7 +175,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
         }
     }
     
-    private class RungeKuttaEquationSolverCallback implements AsyncCallback<Solution>
+    private class EquationSolverCallback implements AsyncCallback<Solution>
     {
         
         @Override

@@ -9,18 +9,20 @@ import uk.ac.cranfield.thesis.client.view.system.SystemWidget;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.KeyListener;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
+import com.extjs.gxt.ui.client.widget.form.Radio;
+import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 
@@ -29,10 +31,9 @@ public class InputPanel extends FormPanel
     
     private VerticalPanel panel;
     private Button computeButton;
-    private RadioButton method1;
-    private RadioButton method2;
-    private RadioButton method3;
-    private RadioButton method4;
+    private Radio method1;
+    private Radio method2;
+    private Radio method3;
     private Label stepLabel;
     private Label minLabel;
     private Label maxLabel;
@@ -41,6 +42,7 @@ public class InputPanel extends FormPanel
     private TextField<String> maxBox;
     private FlexTable flexTextPanel;
     private ThesisAE parent;
+    private String selectedMethod;
     
     
     public InputPanel(ThesisAE parent)
@@ -53,8 +55,8 @@ public class InputPanel extends FormPanel
         panel.setSpacing(10);
         
         createEquationsInput();
-        createMethodsSelector();
         createParametersInput();
+        createMethodsSelector();
         createPersistentPanel();
         createComputePanel();
         
@@ -89,27 +91,37 @@ public class InputPanel extends FormPanel
     
     private void createMethodsSelector()
     {
-        MethodSelector methodSelector = new MethodSelector();
-        
-        method1 = new RadioButton("method1", "Runge-Kutta");
+        method1 = new Radio();
+        method1.setBoxLabel(SolverMethod.RUNGE_KUTTA.toString());
         method1.setValue(true);
-        method1.addClickHandler(methodSelector);
         
-        method2 = new RadioButton("method2", "method 2");
-        method2.addClickHandler(methodSelector);
+        method2 = new Radio();
+        method2.setBoxLabel(SolverMethod.MODIFIED_MIDPOINT.toString());
         
-        method3 = new RadioButton("method3", "method 3");
-        method3.addClickHandler(methodSelector);
+        method3 = new Radio();
+        method3.setBoxLabel(SolverMethod.ROSENBROCK.toString());
         
-        method4 = new RadioButton("method4", "method 4");
-        method4.addClickHandler(methodSelector);
+        final RadioGroup group = new RadioGroup();
+        group.add(method1);
+        group.add(method2);
+        group.add(method3);
+        group.addListener(Events.Change, new Listener<FieldEvent>()
+        {
+            
+            @Override
+            public void handleEvent(FieldEvent fe)
+            {
+                selectedMethod = group.getValue().getBoxLabel();
+            }
+        });
+        
+        selectedMethod = SolverMethod.RUNGE_KUTTA.toString();
         
         HorizontalPanel hp2 = new HorizontalPanel();
         hp2.setSpacing(10);
         hp2.add(method1);
         hp2.add(method2);
         hp2.add(method3);
-        hp2.add(method4);
         panel.add(hp2);
     }
     
@@ -230,21 +242,6 @@ public class InputPanel extends FormPanel
         }
     }
     
-    private class MethodSelector implements ClickHandler
-    {
-        
-        @Override
-        public void onClick(ClickEvent event)
-        {
-            method1.setValue(false);
-            method2.setValue(false);
-            method3.setValue(false);
-            method4.setValue(false);
-            
-            ((RadioButton) event.getSource()).setValue(true);
-        }
-    }
-    
     @SuppressWarnings("unchecked")
     private String getInput(int i)
     {
@@ -283,4 +280,8 @@ public class InputPanel extends FormPanel
         stepBox.setValue(step);
     }
     
+    public String getSelectedMethod()
+    {
+        return selectedMethod;
+    }
 }

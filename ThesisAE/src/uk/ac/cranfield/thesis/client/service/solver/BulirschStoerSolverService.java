@@ -24,12 +24,14 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("BulirschStoerSolverService")
-public interface BulirschStoerSolverService extends RemoteService
+public interface BulirschStoerSolverService extends RemoteService, SolverService
 {
     
+    @Override
     Solution solve(Equation equation, double step, double start, double stop) throws IncorrectODEEquationException,
             Exception;
     
+    @Override
     List<Solution> solveSystem(System system, double step, double start, double stop)
             throws IncorrectODEEquationException, Exception;
     

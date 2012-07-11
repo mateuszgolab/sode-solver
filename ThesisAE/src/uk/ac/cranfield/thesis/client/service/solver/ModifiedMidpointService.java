@@ -12,29 +12,13 @@
  *******************************************************************************/
 package uk.ac.cranfield.thesis.client.service.solver;
 
-import java.util.List;
-
-import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
-import uk.ac.cranfield.thesis.shared.model.Equation;
-import uk.ac.cranfield.thesis.shared.model.Solution;
-import uk.ac.cranfield.thesis.shared.model.System;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-@RemoteServiceRelativePath("RungeKuttaSolverService")
-public interface RungeKuttaSolverService extends RemoteService, SolverService
+@RemoteServiceRelativePath("ModifiedMidpointService")
+public interface ModifiedMidpointService extends RemoteService, SolverService
 {
-    
-    @Override
-    Solution solve(Equation equation, double step, double start, double stop) throws IncorrectODEEquationException,
-            Exception;
-    
-    @Override
-    List<Solution> solveSystem(System system, double step, double start, double stop)
-            throws IncorrectODEEquationException, Exception;
-    
     
     /**
      * Utility class for simplifying access to the instance of async service.
@@ -42,13 +26,13 @@ public interface RungeKuttaSolverService extends RemoteService, SolverService
     public static class Util
     {
         
-        private static RungeKuttaSolverServiceAsync instance;
+        private static ModifiedMidpointServiceAsync instance;
         
-        public static RungeKuttaSolverServiceAsync getInstance()
+        public static ModifiedMidpointServiceAsync getInstance()
         {
             if (instance == null)
             {
-                instance = GWT.create(RungeKuttaSolverService.class);
+                instance = GWT.create(ModifiedMidpointService.class);
             }
             return instance;
         }

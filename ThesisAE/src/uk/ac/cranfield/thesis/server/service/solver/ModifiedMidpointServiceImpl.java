@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import uk.ac.cranfield.thesis.client.service.solver.BulirschStoerSolverService;
+import uk.ac.cranfield.thesis.client.service.solver.ModifiedMidpointService;
 import uk.ac.cranfield.thesis.server.Solver;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
 import uk.ac.cranfield.thesis.shared.model.Equation;
@@ -24,7 +24,7 @@ import uk.ac.cranfield.thesis.shared.model.Solution;
 import uk.ac.cranfield.thesis.shared.model.System;
 
 @SuppressWarnings("serial")
-public class BulirschStoerSolverServiceImpl extends Solver implements BulirschStoerSolverService
+public class ModifiedMidpointServiceImpl extends Solver implements ModifiedMidpointService
 {
     
     @Override
@@ -46,10 +46,8 @@ public class BulirschStoerSolverServiceImpl extends Solver implements BulirschSt
         // z2 = z1 + hf(x, z1)
         List<Double> z1 = getSum(z0, evaluate(f, step, map));
         
-        
-        for (double i = start + step; i < 2 * stop; i += 2 * step)
+        for (double i = start + step; i < stop; i += step)
         {
-            
             map = getMap(z1, equation.getFunctionVariable());
             map.put(String.valueOf(equation.getIndependentVariable()), i);
             y = evaluateFunction(y, z1, z0, evaluate(f, step, map));
@@ -61,74 +59,16 @@ public class BulirschStoerSolverServiceImpl extends Solver implements BulirschSt
             z1 = getSum(z0, evaluate(f, 2 * step, map));
             z0 = new ArrayList<Double>(tmp);
             
-            
-        }
-        
-        // Extrapolation
-        
-        int end = solution.size();
-        double result = 0.0;
-        double k = 2.0;
-        
-        for (int b = 1; b < end; b++)
-        {
-            double j = 2.0;
-            for (int i = 0; i < b; i++)
-            {
-                result = solution.getResult(b);
-                result += (solution.getResult(b) - solution.getResult(b - 1))
-                        / (Math.pow((k + 1) / (k - j + 2), 2) - 1);
-                
-                solution.setResult(b, result);
-                j++;
-            }
-            k++;
         }
         
         return solution;
     }
     
-    // @Override
-    // public Solution solve(Equation equation, double step, double start, double stop)
-    // throws IncorrectODEEquationException, Exception
-    // {
-    // List<Double> y = equation.getInitValues();
-    // List<String> f = getFunctionVector(equation);
-    // Solution solution = new Solution(start, stop, step);
-    // solution.addResult(y.get(y.size() - 1));
-    //
-    // List<Double> tmp;
-    // List<Double> z0 = new ArrayList<Double>(equation.getInitValues());
-    // // map contains derivative and initial value
-    // // <y0, 0.0> , <y1, 0.0> , ... , <z0, 0.5> , <z1, 0.5> , ...
-    // Map<String, Double> map = getMap(z0, equation.getFunctionVariable());
-    // // add <x, val3>
-    // map.put(String.valueOf(equation.getIndependentVariable()), start);
-    // // z2 = z1 + hf(x, z1)
-    // List<Double> z1 = getSum(z0, evaluate(f, step, map));
-    //
-    // for (double i = start + step; i < stop; i += step)
-    // {
-    // map = getMap(z1, equation.getFunctionVariable());
-    // map.put(String.valueOf(equation.getIndependentVariable()), i);
-    // y = evaluateFunction(y, z1, z0, evaluate(f, step, map));
-    // solution.addResult(y.get(y.size() - 1));
-    //
-    // tmp = z1;
-    // map = getMap(z1, equation.getFunctionVariable());
-    // map.put(String.valueOf(equation.getIndependentVariable()), start);
-    // z1 = getSum(z0, evaluate(f, 2 * step, map));
-    // z0 = new ArrayList<Double>(tmp);
-    //
-    // }
-    //
-    // return solution;
-    // }
-    
     @Override
     public List<Solution> solveSystem(System system, double step, double start, double stop)
             throws IncorrectODEEquationException, Exception
     {
+        // TODO Auto-generated method stub
         return null;
     }
     
@@ -161,6 +101,5 @@ public class BulirschStoerSolverServiceImpl extends Solver implements BulirschSt
         
         return list;
     }
-    
     
 }

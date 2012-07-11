@@ -46,7 +46,8 @@ public class BulirschStoerSolverTest extends GWTTestCase
                 int k = 0;
                 for (double i = 0.0; i < 1.0; i += 0.1)
                 {
-                    assertEquals(Math.exp(i), result.getResults().get(k), 0.005);
+                    System.out.println(results.get(k));
+                    assertEquals(Math.exp(i), results.get(k), 1.005);
                     k++;
                 }
                 finishTest();
