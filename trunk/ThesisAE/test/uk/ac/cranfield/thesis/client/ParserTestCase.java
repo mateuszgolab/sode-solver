@@ -281,6 +281,30 @@ public class ParserTestCase extends GWTTestCase
             
         });
         
+    }
+    
+    public void testMathExpressions()
+    {
+        final ParserServiceAsync parserService = ParserService.Util.getInstance();
+        delayTestFinish(500);
+        parserService.parseEquation("y'=sin(x)+cos(x)+exp(x)+log(x)+tan(x)+sqrt(x)", new AsyncCallback<Equation>()
+        {
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(false);
+                finishTest();
+            }
+            
+            @Override
+            public void onSuccess(Equation result)
+            {
+                assertEquals(result.getIndependentVariable(), 'x');
+                finishTest();
+            }
+            
+        });
         
     }
 }

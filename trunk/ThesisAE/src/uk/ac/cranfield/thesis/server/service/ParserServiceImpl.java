@@ -32,6 +32,9 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class ParserServiceImpl extends RemoteServiceServlet implements ParserService
 {
     
+    public static final String[] mathFunctions = {"sin", "cos", "asin", "acos", "tan", "atan", "cosh", "sinh", "exp",
+            "log", "sqrt", "tanh"};
+    
     @Override
     public Equation parseEquation(String input) throws IncorrectODEEquationException
     {
@@ -62,7 +65,7 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         
         for (String input : inputs)
         {
-            input = input.replace(" ", "");
+            input = input.replace(" ", "").toLowerCase();
             String[] parts = input.split(",");
             
             Equation equation = new Equation(parts[0]);
@@ -126,6 +129,10 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
     {
         Set<Character> invalid = new HashSet<Character>();
         Set<Character> valid = new HashSet<Character>();
+        for (String f : mathFunctions)
+        {
+            input = input.replace(f, "");
+        }
         
         for (int i = 0; i < input.length(); i++)
         {
@@ -189,17 +196,24 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
                 }
             }
             
+            List<Character> toRemove = new ArrayList<Character>();
             for (Character res : results)
             {
                 if (!set.contains(res))
                 {
-                    results.remove(res);
+                    toRemove.add(res);
                 }
+            }
+            
+            for (Character ch : toRemove)
+            {
+                results.remove(ch);
             }
             
             if (results.isEmpty())
             {
-                throw new IncorrectODEEquationException(inputs.get(i));
+                // throw new IncorrectODEEquationException(inputs.get(i));
+                return 0;
             }
             
             set.clear();

@@ -1,10 +1,14 @@
 package uk.ac.cranfield.thesis.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
+import uk.ac.cranfield.thesis.server.service.ParserServiceImpl;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
 import uk.ac.cranfield.thesis.shared.model.Equation;
 import uk.ac.cranfield.thesis.shared.model.System;
@@ -20,6 +24,8 @@ import de.congrace.exp4j.UnparsableExpressionException;
 @SuppressWarnings("serial")
 public class Solver extends RemoteServiceServlet
 {
+    
+    protected final Set<String> mathSet = new TreeSet<String>(Arrays.asList(ParserServiceImpl.mathFunctions));
     
     protected List<String> getFunctionVector(Equation equation) throws IncorrectODEEquationException
     {
@@ -65,15 +71,31 @@ public class Solver extends RemoteServiceServlet
             char ch = eq[1].charAt(i);
             if (Character.isLetter(ch) && ch != equation.getIndependentVariable())
             {
-                i++;
-                int k = 0;
-                while (i < len && eq[1].charAt(i) == '\'')
+                // 3 chars long math functions check
+                if (i + 2 < len && mathSet.contains(eq[1].substring(i, i + 2)))
                 {
-                    k++;
-                    i++;
+                    result += eq[1].substring(i, i + 2);
+                    i += 2;
                 }
-                
-                result += ch + Integer.valueOf(k).toString();
+                // 4 chars long math functions check
+                else if (i + 3 < len && mathSet.contains(eq[1].substring(i, i + 3)))
+                {
+                    result += eq[1].substring(i, i + 3);
+                    i += 3;
+                }
+                // checking if character is a variable
+                else
+                {
+                    i++;
+                    int k = 0;
+                    while (i < len && eq[1].charAt(i) == '\'')
+                    {
+                        k++;
+                        i++;
+                    }
+                    
+                    result += ch + Integer.valueOf(k).toString();
+                }
             }
             
             if (i < len)

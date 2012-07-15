@@ -46,7 +46,7 @@ public class ModifiedMidpointSolverServiceImpl extends Solver implements Modifie
         // z2 = z1 + hf(x, z1)
         List<Double> z1 = getSum(z0, evaluate(f, step, map));
         
-        for (double i = start; i < stop; i += step)
+        for (double i = start; i + step / 2.0 < stop; i += step)
         {
             map = getMap(z1, equation.getFunctionVariable());
             map.put(String.valueOf(equation.getIndependentVariable()), i + step);
@@ -92,7 +92,7 @@ public class ModifiedMidpointSolverServiceImpl extends Solver implements Modifie
         // z2 = z1 + hf(x, z1)
         List<List<Double>> z1 = getSystemSum(z0, evaluateSystem(f, step, map));
         
-        for (double i = start + step; i < stop; i += step)
+        for (double i = start + step; i + step / 2.0 < stop; i += step)
         {
             map = getMap(z1, system.getFunctionVariables());
             map.put(String.valueOf(system.getIndependentVariable()), i);
