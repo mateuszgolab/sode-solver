@@ -140,7 +140,6 @@ public class GraphPanel extends AbsolutePanel implements Runnable
                 modifiedMidpointSolverService.solve(result, inputPanel.getStep(), inputPanel.getRangeStart(),
                         inputPanel.getRangeStop(), new EquationSolverCallback());
             }
-            
         }
     }
     

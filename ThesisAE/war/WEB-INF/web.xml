@@ -58,5 +58,13 @@
 		<servlet-name>BulirschStoerSolverService</servlet-name>
 		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/BulirschStoerSolverService</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>ModifiedMidpointService</servlet-name>
+		<servlet-class>uk.ac.cranfield.thesis.server.service.solver.ModifiedMidpointSolverServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ModifiedMidpointService</servlet-name>
+		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/ModifiedMidpointService</url-pattern>
+	</servlet-mapping>
 
 </web-app>

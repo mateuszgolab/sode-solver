@@ -23,16 +23,18 @@
 	<servlet path="/ParserService"
 		class="uk.ac.cranfield.thesis.server.service.ParserServiceImpl" />
 
+	<servlet path="/SystemPersistenceService"
+		class="uk.ac.cranfield.thesis.server.service.persistence.SystemPersistenceServiceImpl" />
 
 	<servlet path="/RungeKuttaSolverService"
 		class="uk.ac.cranfield.thesis.server.service.solver.RungeKuttaSolverServiceImpl" />
-		
-		<servlet path="/BulirschStoerSolverService"
+
+	<servlet path="/ModifiedMidpointSolverService"
+		class="uk.ac.cranfield.thesis.server.service.solver.ModifiedMidpointSolverServiceImpl" />
+
+	<servlet path="/BulirschStoerSolverService"
 		class="uk.ac.cranfield.thesis.server.service.solver.BulirschStoerSolverServiceImpl" />
 
-
-	<servlet path="/SystemPersistenceService"
-		class="uk.ac.cranfield.thesis.server.service.persistence.SystemPersistenceServiceImpl" />
 
 
 

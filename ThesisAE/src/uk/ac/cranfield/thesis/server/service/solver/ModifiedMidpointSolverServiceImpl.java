@@ -24,7 +24,7 @@ import uk.ac.cranfield.thesis.shared.model.Solution;
 import uk.ac.cranfield.thesis.shared.model.System;
 
 @SuppressWarnings("serial")
-public class ModifiedMidpointServiceImpl extends Solver implements ModifiedMidpointService
+public class ModifiedMidpointSolverServiceImpl extends Solver implements ModifiedMidpointService
 {
     
     @Override
@@ -46,10 +46,10 @@ public class ModifiedMidpointServiceImpl extends Solver implements ModifiedMidpo
         // z2 = z1 + hf(x, z1)
         List<Double> z1 = getSum(z0, evaluate(f, step, map));
         
-        for (double i = start + step; i < stop; i += step)
+        for (double i = start; i < stop; i += step)
         {
             map = getMap(z1, equation.getFunctionVariable());
-            map.put(String.valueOf(equation.getIndependentVariable()), i);
+            map.put(String.valueOf(equation.getIndependentVariable()), i + step);
             y = evaluateFunction(y, z1, z0, evaluate(f, step, map));
             solution.addResult(y.get(y.size() - 1));
             
@@ -68,8 +68,53 @@ public class ModifiedMidpointServiceImpl extends Solver implements ModifiedMidpo
     public List<Solution> solveSystem(System system, double step, double start, double stop)
             throws IncorrectODEEquationException, Exception
     {
-        // TODO Auto-generated method stub
-        return null;
+        List<List<String>> f = getFunctionVector(system);
+        List<List<Double>> functions = system.getInitValues();
+        List<Solution> result = new ArrayList<Solution>();
+        
+        // Solution for y,z, ... at start point
+        for (List<Double> list : functions)
+        {
+            Solution solution = new Solution(start, stop, step);
+            solution.addResult(list.get(list.size() - 1));
+            result.add(solution);
+        }
+        
+        List<List<Double>> tmp;
+        List<List<Double>> z0 = new ArrayList<List<Double>>();
+        for (List<Double> init : functions)
+            z0.add(new ArrayList<Double>(init));
+        // map contains derivative and initial value
+        // <y0, 0.0> , <y1, 0.0> , ... , <z0, 0.5> , <z1, 0.5> , ...
+        Map<String, Double> map = getMap(z0, system.getFunctionVariables());
+        // add <x, val3>
+        map.put(String.valueOf(system.getIndependentVariable()), start);
+        // z2 = z1 + hf(x, z1)
+        List<List<Double>> z1 = getSystemSum(z0, evaluateSystem(f, step, map));
+        
+        for (double i = start + step; i < stop; i += step)
+        {
+            map = getMap(z1, system.getFunctionVariables());
+            map.put(String.valueOf(system.getIndependentVariable()), i);
+            functions = evaluateFunctions(functions, z1, z0, evaluateSystem(f, step, map));
+            
+            // adding result after step
+            int index = 0;
+            for (List<Double> list : functions)
+            {
+                result.get(index).addResult(list.get(list.size() - 1));
+                index++;
+            }
+            
+            tmp = z1;
+            map = getMap(z1, system.getFunctionVariables());
+            map.put(String.valueOf(system.getIndependentVariable()), i);
+            z1 = getSystemSum(z0, evaluateSystem(f, 2 * step, map));
+            z0 = new ArrayList<List<Double>>(tmp);
+            
+        }
+        
+        return result;
     }
     
     private List<Double> evaluateFunction(List<Double> y, final List<Double> z0, final List<Double> z1,
@@ -77,6 +122,21 @@ public class ModifiedMidpointServiceImpl extends Solver implements ModifiedMidpo
     {
         for (int i = 0; i < y.size(); i++)
             y.set(i, 0.5 * (z1.get(i) + z0.get(i) + f.get(i)));
+        
+        return y;
+    }
+    
+    private List<List<Double>> evaluateFunctions(List<List<Double>> y, final List<List<Double>> z0,
+            final List<List<Double>> z1, final List<List<Double>> f)
+    {
+        for (int i = 0; i < y.size(); i++)
+        {
+            int size = y.get(i).size();
+            for (int j = 0; j < size; j++)
+            {
+                y.get(i).set(j, 0.5 * (z1.get(i).get(j) + z0.get(i).get(j) + f.get(i).get(j)));
+            }
+        }
         
         return y;
     }
@@ -99,6 +159,26 @@ public class ModifiedMidpointServiceImpl extends Solver implements ModifiedMidpo
             k++;
         }
         
+        return list;
+    }
+    
+    private List<List<Double>> getSystemSum(List<List<Double>> y, List<List<Double>> v)
+    {
+        List<List<Double>> list = new ArrayList<List<Double>>(y.size());
+        
+        for (int i = 0; i < y.size(); i++)
+        {
+            int k = 0;
+            List<Double> vi = v.get(i);
+            List<Double> res = new ArrayList<Double>();
+            
+            for (Double val : y.get(i))
+            {
+                res.add(val + vi.get(k));
+                k++;
+            }
+            list.add(res);
+        }
         return list;
     }
     

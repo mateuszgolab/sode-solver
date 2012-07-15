@@ -9,7 +9,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
-public class ParserTest extends GWTTestCase
+public class ParserTestCase extends GWTTestCase
 {
     
     @Override

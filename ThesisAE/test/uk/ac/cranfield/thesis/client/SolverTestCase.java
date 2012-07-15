@@ -3,18 +3,20 @@ package uk.ac.cranfield.thesis.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.ac.cranfield.thesis.client.service.solver.RungeKuttaSolverService;
-import uk.ac.cranfield.thesis.client.service.solver.RungeKuttaSolverServiceAsync;
+import uk.ac.cranfield.thesis.client.service.solver.SolverServiceAsync;
 import uk.ac.cranfield.thesis.shared.model.Equation;
-import uk.ac.cranfield.thesis.shared.model.System;
 import uk.ac.cranfield.thesis.shared.model.Solution;
+import uk.ac.cranfield.thesis.shared.model.System;
 
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
-public class RungeKuttaSolverTest extends GWTTestCase
+public abstract class SolverTestCase extends GWTTestCase
 {
+    
+    protected SolverServiceAsync solverService;
+    protected double accuracy;
     
     @Override
     public String getModuleName()
@@ -22,9 +24,11 @@ public class RungeKuttaSolverTest extends GWTTestCase
         return "uk.ac.cranfield.thesis.ThesisAE";
     }
     
-    public void testRungeKutta1OrderEquation()
+    @Override
+    public abstract void gwtSetUp();
+    
+    public void test1OrderEquation()
     {
-        RungeKuttaSolverServiceAsync solverService = RungeKuttaSolverService.Util.getInstance();
         delayTestFinish(500);
         
         Equation equation = new Equation("y'=-2*y+x+4");
@@ -43,7 +47,7 @@ public class RungeKuttaSolverTest extends GWTTestCase
             @Override
             public void onSuccess(Solution result)
             {
-                assertEquals(1.3472, result.getResult(1), 0.00005);
+                assertEquals(1.3472, result.getResult(1), accuracy);
                 finishTest();
                 
             }
@@ -59,9 +63,8 @@ public class RungeKuttaSolverTest extends GWTTestCase
         
     }
     
-    public void testRungeKutta1OrderSystem()
+    public void test1OrderSystem()
     {
-        RungeKuttaSolverServiceAsync solverService = RungeKuttaSolverService.Util.getInstance();
         delayTestFinish(500);
         
         Equation equation = new Equation("y'= y + x");
@@ -94,8 +97,8 @@ public class RungeKuttaSolverTest extends GWTTestCase
             public void onSuccess(List<Solution> result)
             {
                 assertEquals(2, result.size());
-                assertEquals(-0.5 + Math.exp(0.5) - 1.0, result.get(0).getResult(5), 0.00005);
-                assertEquals(Math.exp(0.5) * (0.5 - 1.0) + 1, result.get(1).getResult(5), 0.00005);
+                assertEquals(-0.5 + Math.exp(0.5) - 1.0, result.get(0).getResult(5), accuracy);
+                assertEquals(Math.exp(0.5) * (0.5 - 1.0) + 1, result.get(1).getResult(5), accuracy);
                 finishTest();
             }
             
@@ -109,9 +112,8 @@ public class RungeKuttaSolverTest extends GWTTestCase
         
     }
     
-    public void testRungeKutta1OrderSystem2()
+    public void test1OrderSystem2()
     {
-        RungeKuttaSolverServiceAsync solverService = RungeKuttaSolverService.Util.getInstance();
         delayTestFinish(500);
         
         Equation equation = new Equation("y'= y + x");
@@ -144,8 +146,8 @@ public class RungeKuttaSolverTest extends GWTTestCase
             public void onSuccess(List<Solution> result)
             {
                 assertEquals(2, result.size());
-                assertEquals(-0.5 + Math.exp(0.5) - 1.0, result.get(0).getResult(5), 0.00005);
-                assertEquals(Math.exp(0.5) * (0.5 - 1.0) + 1, result.get(1).getResult(5), 0.00005);
+                assertEquals(-0.5 + Math.exp(0.5) - 1.0, result.get(0).getResult(5), accuracy);
+                assertEquals(Math.exp(0.5) * (0.5 - 1.0) + 1, result.get(1).getResult(5), accuracy);
                 finishTest();
             }
             
@@ -159,9 +161,8 @@ public class RungeKuttaSolverTest extends GWTTestCase
         
     }
     
-    public void testRungeKutta1OrderSystem3()
+    public void test1OrderSystem3()
     {
-        RungeKuttaSolverServiceAsync solverService = RungeKuttaSolverService.Util.getInstance();
         delayTestFinish(500);
         
         Equation equation = new Equation("y'= y + x");
@@ -208,9 +209,9 @@ public class RungeKuttaSolverTest extends GWTTestCase
             public void onSuccess(List<Solution> result)
             {
                 assertEquals(3, result.size());
-                assertEquals(-0.5 + Math.exp(0.5) - 1.0, result.get(0).getResult(5), 0.00005);
-                assertEquals(Math.exp(0.5) * (0.5 - 1.0) + 1, result.get(1).getResult(5), 0.00005);
-                assertEquals(-0.5 + 5 * Math.exp(0.5) - 5.0, result.get(2).getResult(5), 0.00005);
+                assertEquals(-0.5 + Math.exp(0.5) - 1.0, result.get(0).getResult(5), accuracy);
+                assertEquals(Math.exp(0.5) * (0.5 - 1.0) + 1, result.get(1).getResult(5), accuracy);
+                assertEquals(-0.5 + 5 * Math.exp(0.5) - 5.0, result.get(2).getResult(5), accuracy);
                 finishTest();
             }
             
