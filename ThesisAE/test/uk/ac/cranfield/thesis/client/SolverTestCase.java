@@ -27,6 +27,80 @@ public abstract class SolverTestCase extends GWTTestCase
     @Override
     public abstract void gwtSetUp();
     
+    public void test1OrderMathPowerEquation()
+    {
+        delayTestFinish(500);
+        
+        Equation equation = new Equation("y'=y+x^2");
+        equation.setFunctionVariable('y');
+        equation.setIndependentVariable('x');
+        equation.setOrder(1);
+        
+        List<Double> list = new ArrayList<Double>();
+        list.add(0.0);
+        
+        equation.setInitValues(list);
+        
+        solverService.solve(equation, 0.1, 0.0, 1.0, new AsyncCallback<Solution>()
+        {
+            
+            @Override
+            public void onSuccess(Solution result)
+            {
+                assertEquals(11, result.size());
+                assertEquals(-0.1 * 0.1 - 2 * 0.1 + 2 * Math.exp(0.1) - 2.0, result.getResult(1), accuracy);
+                assertEquals(-0.5 * 0.5 - 2 * 0.5 + 2 * Math.exp(0.5) - 2.0, result.getResult(5), accuracy);
+                assertEquals(-1.0 * 1.0 - 2 * 1.0 + 2 * Math.exp(1.0) - 2.0, result.getResult(10), accuracy);
+                finishTest();
+            }
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(false);
+                finishTest();
+            }
+        });
+        
+    }
+    
+    public void test1OrderMathSinCosEquation()
+    {
+        delayTestFinish(500);
+        
+        Equation equation = new Equation("y'=sin(x)+cos(x)");
+        equation.setFunctionVariable('y');
+        equation.setIndependentVariable('x');
+        equation.setOrder(1);
+        
+        List<Double> list = new ArrayList<Double>();
+        list.add(0.0);
+        
+        equation.setInitValues(list);
+        
+        solverService.solve(equation, 0.1, 0.0, 1.0, new AsyncCallback<Solution>()
+        {
+            
+            @Override
+            public void onSuccess(Solution result)
+            {
+                assertEquals(11, result.size());
+                assertEquals(Math.sin(0.1) - Math.cos(0.1) + 1.0, result.getResult(1), accuracy);
+                assertEquals(Math.sin(0.5) - Math.cos(0.5) + 1.0, result.getResult(5), accuracy);
+                assertEquals(Math.sin(1.0) - Math.cos(1.0) + 1.0, result.getResult(10), accuracy);
+                finishTest();
+            }
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(false);
+                finishTest();
+            }
+        });
+        
+    }
+    
     public void test1OrderEquation()
     {
         delayTestFinish(500);
