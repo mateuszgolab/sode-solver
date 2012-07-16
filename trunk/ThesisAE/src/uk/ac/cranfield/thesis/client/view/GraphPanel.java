@@ -16,6 +16,7 @@ import uk.ac.cranfield.thesis.shared.model.System;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -42,6 +43,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
     private DialogBox errorDialog;
     private InputPanel inputPanel;
     private ProgressWidget progressWidget;
+    private NumberFormat formatter = NumberFormat.getFormat("#.##");
     
     public GraphPanel(InputPanel panel)
     {
@@ -169,7 +171,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             }
             
             rungeKuttaSolverService.solveSystem(result, inputPanel.getStep(), inputPanel.getRangeStart(),
-                    inputPanel.getRangeStop(), new RungeKuttaEquationsSystemSolverCallback());
+                    inputPanel.getRangeStop(), new SystemSolverCallback());
             
         }
     }
@@ -191,24 +193,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
         @Override
         public void onSuccess(Solution result)
         {
-            // // x - axis
-            // XAxis xa = new XAxis();
-            // xa.setRange(result.getMin(), result.getMax(), result.getMax() / 10);
-            // xa.setGridColour(WHITE_COLOR);
-            // charModel.setXAxis(xa);
-            //
-            // // y - axis
-            // YAxis ya = new YAxis();
-            // ya.setRange(0, 2.0, 0.5);
-            // ya.setGridColour(WHITE_COLOR);
-            // charModel.setYAxis(ya);
-            //
-            // lineChart.addValues(result.getResults());
-            // charModel.addChartConfig(lineChart);
-            // charModel.setTooltipStyle(new ToolTip(MouseStyle.FOLLOW));
-            //
-            // chart.setChartModel(charModel);
-            // chart.setVisible(true);
+            NumberFormat formatter = NumberFormat.getFormat("#.##");
             
             dataTable.addRows(result.size());
             
@@ -217,7 +202,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             for (double i = result.getMin(); i < result.getMax() && k < result.size(); i += result.getStep())
             {
                 // x
-                dataTable.setValue(k, equationsCounter, i);
+                dataTable.setValue(k, equationsCounter, Double.valueOf(formatter.format(i)));
                 // y
                 dataTable.setValue(k, equationsCounter + 1, result.getResult(k));
                 
@@ -241,7 +226,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
         }
     }
     
-    private class RungeKuttaEquationsSystemSolverCallback implements AsyncCallback<List<Solution>>
+    private class SystemSolverCallback implements AsyncCallback<List<Solution>>
     {
         
         @Override
@@ -263,13 +248,14 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             double stop = result.get(0).getMax();
             double step = result.get(0).getStep();
             
+            
             dataTable.addRows(result.get(0).size());
             
             int k = 0;
             for (double i = start; i < stop; i += step, k++)
             {
                 // x
-                dataTable.setValue(k, equationsCounter, i);
+                dataTable.setValue(k, equationsCounter, Double.valueOf(formatter.format(i)));
             }
             
             equationsCounter++;
