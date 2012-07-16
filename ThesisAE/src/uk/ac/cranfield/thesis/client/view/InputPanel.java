@@ -6,6 +6,8 @@ import java.util.List;
 import uk.ac.cranfield.thesis.client.ThesisAE;
 import uk.ac.cranfield.thesis.client.view.system.SaveSystemDialog;
 import uk.ac.cranfield.thesis.client.view.system.SystemWidget;
+import uk.ac.cranfield.thesis.client.view.widget.ExampleDialog;
+import uk.ac.cranfield.thesis.client.view.widget.ExpressionsDialog;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -44,7 +46,6 @@ public class InputPanel extends FormPanel
     private ThesisAE parent;
     private String selectedMethod;
     
-    
     public InputPanel(ThesisAE parent)
     {
         setHeading("Input");
@@ -56,6 +57,7 @@ public class InputPanel extends FormPanel
         
         createEquationsInput();
         createParametersInput();
+        createHelpPanel();
         createMethodsSelector();
         createPersistentPanel();
         createComputePanel();
@@ -146,6 +148,41 @@ public class InputPanel extends FormPanel
         hp3.add(stepLabel);
         hp3.add(stepBox);
         panel.add(hp3);
+    }
+    
+    private void createHelpPanel()
+    {
+        HorizontalPanel hp = new HorizontalPanel();
+        hp.setSpacing(10);
+        
+        final ExampleDialog exampleDialog = new ExampleDialog();
+        Button examples = new Button("Show examples");
+        examples.addSelectionListener(new SelectionListener<ButtonEvent>()
+        {
+            
+            @Override
+            public void componentSelected(ButtonEvent ce)
+            {
+                exampleDialog.setVisible(true);
+            }
+        });
+        hp.add(examples);
+        
+        
+        final ExpressionsDialog expressionDialog = new ExpressionsDialog();
+        Button expressions = new Button("Available expressions");
+        expressions.addSelectionListener(new SelectionListener<ButtonEvent>()
+        {
+            
+            @Override
+            public void componentSelected(ButtonEvent ce)
+            {
+                expressionDialog.setVisible(true);
+            }
+        });
+        hp.add(expressions);
+        
+        panel.add(hp);
     }
     
     private void createPersistentPanel()

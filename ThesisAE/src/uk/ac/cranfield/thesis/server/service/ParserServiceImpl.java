@@ -164,68 +164,49 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         
     }
     
+    private List<Character> parseIndependentVariable(String input, Set<Character> functionalVariables)
+    {
+        List<Character> result = new ArrayList<Character>();
+        
+        for (String f : mathFunctions)
+        {
+            input = input.replace(f, "");
+        }
+        
+        for (int i = 0; i < input.length(); i++)
+        {
+            char ch = input.charAt(i);
+            if (Character.isLetter(ch))
+            {
+                if (!input.contains(ch + "'") && !functionalVariables.contains(ch))
+                {
+                    result.add(ch);
+                }
+            }
+        }
+        
+        return result;
+        
+    }
+    
     private char parseIndependentVariable(List<String> inputs, List<Character> functionalVariables)
             throws IncorrectODEEquationException
     {
-        char result = 0;
-        int k = 0;
-        Set<Character> set = new TreeSet<Character>();
-        List<Character> results = new ArrayList<Character>();
+        Set<Character> result = new TreeSet<Character>();
+        Set<Character> functionVariablesSet = new TreeSet<Character>(functionalVariables);
         
-        String input = inputs.get(0);
-        
-        for (char ch = 'a'; ch <= 'z'; ch++)
+        for (String input : inputs)
         {
-            Pattern p = Pattern.compile("^[^" + ch + "]*" + ch + "[^" + ch + "]*$");
-            Matcher m = p.matcher(input);
-            if (m.find() && ch != functionalVariables.get(k))
-            {
-                results.add(ch);
-            }
+            result.addAll(parseIndependentVariable(input.toLowerCase(), functionVariablesSet));
         }
         
-        for (int i = 1; i < inputs.size(); i++)
+        
+        if (result.size() > 1)
         {
-            for (char ch = 'a'; ch <= 'z'; ch++)
-            {
-                Pattern p = Pattern.compile("^[^" + ch + "]*" + ch + "[^" + ch + "]*$");
-                Matcher m = p.matcher(inputs.get(i));
-                if (m.find() && ch != functionalVariables.get(k))
-                {
-                    set.add(ch);
-                }
-            }
-            
-            List<Character> toRemove = new ArrayList<Character>();
-            for (Character res : results)
-            {
-                if (!set.contains(res))
-                {
-                    toRemove.add(res);
-                }
-            }
-            
-            for (Character ch : toRemove)
-            {
-                results.remove(ch);
-            }
-            
-            if (results.isEmpty())
-            {
-                // throw new IncorrectODEEquationException(inputs.get(i));
-                return 0;
-            }
-            
-            set.clear();
-            k++;
+            throw new IncorrectODEEquationException("Too many variables in equation");
         }
         
-        if (results.size() != 1)
-        {
-            throw new IncorrectODEEquationException(inputs.toString());
-        }
-        
-        for (Character ch : results)
+        for (Character ch : result)
         {
             if (ch != null)
             {
@@ -233,7 +214,8 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
             }
         }
         
-        return result;
+        return 0;
+        
     }
     
     private List<Double> parseInitialValues(List<String> data) throws IncorrectODEEquationException
