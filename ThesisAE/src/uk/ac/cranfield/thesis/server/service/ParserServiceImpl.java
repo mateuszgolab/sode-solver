@@ -41,10 +41,11 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         input = input.replace(" ", "").toLowerCase();
         String[] parts = input.split(",");
         
+        if (parts.length < 2)
+            throw new IncorrectODEEquationException("lack of initial values");
+        
         Equation equation = new Equation(parts[0]);
         equation.setOrder(longestRun(parts[0], '\'', 1));
-        if (equation.getOrder() < parts.length - 1)
-            throw new IncorrectODEEquationException("lack of initial values");
         
         List<String> init = new ArrayList<String>(parts.length - 1);
         for (int i = 1; i < parts.length; i++)
@@ -53,6 +54,9 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         equation.setInitValues(parseInitialValues(init));
         equation.setFunctionVariable(parseFunctionVariable(parts[0]));
         equation.setIndependentVariable(parseIndependentVariable(parts[0], equation.getFunctionVariable()));
+        
+        if (equation.getFunctionVariable() != parts[1].charAt(0))
+            throw new IncorrectODEEquationException("Incorrect initial variable");
         
         return equation;
     }

@@ -13,7 +13,6 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 public class ExampleDialog extends Dialog
 {
     
-    
     public ExampleDialog()
     {
         
@@ -41,7 +40,6 @@ public class ExampleDialog extends Dialog
         panel.add(new Label("System of equations"));
         panel.add(system1);
         panel.add(system2);
-        
         
         mainPanel.add(panel);
         add(mainPanel);

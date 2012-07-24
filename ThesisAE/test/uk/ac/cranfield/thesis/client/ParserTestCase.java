@@ -23,7 +23,7 @@ public class ParserTestCase extends GWTTestCase
         ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
         
-        parserService.parseEquation("y' + x", new AsyncCallback<Equation>()
+        parserService.parseEquation("y' + x, y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -50,7 +50,7 @@ public class ParserTestCase extends GWTTestCase
         ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
         
-        parserService.parseEquation("y''' + x", new AsyncCallback<Equation>()
+        parserService.parseEquation("y''' + x, y=0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -77,7 +77,7 @@ public class ParserTestCase extends GWTTestCase
         ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
         
-        parserService.parseEquation("y ' ' ' + x", new AsyncCallback<Equation>()
+        parserService.parseEquation("y ' ' ' + x, y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -104,7 +104,7 @@ public class ParserTestCase extends GWTTestCase
         ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
         
-        parserService.parseEquation("y''' + y'' + y' + y + x = 5", new AsyncCallback<Equation>()
+        parserService.parseEquation("y''' + y'' + y' + y + x = 5, y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -156,7 +156,7 @@ public class ParserTestCase extends GWTTestCase
         ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
         
-        parserService.parseEquation("y + x + z", new AsyncCallback<Equation>()
+        parserService.parseEquation("y + x + z, y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -181,7 +181,7 @@ public class ParserTestCase extends GWTTestCase
         ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
         
-        parserService.parseEquation("y'' = y + x + 2*X + 3/Y'", new AsyncCallback<Equation>()
+        parserService.parseEquation("y'' = y + x + 2*X + 3/Y', y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -206,7 +206,7 @@ public class ParserTestCase extends GWTTestCase
     {
         final ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
-        parserService.parseEquation("y''' = y '' + y*y' - y  + x + 4", new AsyncCallback<Equation>()
+        parserService.parseEquation("y''' = y '' + y*y' - y  + x + 4, y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -234,7 +234,7 @@ public class ParserTestCase extends GWTTestCase
     {
         final ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
-        parserService.parseEquation("y''' = y '' + y*y' - y  + 4", new AsyncCallback<Equation>()
+        parserService.parseEquation("y''' = y '' + y*y' - y  + 4, y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -262,7 +262,7 @@ public class ParserTestCase extends GWTTestCase
     {
         final ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
-        parserService.parseEquation("y''' = y '' + y*y' - y  + 4 + x + u", new AsyncCallback<Equation>()
+        parserService.parseEquation("y''' = y '' + y*y' - y  + 4 + x + u, y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -287,24 +287,104 @@ public class ParserTestCase extends GWTTestCase
     {
         final ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
-        parserService.parseEquation("y'=sin(x)+cos(x)+exp(x)+log(x)+tan(x)+sqrt(x)", new AsyncCallback<Equation>()
+        parserService.parseEquation("y'=sin(x)+cos(x)+exp(x)+log(x)+tan(x)+sqrt(x), y = 0",
+                new AsyncCallback<Equation>()
+                {
+                    
+                    @Override
+                    public void onFailure(Throwable caught)
+                    {
+                        assertTrue(false);
+                        finishTest();
+                    }
+                    
+                    @Override
+                    public void onSuccess(Equation result)
+                    {
+                        assertEquals(result.getIndependentVariable(), 'x');
+                        finishTest();
+                    }
+                    
+                });
+        
+    }
+    
+    public void testWrongInitVariable()
+    {
+        
+        final ParserServiceAsync parserService = ParserService.Util.getInstance();
+        delayTestFinish(500);
+        parserService.parseEquation("  y' = y +3, u =4", new AsyncCallback<Equation>()
         {
             
             @Override
             public void onFailure(Throwable caught)
             {
-                assertTrue(false);
+                assertTrue(caught instanceof IncorrectODEEquationException);
                 finishTest();
             }
             
             @Override
             public void onSuccess(Equation result)
             {
-                assertEquals(result.getIndependentVariable(), 'x');
+                assertTrue(false);
                 finishTest();
             }
             
         });
         
     }
+    
+    public void testNoInitVariable()
+    {
+        
+        final ParserServiceAsync parserService = ParserService.Util.getInstance();
+        delayTestFinish(500);
+        parserService.parseEquation("  y' = x + 4", new AsyncCallback<Equation>()
+        {
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(caught instanceof IncorrectODEEquationException);
+                finishTest();
+            }
+            
+            @Override
+            public void onSuccess(Equation result)
+            {
+                assertTrue(false);
+                finishTest();
+            }
+            
+        });
+        
+    }
+    
+    public void testNoODEWithInitVariable()
+    {
+        
+        final ParserServiceAsync parserService = ParserService.Util.getInstance();
+        delayTestFinish(500);
+        parserService.parseEquation(" y = tre , y  = 0", new AsyncCallback<Equation>()
+        {
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(caught instanceof IncorrectODEEquationException);
+                finishTest();
+            }
+            
+            @Override
+            public void onSuccess(Equation result)
+            {
+                assertTrue(false);
+                finishTest();
+            }
+            
+        });
+        
+    }
+    
 }

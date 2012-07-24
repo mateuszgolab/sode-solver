@@ -14,8 +14,8 @@ import com.google.gwt.user.cellview.client.CellList;
 public class ExpressionsDialog extends Dialog
 {
     
-    public static final String[] mathFunctions = {"x^y (x to the y power)", "acos", "asin", "atan", "cos", "cosh",
-            "exp (e^x)", "log", "sin", "sinh", "sqrt", "tan", "tanh"};
+    public static final String[] mathFunctions = {"acos", "asin", "atan", "cos", "cosh", "log", "sin", "sinh", "sqrt",
+            "tan", "tanh", "exp (e^x)", "x^y (x to the y power)"};
     
     public ExpressionsDialog()
     {

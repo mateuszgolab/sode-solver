@@ -115,13 +115,14 @@ public abstract class SolverTestCase extends GWTTestCase
         
         equation.setInitValues(list);
         
-        solverService.solve(equation, 0.2, 0.0, 0.2, new AsyncCallback<Solution>()
+        solverService.solve(equation, 0.01, 0.0, 0.2, new AsyncCallback<Solution>()
         {
             
             @Override
             public void onSuccess(Solution result)
             {
-                assertEquals(1.3472, result.getResult(1), accuracy);
+                assertEquals(21, result.size());
+                assertEquals(1.3472, result.getResult(20), accuracy);
                 finishTest();
                 
             }

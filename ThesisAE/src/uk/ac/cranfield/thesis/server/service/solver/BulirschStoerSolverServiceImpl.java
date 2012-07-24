@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.cranfield.thesis.client.service.solver.BulirschStoerSolverService;
-import uk.ac.cranfield.thesis.server.Solver;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
 import uk.ac.cranfield.thesis.shared.model.Equation;
 import uk.ac.cranfield.thesis.shared.model.Solution;
