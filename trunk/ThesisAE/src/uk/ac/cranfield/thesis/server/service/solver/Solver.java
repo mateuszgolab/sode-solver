@@ -1,4 +1,4 @@
-package uk.ac.cranfield.thesis.server;
+package uk.ac.cranfield.thesis.server.service.solver;
 
 import java.util.ArrayList;
 import java.util.Arrays;

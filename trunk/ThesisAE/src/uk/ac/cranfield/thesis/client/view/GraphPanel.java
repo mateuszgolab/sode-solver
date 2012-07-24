@@ -13,15 +13,14 @@ import uk.ac.cranfield.thesis.shared.model.Equation;
 import uk.ac.cranfield.thesis.shared.model.Solution;
 import uk.ac.cranfield.thesis.shared.model.System;
 
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.MessageBoxEvent;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
 import com.google.gwt.visualization.client.DataTable;
 import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
@@ -40,10 +39,10 @@ public class GraphPanel extends AbsolutePanel implements Runnable
     private final ModifiedMidpointServiceAsync modifiedMidpointSolverService = ModifiedMidpointService.Util
             .getInstance();
     private int equationsCounter;
-    private DialogBox errorDialog;
     private InputPanel inputPanel;
     private ProgressWidget progressWidget;
     private NumberFormat formatter = NumberFormat.getFormat("#.##");
+    private ALertEvent alertEvent;
     
     public GraphPanel(InputPanel panel)
     {
@@ -52,20 +51,8 @@ public class GraphPanel extends AbsolutePanel implements Runnable
         // setHeading("Solution");
         // setCaptionText("Solution");
         setStyleName("bigFontRoundedBorder");
-        errorDialog = new DialogBox();
-        errorDialog.setAnimationEnabled(true);
-        Button closeButton = new Button("Close");
-        closeButton.addClickHandler(new ClickHandler()
-        {
-            
-            @Override
-            public void onClick(ClickEvent event)
-            {
-                errorDialog.hide();
-            }
-        });
-        errorDialog.add(closeButton);
         progressWidget = new ProgressWidget();
+        alertEvent = new ALertEvent();
         
         
         // lineChart = new LineChart();
@@ -122,7 +109,8 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             // errorDialog.center();
             // errorDialog.show();
             progressWidget.close();
-            Window.alert(caught.getMessage());
+            // Window.alert(caught.getMessage());
+            MessageBox.alert("Error", caught.getMessage(), alertEvent);
         }
         
         @Override
@@ -155,7 +143,8 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             // errorDialog.center();
             // errorDialog.show();
             progressWidget.close();
-            Window.alert(caught.getMessage());
+            // Window.alert(caught.getMessage());
+            MessageBox.alert("Error", caught.getMessage(), alertEvent);
         }
         
         @Override
@@ -170,8 +159,17 @@ public class GraphPanel extends AbsolutePanel implements Runnable
                         + ")");
             }
             
-            rungeKuttaSolverService.solveSystem(result, inputPanel.getStep(), inputPanel.getRangeStart(),
-                    inputPanel.getRangeStop(), new SystemSolverCallback());
+            if (SolverMethod.RUNGE_KUTTA.toString().compareTo(inputPanel.getSelectedMethod()) == 0)
+            {
+                rungeKuttaSolverService.solveSystem(result, inputPanel.getStep(), inputPanel.getRangeStart(),
+                        inputPanel.getRangeStop(), new SystemSolverCallback());
+            }
+            else if (SolverMethod.MODIFIED_MIDPOINT.toString().compareTo(inputPanel.getSelectedMethod()) == 0)
+            {
+                modifiedMidpointSolverService.solveSystem(result, inputPanel.getStep(), inputPanel.getRangeStart(),
+                        inputPanel.getRangeStop(), new SystemSolverCallback());
+            }
+            
             
         }
     }
@@ -186,14 +184,13 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             // errorDialog.center();
             // errorDialog.show();
             progressWidget.close();
-            Window.alert(caught.getMessage());
-            
+            // Window.alert(caught.getMessage());
+            MessageBox.alert("Error", caught.getMessage(), alertEvent);
         }
         
         @Override
         public void onSuccess(Solution result)
         {
-            NumberFormat formatter = NumberFormat.getFormat("#.##");
             
             dataTable.addRows(result.size());
             
@@ -236,8 +233,8 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             // errorDialog.center();
             // errorDialog.show();
             progressWidget.close();
-            Window.alert(caught.getMessage());
-            
+            // Window.alert(caught.getMessage());
+            MessageBox.alert("Error", caught.getMessage(), alertEvent);
         }
         
         @Override
@@ -248,11 +245,11 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             double stop = result.get(0).getMax();
             double step = result.get(0).getStep();
             
-            
-            dataTable.addRows(result.get(0).size());
+            int size = result.get(0).size();
+            dataTable.addRows(size);
             
             int k = 0;
-            for (double i = start; i < stop; i += step, k++)
+            for (double i = start; i < stop && k < size; i += step, k++)
             {
                 // x
                 dataTable.setValue(k, equationsCounter, Double.valueOf(formatter.format(i)));
@@ -269,7 +266,6 @@ public class GraphPanel extends AbsolutePanel implements Runnable
                 {
                     // y
                     dataTable.setValue(k, equationsCounter, sol.getResult(k));
-                    
                 }
                 
                 equationsCounter++;
@@ -287,6 +283,16 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             }
             
             progressWidget.close();
+        }
+    }
+    
+    private class ALertEvent implements Listener<MessageBoxEvent>
+    {
+        
+        @Override
+        public void handleEvent(MessageBoxEvent be)
+        {
+            
         }
     }
     
