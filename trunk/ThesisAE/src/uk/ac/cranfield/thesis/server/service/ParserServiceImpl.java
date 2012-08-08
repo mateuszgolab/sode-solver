@@ -35,6 +35,12 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
     public static final String[] mathFunctions = {"sin", "cos", "asin", "acos", "tan", "atan", "cosh", "sinh", "exp",
             "log", "sqrt", "tanh"};
     
+    /**
+     * Parses single equation
+     * @param input equation
+     * @return parsed equation
+     * @throws IncorrectODEEquationException
+     */
     @Override
     public Equation parseEquation(String input) throws IncorrectODEEquationException
     {
@@ -61,6 +67,12 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         return equation;
     }
     
+    /**
+     * Parses system of equations
+     * @param inputs system of equations
+     * @return parsed system
+     * @throws IncorrectODEEquationException
+     */
     @Override
     public System parseEquationsSystem(List<String> inputs) throws IncorrectODEEquationException
     {
@@ -100,6 +112,12 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         return system;
     }
     
+    /**
+     * Returns character that is a symbol of a function in a equation
+     * @param input equation
+     * @return functional variable
+     * @throws IncorrectODEEquationException
+     */
     private char parseFunctionVariable(String input) throws IncorrectODEEquationException
     {
         char result = 0;
@@ -129,6 +147,13 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         return nm;
     }
     
+    /**
+     * Returnes independent variable of the equation
+     * @param input equation
+     * @param functionalVariable symbol of functional variable (to exclude from searching set)
+     * @return independent variable
+     * @throws IncorrectODEEquationException
+     */
     private char parseIndependentVariable(String input, char functionalVariable) throws IncorrectODEEquationException
     {
         Set<Character> invalid = new HashSet<Character>();
@@ -222,6 +247,12 @@ public class ParserServiceImpl extends RemoteServiceServlet implements ParserSer
         
     }
     
+    /**
+     * Parses initial values
+     * @param data initial values to parse
+     * @return initial values
+     * @throws IncorrectODEEquationException
+     */
     private List<Double> parseInitialValues(List<String> data) throws IncorrectODEEquationException
     {
         List<Double> result = new ArrayList<Double>(data.size());
