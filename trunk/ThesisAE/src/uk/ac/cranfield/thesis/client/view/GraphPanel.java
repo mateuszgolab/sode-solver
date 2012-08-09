@@ -69,7 +69,6 @@ public class GraphPanel extends AbsolutePanel implements Runnable
     @Override
     public void run()
     {
-        // TODO : round x- values on the chart tooltip
         
         progressWidget.show();
         dataTable = DataTable.create();

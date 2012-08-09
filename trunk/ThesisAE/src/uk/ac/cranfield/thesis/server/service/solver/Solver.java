@@ -162,7 +162,6 @@ public class Solver extends RemoteServiceServlet
         return map;
     }
     
-    
     protected Map<String, Double> getSum(final List<List<Double>> functions, final List<List<Double>> vectors,
             final double h, final List<Character> f)
     {
@@ -224,7 +223,6 @@ public class Solver extends RemoteServiceServlet
         
         return y;
     }
-    
     
     protected List<List<Double>> evaluateFunctions(List<List<Double>> functions, final List<List<Double>> k1,
             final List<List<Double>> k2, final List<List<Double>> k3, List<List<Double>> k4)
