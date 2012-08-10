@@ -60,18 +60,15 @@ public class Solution implements Serializable
         this.results = results;
     }
     
-    
     public double getResult(int i)
     {
         return results.get(i);
     }
     
-    
     public int size()
     {
         return results.size();
     }
-    
     
     /**
      * @return the min
@@ -81,7 +78,6 @@ public class Solution implements Serializable
         return min;
     }
     
-    
     /**
      * @param min the min to set
      */
@@ -89,7 +85,6 @@ public class Solution implements Serializable
     {
         this.min = min;
     }
-    
     
     /**
      * @return the max
@@ -99,7 +94,6 @@ public class Solution implements Serializable
         return max;
     }
     
-    
     /**
      * @param max the max to set
      */
@@ -108,7 +102,6 @@ public class Solution implements Serializable
         this.max = max;
     }
     
-    
     /**
      * @return the step
      */
@@ -116,7 +109,6 @@ public class Solution implements Serializable
     {
         return step;
     }
-    
     
     /**
      * @param step the step to set
