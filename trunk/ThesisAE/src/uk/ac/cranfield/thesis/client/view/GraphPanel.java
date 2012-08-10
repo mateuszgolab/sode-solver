@@ -42,7 +42,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
     private InputPanel inputPanel;
     private ProgressWidget progressWidget;
     private NumberFormat formatter = NumberFormat.getFormat("#.##");
-    private ALertEvent alertEvent;
+    private AlertEvent alertEvent;
     
     public GraphPanel(InputPanel panel)
     {
@@ -52,7 +52,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
         // setCaptionText("Solution");
         setStyleName("bigFontRoundedBorder");
         progressWidget = new ProgressWidget();
-        alertEvent = new ALertEvent();
+        alertEvent = new AlertEvent();
         
         
         // lineChart = new LineChart();
@@ -285,7 +285,7 @@ public class GraphPanel extends AbsolutePanel implements Runnable
         }
     }
     
-    private class ALertEvent implements Listener<MessageBoxEvent>
+    private class AlertEvent implements Listener<MessageBoxEvent>
     {
         
         @Override
