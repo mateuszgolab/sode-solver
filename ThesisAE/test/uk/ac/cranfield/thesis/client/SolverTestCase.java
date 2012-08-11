@@ -189,6 +189,9 @@ public abstract class SolverTestCase extends GWTTestCase
     
     public void test1OrderSystem2()
     {
+        
+        // TODO : transformthis test into parser test
+        
         delayTestFinish(500);
         
         Equation equation = new Equation("y'= y + x");

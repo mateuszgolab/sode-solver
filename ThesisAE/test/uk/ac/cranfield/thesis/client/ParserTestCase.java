@@ -1,9 +1,13 @@
 package uk.ac.cranfield.thesis.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.ac.cranfield.thesis.client.service.ParserService;
 import uk.ac.cranfield.thesis.client.service.ParserServiceAsync;
 import uk.ac.cranfield.thesis.shared.exception.IncorrectODEEquationException;
 import uk.ac.cranfield.thesis.shared.model.Equation;
+import uk.ac.cranfield.thesis.shared.model.System;
 
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -23,7 +27,7 @@ public class ParserTestCase extends GWTTestCase
         ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
         
-        parserService.parseEquation("y' + x, y = 0", new AsyncCallback<Equation>()
+        parserService.parseEquation("y' = y + x, y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -50,7 +54,7 @@ public class ParserTestCase extends GWTTestCase
         ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
         
-        parserService.parseEquation("y''' + x, y=0", new AsyncCallback<Equation>()
+        parserService.parseEquation("y''' = y + x, y=0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -77,7 +81,7 @@ public class ParserTestCase extends GWTTestCase
         ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
         
-        parserService.parseEquation("y ' ' ' + x, y = 0", new AsyncCallback<Equation>()
+        parserService.parseEquation("y ' ' ' = y+x, y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -104,7 +108,7 @@ public class ParserTestCase extends GWTTestCase
         ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
         
-        parserService.parseEquation("y''' + y'' + y' + y + x = 5, y = 0", new AsyncCallback<Equation>()
+        parserService.parseEquation("y''' = y'' + y' + y + x = 5, y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -156,7 +160,7 @@ public class ParserTestCase extends GWTTestCase
         ParserServiceAsync parserService = ParserService.Util.getInstance();
         delayTestFinish(500);
         
-        parserService.parseEquation("y + x + z, y = 0", new AsyncCallback<Equation>()
+        parserService.parseEquation("y' = y + x + z, y = 0", new AsyncCallback<Equation>()
         {
             
             @Override
@@ -387,4 +391,35 @@ public class ParserTestCase extends GWTTestCase
         
     }
     
+    public void testSystemOfODE()
+    {
+        
+        final ParserServiceAsync parserService = ParserService.Util.getInstance();
+        delayTestFinish(500);
+        
+        List<String> systemInput = new ArrayList<String>(2);
+        systemInput.add("y'= y + x, y = 0");
+        systemInput.add("z'= z + y + x, z = 0");
+        
+        parserService.parseEquationsSystem(systemInput, new AsyncCallback<System>()
+        {
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(false);
+                finishTest();
+                
+            }
+            
+            @Override
+            public void onSuccess(System result)
+            {
+                assertEquals('x', result.getIndependentVariable());
+                finishTest();
+                
+            }
+        });
+        
+    }
 }
