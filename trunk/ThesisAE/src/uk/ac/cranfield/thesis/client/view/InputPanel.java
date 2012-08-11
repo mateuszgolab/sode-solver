@@ -101,7 +101,7 @@ public class InputPanel extends FormPanel
         method2.setBoxLabel(SolverMethod.MODIFIED_MIDPOINT.toString());
         
         method3 = new Radio();
-        method3.setBoxLabel(SolverMethod.ROSENBROCK.toString());
+        method3.setBoxLabel(SolverMethod.PREDICTOR_CORRECTOR.toString());
         
         final RadioGroup group = new RadioGroup();
         group.add(method1);

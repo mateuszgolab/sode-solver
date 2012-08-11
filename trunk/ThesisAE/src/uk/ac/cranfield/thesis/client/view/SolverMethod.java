@@ -3,8 +3,8 @@ package uk.ac.cranfield.thesis.client.view;
 
 public enum SolverMethod
 {
-    RUNGE_KUTTA("Runge-Kutta"), MODIFIED_MIDPOINT("Modified Midpoint"), BULIRSCH_STOER("Bulirsch-Stoer"), ROSENBROCK(
-            "Rosenbrock");
+    RUNGE_KUTTA("Runge-Kutta"), MODIFIED_MIDPOINT("Modified Midpoint"), BULIRSCH_STOER("Bulirsch-Stoer"), PREDICTOR_CORRECTOR(
+            "Adams-Bashforth-Moulton");
     
     private final String text;
     
