@@ -7,17 +7,20 @@ import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceServic
 import uk.ac.cranfield.thesis.client.service.persistence.SystemPersistenceServiceAsync;
 import uk.ac.cranfield.thesis.shared.model.entity.SystemEntity;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.Query;
 
 
 public class PersistenceTestCase extends GWTTestCase
 {
     
     private SystemPersistenceServiceAsync service;
+    private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+    
     
     @Override
     public String getModuleName()
@@ -25,12 +28,43 @@ public class PersistenceTestCase extends GWTTestCase
         return "uk.ac.cranfield.thesis.ThesisAE";
     }
     
+    
     @Override
     public void gwtSetUp()
     {
+        helper.setUp();
         service = SystemPersistenceService.Util.getInstance();
-        // ObjectifyService.register(SystemEntity.class);
     }
+    
+    @Override
+    public void gwtTearDown()
+    {
+        helper.tearDown();
+        
+    }
+    
+    public void testLoadEmpty()
+    {
+        DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+        
+        service.get("testName", new AsyncCallback<SystemEntity>()
+        {
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(false);
+                finishTest();
+            }
+            
+            @Override
+            public void onSuccess(SystemEntity result)
+            {
+                assertNull(result);
+            }
+        });
+    }
+    
     
     public void testStoreSystem()
     {
@@ -41,20 +75,15 @@ public class PersistenceTestCase extends GWTTestCase
         equations.add("eq1");
         equations.add("eq2");
         entity.setEquations(equations);
+        
+        
         service.persist(entity, new AsyncCallback<Void>()
         {
             
             @Override
             public void onSuccess(Void result)
             {
-                Objectify ofy = ObjectifyService.begin();
-                Query<SystemEntity> q = ofy.query(SystemEntity.class).filter("name", "testName");
                 
-                SystemEntity res = q.get();
-                assertNotNull(res);
-                assertEquals("testName", res.getName());
-                assertEquals("eq1", res.getEquations().get(0));
-                assertEquals("eq2", res.getEquations().get(1));
             }
             
             @Override
@@ -64,6 +93,7 @@ public class PersistenceTestCase extends GWTTestCase
                 finishTest();
             }
         });
+        
     }
     
     public void testLoadSystem()
@@ -102,11 +132,6 @@ public class PersistenceTestCase extends GWTTestCase
             public void onSuccess(String result)
             {
                 
-                Objectify ofy = ObjectifyService.begin();
-                Query<SystemEntity> q = ofy.query(SystemEntity.class).filter("name", "testName");
-                
-                assertNull(q.get());
-                
             }
             
             @Override
@@ -116,5 +141,27 @@ public class PersistenceTestCase extends GWTTestCase
                 finishTest();
             }
         });
+    }
+    
+    public void testLoadAfterRemovingSystem()
+    {
+        delayTestFinish(500);
+        service.get("testName", new AsyncCallback<SystemEntity>()
+        {
+            
+            @Override
+            public void onSuccess(SystemEntity result)
+            {
+                assertNull(result);
+            }
+            
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                assertTrue(false);
+                finishTest();
+            }
+        });
+        
     }
 }

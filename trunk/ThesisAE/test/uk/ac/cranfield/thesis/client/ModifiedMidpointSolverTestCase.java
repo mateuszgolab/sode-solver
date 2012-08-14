@@ -10,7 +10,7 @@ public class ModifiedMidpointSolverTestCase extends SolverTestCase
     public void gwtSetUp()
     {
         solverService = ModifiedMidpointService.Util.getInstance();
-        accuracy = 0.0005;
+        accuracy = 0.01;
     }
     
 }
