@@ -47,7 +47,7 @@ public abstract class SolverTestCase extends GWTTestCase
             @Override
             public void onSuccess(Solution result)
             {
-                assertEquals(11, result.size());
+                assertTrue(11 <= result.size());
                 assertEquals(-0.1 * 0.1 - 2 * 0.1 + 2 * Math.exp(0.1) - 2.0, result.getResult(1), accuracy);
                 assertEquals(-0.5 * 0.5 - 2 * 0.5 + 2 * Math.exp(0.5) - 2.0, result.getResult(5), accuracy);
                 assertEquals(-1.0 * 1.0 - 2 * 1.0 + 2 * Math.exp(1.0) - 2.0, result.getResult(10), accuracy);
@@ -84,7 +84,7 @@ public abstract class SolverTestCase extends GWTTestCase
             @Override
             public void onSuccess(Solution result)
             {
-                assertEquals(11, result.size());
+                assertTrue(11 <= result.size());
                 assertEquals(Math.sin(0.1) - Math.cos(0.1) + 1.0, result.getResult(1), accuracy);
                 assertEquals(Math.sin(0.5) - Math.cos(0.5) + 1.0, result.getResult(5), accuracy);
                 assertEquals(Math.sin(1.0) - Math.cos(1.0) + 1.0, result.getResult(10), accuracy);
@@ -121,7 +121,7 @@ public abstract class SolverTestCase extends GWTTestCase
             @Override
             public void onSuccess(Solution result)
             {
-                assertEquals(21, result.size());
+                assertTrue(21 <= result.size());
                 assertEquals(1.3472, result.getResult(20), accuracy);
                 finishTest();
                 

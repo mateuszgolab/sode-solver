@@ -10,7 +10,7 @@ public class PredictorCorrectorSolverTestCase extends SolverTestCase
     public void gwtSetUp()
     {
         solverService = PredictorCorrectorSolverService.Util.getInstance();
-        accuracy = 0.0005;
+        accuracy = 0.001;
     }
     
 }
