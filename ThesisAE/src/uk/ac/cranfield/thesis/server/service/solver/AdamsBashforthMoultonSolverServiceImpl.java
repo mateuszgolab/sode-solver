@@ -52,8 +52,8 @@ public class AdamsBashforthMoultonSolverServiceImpl extends Solver implements Ad
         
         for (double i = start + 3 * step; i < stop + step / 2.0; i += step)
         {
-            yn1 = predictor(step, i, equation, f, yn_2, yn_1, yn);
-            yn1 = corrector(step, i, equation, f, yn_1, yn, yn1);
+            yn1 = predictor(step, i, equation, f, yn, yn_1, yn_2);
+            yn1 = corrector(step, i, equation, f, yn1, yn, yn_1);
             yn_2 = new ArrayList<Double>(yn_1);
             yn_1 = new ArrayList<Double>(yn);
             yn = new ArrayList<Double>(yn1);
@@ -71,30 +71,30 @@ public class AdamsBashforthMoultonSolverServiceImpl extends Solver implements Ad
         return null;
     }
     
-    private List<Double> predictor(final double step, final double n, final Equation equation, final List<String> f,
-            List<Double> yn3, List<Double> yn2, List<Double> yn1) throws UnknownFunctionException,
+    private List<Double> predictor(final double step, final double i, final Equation equation, final List<String> f,
+            List<Double> yn, List<Double> yn_1, List<Double> yn_2) throws UnknownFunctionException,
             UnparsableExpressionException
     {
         List<Double> result = new ArrayList<Double>();
         
-        // f(xn-1, yn-1)
-        Map<String, Double> map = getMap(yn1, equation.getFunctionVariable());
-        map.put(String.valueOf(equation.getIndependentVariable()), n);
+        // f(xn, yn)
+        Map<String, Double> map = getMap(yn, equation.getFunctionVariable());
+        map.put(String.valueOf(equation.getIndependentVariable()), i);
         List<Double> fn1 = evaluate(f, 23.0, map);
         
-        // f(xn-2, yn-2)
-        map = getMap(yn2, equation.getFunctionVariable());
-        map.put(String.valueOf(equation.getIndependentVariable()), n - step);
+        // f(xn-1, yn-1)
+        map = getMap(yn_1, equation.getFunctionVariable());
+        map.put(String.valueOf(equation.getIndependentVariable()), i - step);
         List<Double> fn2 = evaluate(f, -16.0, map);
         
-        // f(xn-3, yn-3)
-        map = getMap(yn3, equation.getFunctionVariable());
-        map.put(String.valueOf(equation.getIndependentVariable()), n - 2 * step);
+        // f(xn-2, yn-2)
+        map = getMap(yn_2, equation.getFunctionVariable());
+        map.put(String.valueOf(equation.getIndependentVariable()), i - 2 * step);
         List<Double> fn3 = evaluate(f, 5.0, map);
         
-        for (int i = 0; i < yn3.size(); i++)
+        for (int j = 0; j < yn.size(); j++)
         {
-            result.add(yn1.get(i) + step / 12.0 * (fn1.get(i) + fn2.get(i) + fn3.get(i)));
+            result.add(yn.get(j) + (step / 12.0) * (fn1.get(j) + fn2.get(j) + fn3.get(j)));
         }
         
         return result;
@@ -102,24 +102,24 @@ public class AdamsBashforthMoultonSolverServiceImpl extends Solver implements Ad
     }
     
     private List<Double> corrector(final double step, final double n, final Equation equation, final List<String> f,
-            List<Double> yn2, List<Double> yn1, List<Double> yn) throws UnknownFunctionException,
+            List<Double> yn1, List<Double> yn, List<Double> yn_1) throws UnknownFunctionException,
             UnparsableExpressionException
     {
         List<Double> result = new ArrayList<Double>();
         
-        // f(xn, yn)
-        Map<String, Double> map = getMap(yn, equation.getFunctionVariable());
-        map.put(String.valueOf(equation.getIndependentVariable()), n);
+        // f(xn+1, yn+1)
+        Map<String, Double> map = getMap(yn1, equation.getFunctionVariable());
+        map.put(String.valueOf(equation.getIndependentVariable()), n + step);
         List<Double> fn = evaluate(f, 5.0, map);
         
-        // f(xn-1, yn-1)
-        map = getMap(yn1, equation.getFunctionVariable());
-        map.put(String.valueOf(equation.getIndependentVariable()), n - step);
+        // f(xn, yn)
+        map = getMap(yn, equation.getFunctionVariable());
+        map.put(String.valueOf(equation.getIndependentVariable()), n);
         List<Double> fn1 = evaluate(f, 8.0, map);
         
-        // f(xn-2, yn-2)
-        map = getMap(yn2, equation.getFunctionVariable());
-        map.put(String.valueOf(equation.getIndependentVariable()), n - 2 * step);
+        // f(xn-1, yn-1)
+        map = getMap(yn_1, equation.getFunctionVariable());
+        map.put(String.valueOf(equation.getIndependentVariable()), n - step);
         List<Double> fn2 = evaluate(f, -1.0, map);
         
         for (int i = 0; i < yn.size(); i++)
@@ -149,7 +149,7 @@ public class AdamsBashforthMoultonSolverServiceImpl extends Solver implements Ad
         solution.addResult(y.get(y.size() - 1));
         
         // y1,y2 evaluation
-        for (double i = start; i < stop; i += step)
+        for (double i = start; i < start + 2 * step; i += step)
         {
             map = getMap(y, equation.getFunctionVariable());
             map.put(String.valueOf(equation.getIndependentVariable()), i + step);
@@ -174,4 +174,5 @@ public class AdamsBashforthMoultonSolverServiceImpl extends Solver implements Ad
         
         return solution;
     }
+    
 }
