@@ -67,12 +67,12 @@
 		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/ModifiedMidpointSolverService</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>PredictorCorrectorSolverService</servlet-name>
-		<servlet-class>uk.ac.cranfield.thesis.server.service.solver.PredictorCorrectorSolverServiceImpl</servlet-class>
+		<servlet-name>AdamsBashforthMoultonSolverService</servlet-name>
+		<servlet-class>uk.ac.cranfield.thesis.server.service.solver.AdamsBashforthMoultonSolverServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>PredictorCorrectorSolverService</servlet-name>
-		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/PredictorCorrectorSolverService</url-pattern>
+		<servlet-name>AdamsBashforthMoultonSolverService</servlet-name>
+		<url-pattern>/uk.ac.cranfield.thesis.ThesisAE/AdamsBashforthMoultonSolverService</url-pattern>
 	</servlet-mapping>
 
 </web-app>
