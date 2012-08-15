@@ -54,7 +54,7 @@ public class ModifiedMidpointSolverServiceImpl extends Solver implements Modifie
             
             tmp = z1;
             map = getMap(z1, equation.getFunctionVariable());
-            map.put(String.valueOf(equation.getIndependentVariable()), start);
+            map.put(String.valueOf(equation.getIndependentVariable()), i + step);
             z1 = getSum(z0, evaluate(f, 2 * step, map));
             z0 = new ArrayList<Double>(tmp);
             

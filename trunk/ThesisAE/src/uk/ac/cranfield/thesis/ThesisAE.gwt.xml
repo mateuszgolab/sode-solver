@@ -35,8 +35,8 @@
 	<servlet path="/BulirschStoerSolverService"
 		class="uk.ac.cranfield.thesis.server.service.solver.BulirschStoerSolverServiceImpl" />
 
-	<servlet path="/PredictorCorrectorSolverService"
-		class="uk.ac.cranfield.thesis.server.service.solver.PredictorCorrectorSolverServiceImpl" />
+	<servlet path="/AdamsBashforthMoultonSolverService"
+		class="uk.ac.cranfield.thesis.server.service.solver.AdamsBashforthMoultonSolverServiceImpl" />
 
 
 
