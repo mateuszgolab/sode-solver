@@ -47,7 +47,7 @@ public class RungeKuttaSolverServiceImpl extends Solver implements RungeKuttaSol
         Map<String, Double> map = null;
         solution.addResult(y.get(y.size() - 1));
         
-        for (double i = start; i < stop + step / 2.0; i += step)
+        for (double i = start; i < stop; i += step)
         {
             // add <y0, val>, <y1, val2> ....
             map = getMap(y, equation.getFunctionVariable());
@@ -68,7 +68,6 @@ public class RungeKuttaSolverServiceImpl extends Solver implements RungeKuttaSol
             k4 = evaluate(f, step, map);
             
             y = evaluateFunction(y, k1, k2, k3, k4);
-            
             solution.addResult(y.get(y.size() - 1));
         }
         
