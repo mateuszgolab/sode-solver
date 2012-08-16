@@ -28,12 +28,14 @@ import de.congrace.exp4j.UnparsableExpressionException;
 public class AdamsBashforthMoultonSolverServiceImpl extends Solver implements AdamsBashforthMoultonSolverService
 {
     
+    private final RungeKuttaSolverServiceImpl rungeKuttaSolverServiceImpl = new RungeKuttaSolverServiceImpl();
+    
     @Override
     public Solution solve(Equation equation, double step, double start, double stop)
             throws IncorrectODEEquationException, Exception
     {
         List<String> f = getFunctionVector(equation);
-        Solution solution = rungeKuttaEvaluation(start, step, stop, equation);
+        Solution solution = rungeKuttaSolverServiceImpl.solve(equation, step, start, start + 2 * step);
         
         if (solution.getResults().size() < 3)
             throw new IncorrectODEEquationException("Error : Not enough initial values to solve equation");
@@ -52,8 +54,8 @@ public class AdamsBashforthMoultonSolverServiceImpl extends Solver implements Ad
         
         for (double i = start + 3 * step; i < stop + step / 2.0; i += step)
         {
-            yn1 = predictor(step, i, equation, f, yn, yn_1, yn_2);
-            yn1 = corrector(step, i, equation, f, yn1, yn, yn_1);
+            yn1 = predictor(step, i - step, equation, f, yn, yn_1, yn_2);
+            yn1 = corrector(step, i - step, equation, f, yn1, yn, yn_1);
             yn_2 = new ArrayList<Double>(yn_1);
             yn_1 = new ArrayList<Double>(yn);
             yn = new ArrayList<Double>(yn1);
@@ -67,8 +69,58 @@ public class AdamsBashforthMoultonSolverServiceImpl extends Solver implements Ad
     public List<Solution> solveSystem(System system, double step, double start, double stop)
             throws IncorrectODEEquationException, Exception
     {
-        // TODO Auto-generated method stub
-        return null;
+        List<List<String>> f = getFunctionVector(system);
+        List<Solution> result = rungeKuttaSolverServiceImpl.solveSystem(system, step, start, start + 2 * step);
+        
+        for (Solution s : result)
+        {
+            if (s.getResults().size() < 3)
+                throw new IncorrectODEEquationException(
+                        "Error : Not enough initial values to solve system of equations");
+        }
+        
+        List<List<Double>> yn_2 = new ArrayList<List<Double>>();
+        for (Solution s : result)
+        {
+            List<Double> tmp = new ArrayList<Double>();
+            tmp.add(s.getResult(0));
+            yn_2.add(tmp);
+        }
+        
+        List<List<Double>> yn_1 = new ArrayList<List<Double>>();
+        for (Solution s : result)
+        {
+            List<Double> tmp = new ArrayList<Double>();
+            tmp.add(s.getResult(1));
+            yn_1.add(tmp);
+        }
+        
+        List<List<Double>> yn = new ArrayList<List<Double>>();
+        for (Solution s : result)
+        {
+            List<Double> tmp = new ArrayList<Double>();
+            tmp.add(s.getResult(2));
+            yn.add(tmp);
+        }
+        
+        List<List<Double>> yn1 = new ArrayList<List<Double>>();
+        
+        
+        for (double i = start + 3 * step; i < stop + step / 2.0; i += step)
+        {
+            yn1 = predictor(step, i - step, system, f, yn, yn_1, yn_2);
+            yn1 = corrector(step, i - step, system, f, yn1, yn, yn_1);
+            yn_2 = new ArrayList<List<Double>>(yn_1);
+            yn_1 = new ArrayList<List<Double>>(yn);
+            yn = new ArrayList<List<Double>>(yn1);
+            
+            for (int ii = 0; ii < result.size(); ii++)
+            {
+                result.get(ii).addResult(yn.get(ii).get(yn.get(ii).size() - 1));
+            }
+        }
+        
+        return result;
     }
     
     private List<Double> predictor(final double step, final double i, final Equation equation, final List<String> f,
@@ -124,55 +176,81 @@ public class AdamsBashforthMoultonSolverServiceImpl extends Solver implements Ad
         
         for (int i = 0; i < yn.size(); i++)
         {
-            result.add(yn.get(i) + step / 12.0 * (fn.get(i) + fn1.get(i) + fn2.get(i)));
+            result.add(yn.get(i) + (step / 12.0) * (fn.get(i) + fn1.get(i) + fn2.get(i)));
         }
         
         return result;
     }
     
-    private Solution rungeKuttaEvaluation(final double start, final double step, final double stop,
-            final Equation equation) throws UnknownFunctionException, UnparsableExpressionException,
-            IncorrectODEEquationException
+    private List<List<Double>> predictor(final double step, final double i, final System system,
+            final List<List<String>> f, List<List<Double>> yn, List<List<Double>> yn_1, List<List<Double>> yn_2)
+            throws UnknownFunctionException, UnparsableExpressionException
     {
+        List<List<Double>> results = new ArrayList<List<Double>>();
         
-        List<Double> k1 = new ArrayList<Double>();
-        List<Double> k2 = new ArrayList<Double>();
-        List<Double> k3 = new ArrayList<Double>();
-        List<Double> k4 = new ArrayList<Double>();
-        List<Double> y = equation.getInitValues();
-        List<String> f = getFunctionVector(equation);
-        Solution solution = new Solution(start, stop, step);
+        // f(xn, yn)
+        Map<String, Double> map = getMap(yn, system.getFunctionVariables());
+        map.put(String.valueOf(system.getIndependentVariable()), i);
+        List<List<Double>> fn1 = evaluateSystem(f, 23.0, map);
         
-        // map contains derivative and initial value
-        // <y0, 0.0> , <y1, 0.0> , ... , <z0, 0.5> , <z1, 0.5> , ...
-        Map<String, Double> map = null;
-        solution.addResult(y.get(y.size() - 1));
+        // f(xn-1, yn-1)
+        map = getMap(yn_1, system.getFunctionVariables());
+        map.put(String.valueOf(system.getIndependentVariable()), i - step);
+        List<List<Double>> fn2 = evaluateSystem(f, -16.0, map);
         
-        // y1,y2 evaluation
-        for (double i = start; i < start + 2 * step; i += step)
+        // f(xn-2, yn-2)
+        map = getMap(yn_2, system.getFunctionVariables());
+        map.put(String.valueOf(system.getIndependentVariable()), i - 2 * step);
+        List<List<Double>> fn3 = evaluateSystem(f, 5.0, map);
+        
+        for (int ii = 0; ii < yn.size(); ii++)
         {
-            map = getMap(y, equation.getFunctionVariable());
-            map.put(String.valueOf(equation.getIndependentVariable()), i + step);
-            k1 = evaluate(f, step, map);
-            
-            map = getSum(y, k1, 0.5, equation.getFunctionVariable());
-            map.put(String.valueOf(equation.getIndependentVariable()), i + step / 2);
-            k2 = evaluate(f, step, map);
-            
-            map = getSum(y, k2, 0.5, equation.getFunctionVariable());
-            map.put(String.valueOf(equation.getIndependentVariable()), i + step / 2);
-            k3 = evaluate(f, step, map);
-            
-            map = getSum(y, k3, 1.0, equation.getFunctionVariable());
-            map.put(String.valueOf(equation.getIndependentVariable()), i + step);
-            k4 = evaluate(f, step, map);
-            
-            y = evaluateFunction(y, k1, k2, k3, k4);
-            solution.addResult(y.get(y.size() - 1));
+            List<Double> res = new ArrayList<Double>();
+            for (int j = 0; j < yn.get(ii).size(); j++)
+            {
+                res.add(yn.get(ii).get(j) + (step / 12.0)
+                        * (fn1.get(ii).get(j) + fn2.get(ii).get(j) + fn3.get(ii).get(j)));
+            }
+            results.add(res);
         }
         
-        
-        return solution;
+        return results;
     }
+    
+    private List<List<Double>> corrector(final double step, final double n, final System system,
+            final List<List<String>> f, List<List<Double>> yn1, List<List<Double>> yn, List<List<Double>> yn_1)
+            throws UnknownFunctionException, UnparsableExpressionException
+    {
+        List<List<Double>> results = new ArrayList<List<Double>>();
+        
+        // f(xn+1, yn+1)
+        Map<String, Double> map = getMap(yn1, system.getFunctionVariables());
+        map.put(String.valueOf(system.getIndependentVariable()), n + step);
+        List<List<Double>> fn = evaluateSystem(f, 5.0, map);
+        
+        // f(xn, yn)
+        map = getMap(yn, system.getFunctionVariables());
+        map.put(String.valueOf(system.getIndependentVariable()), n);
+        List<List<Double>> fn1 = evaluateSystem(f, 8.0, map);
+        
+        // f(xn-1, yn-1)
+        map = getMap(yn_1, system.getFunctionVariables());
+        map.put(String.valueOf(system.getIndependentVariable()), n - step);
+        List<List<Double>> fn2 = evaluateSystem(f, -1.0, map);
+        
+        for (int ii = 0; ii < yn.size(); ii++)
+        {
+            List<Double> res = new ArrayList<Double>();
+            for (int j = 0; j < yn.get(ii).size(); j++)
+            {
+                res.add(yn.get(ii).get(j) + (step / 12.0)
+                        * (fn.get(ii).get(j) + fn1.get(ii).get(j) + fn2.get(ii).get(j)));
+            }
+            results.add(res);
+        }
+        
+        return results;
+    }
+    
     
 }

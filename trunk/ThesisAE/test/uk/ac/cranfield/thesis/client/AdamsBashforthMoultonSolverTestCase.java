@@ -10,7 +10,7 @@ public class AdamsBashforthMoultonSolverTestCase extends SolverTestCase
     public void gwtSetUp()
     {
         solverService = AdamsBashforthMoultonSolverService.Util.getInstance();
-        accuracy = 0.01;
+        accuracy = 0.001;
     }
     
 }
