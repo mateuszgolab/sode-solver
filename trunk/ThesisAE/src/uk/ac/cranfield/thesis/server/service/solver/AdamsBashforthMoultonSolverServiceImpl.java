@@ -36,6 +36,7 @@ public class AdamsBashforthMoultonSolverServiceImpl extends Solver implements Ad
     {
         List<String> f = getFunctionVector(equation);
         Solution solution = rungeKuttaSolverServiceImpl.solve(equation, step, start, start + 2 * step);
+        solution.setMax(stop);
         
         if (solution.getResults().size() < 3)
             throw new IncorrectODEEquationException("Error : Not enough initial values to solve equation");
@@ -77,6 +78,7 @@ public class AdamsBashforthMoultonSolverServiceImpl extends Solver implements Ad
             if (s.getResults().size() < 3)
                 throw new IncorrectODEEquationException(
                         "Error : Not enough initial values to solve system of equations");
+            s.setMax(stop);
         }
         
         List<List<Double>> yn_2 = new ArrayList<List<Double>>();
