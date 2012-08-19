@@ -47,24 +47,8 @@ public class PersistenceTestCase extends GWTTestCase
     {
         DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
         
-        service.get("testName", new AsyncCallback<SystemEntity>()
-        {
-            
-            @Override
-            public void onFailure(Throwable caught)
-            {
-                assertTrue(false);
-                finishTest();
-            }
-            
-            @Override
-            public void onSuccess(SystemEntity result)
-            {
-                assertNull(result);
-            }
-        });
+        
     }
-    
     
     public void testStoreSystem()
     {

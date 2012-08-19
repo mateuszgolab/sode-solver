@@ -4,6 +4,8 @@ import java.util.List;
 
 import uk.ac.cranfield.thesis.client.service.ParserService;
 import uk.ac.cranfield.thesis.client.service.ParserServiceAsync;
+import uk.ac.cranfield.thesis.client.service.solver.AdamsBashforthMoultonSolverService;
+import uk.ac.cranfield.thesis.client.service.solver.AdamsBashforthMoultonSolverServiceAsync;
 import uk.ac.cranfield.thesis.client.service.solver.ModifiedMidpointService;
 import uk.ac.cranfield.thesis.client.service.solver.ModifiedMidpointServiceAsync;
 import uk.ac.cranfield.thesis.client.service.solver.RungeKuttaSolverService;
@@ -37,6 +39,8 @@ public class GraphPanel extends AbsolutePanel implements Runnable
     private final ParserServiceAsync parserService = ParserService.Util.getInstance();
     private final RungeKuttaSolverServiceAsync rungeKuttaSolverService = RungeKuttaSolverService.Util.getInstance();
     private final ModifiedMidpointServiceAsync modifiedMidpointSolverService = ModifiedMidpointService.Util
+            .getInstance();
+    private final AdamsBashforthMoultonSolverServiceAsync adamsBashforthMoultonSolverService = AdamsBashforthMoultonSolverService.Util
             .getInstance();
     private int equationsCounter;
     private InputPanel inputPanel;
@@ -129,6 +133,11 @@ public class GraphPanel extends AbsolutePanel implements Runnable
                 modifiedMidpointSolverService.solve(result, inputPanel.getStep(), inputPanel.getRangeStart(),
                         inputPanel.getRangeStop(), new EquationSolverCallback());
             }
+            else if (SolverMethod.PREDICTOR_CORRECTOR.toString().compareTo(inputPanel.getSelectedMethod()) == 0)
+            {
+                adamsBashforthMoultonSolverService.solve(result, inputPanel.getStep(), inputPanel.getRangeStart(),
+                        inputPanel.getRangeStop(), new EquationSolverCallback());
+            }
         }
     }
     
@@ -167,6 +176,11 @@ public class GraphPanel extends AbsolutePanel implements Runnable
             {
                 modifiedMidpointSolverService.solveSystem(result, inputPanel.getStep(), inputPanel.getRangeStart(),
                         inputPanel.getRangeStop(), new SystemSolverCallback());
+            }
+            else if (SolverMethod.PREDICTOR_CORRECTOR.toString().compareTo(inputPanel.getSelectedMethod()) == 0)
+            {
+                adamsBashforthMoultonSolverService.solveSystem(result, inputPanel.getStep(),
+                        inputPanel.getRangeStart(), inputPanel.getRangeStop(), new SystemSolverCallback());
             }
             
             
